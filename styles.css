@@ -91,6 +91,7 @@ nav ul li a:hover {
     align-items: center;      /* Center horizontally */
     text-align: center;
     margin-top: 20px; /* Add space above the centered content */
+    padding: 0 20px; /* Add horizontal padding for side margins */
 }
 
 .centered h1 {
@@ -102,4 +103,29 @@ nav ul li a:hover {
     font-size: 20px;  /* Adjust subtitle size */
     font-style: italic;
     margin-top: 10px;
+}
+
+/* Main content section with side margins */
+.container {
+    max-width: 800px; /* Limit the width of the main content */
+    margin: 0 auto;  /* Center the content horizontally */
+    padding: 0 20px; /* Add side padding for margins */
+}
+
+/* Footer with a gap above it */
+footer {
+    margin-top: 40px; /* Add space between the content and the footer */
+    text-align: center;
+    font-size: 0.8rem;
+    color: teal;
+    padding: 10px 20px; /* Add side padding for margins */
+}
+
+/* Footer copyright and logo styling */
+.footer-content {
+    margin-top: 20px; /* Add space between text and the copyright content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* Add gap between copyright text and the logo */
 }
