@@ -40,7 +40,7 @@ nav .menu a:hover {
 
 /* Scaled Image */
 .scaled-image {
-    max-width: 150px;
+    max-width: 250px;
     height: auto;
     margin: 20px auto;
     display: block;
