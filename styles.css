@@ -1,161 +1,94 @@
-
-/* Header and Navigation Styling */
-header {
+/* General Body Styling */
+body {
     background-color: black;
-    padding: 10px 0;
-}
-
-nav {
+    color: teal;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 }
 
-.menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 20px; /* Even spacing */
-}
-
-.menu li {
-    margin: 0;
-}
-
-.menu a {
-    text-decoration: none;
-    color: teal;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-}
-
-.menu a:hover {
-    color: #00ffff; /* Lighter teal on hover */
-}
-
-/* Header Image Styling */
-.header-image {
-    width: 100%; /* Adjust to fit the header */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Remove extra whitespace around the image */
-}
-
-/* Navigation Menu Styling */
-.menu {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Space between menu items */
-    padding: 10px;
-    background-color: black;
-    margin: 0;
-}
-
-.menu a {
-    color: teal;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.menu a:hover {
-    color: #00ffff; /* Lighter teal on hover */
-}
-
-/* Scaled Image Styling */
-.scaled-image {
-    display: block;
-    margin: 20px auto; /* Center the image horizontally */
-    width: 200px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Optional: Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
-}
-
-/* General Body Styling */
-body {
-    background-color: black;
-    color: teal;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-/* Styling Links */
-a {
-    color: teal;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #00ffff; /* Light teal on hover */
-}
-
-/* Headings Styling */
-h1, h2, h3, h4, h5, h6 {
-    color: teal;
+/* Header and Navigation */
+header {
+    width: 100%;
     text-align: center;
-    margin-bottom: 20px;
 }
 
-/* Paragraph Styling */
-p {
-    margin: 20px;
-    color: teal;
-    font-size: 1rem;
-}
-
-/* General Body Styling */
-body {
-    background-color: black;
-    color: teal;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+nav .menu {
     display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically (optional) */
-    min-height: 100vh; /* Ensure the body takes up the full viewport height */
-    text-align: center; /* Center align the text */
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-/* Wrapper for Main Content */
+nav .menu li {
+    margin: 0 15px;
+}
+
+nav .menu a {
+    color: teal;
+    text-decoration: none;
+}
+
+nav .menu a:hover {
+    color: #00ffff;
+}
+
+/* Scaled Image */
+.scaled-image {
+    max-width: 150px;
+    height: auto;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Main Content Container */
 .container {
-    max-width: 800px; /* Limit the content width */
+    max-width: 800px;
+    text-align: center;
     padding: 20px;
 }
 
-/* Styling Links */
-a {
-    color: teal;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #00ffff; /* Light teal on hover */
-}
-
-/* Headings Styling */
-h1, h2, h3, h4, h5, h6 {
-    color: teal;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Paragraph Styling */
-p {
+/* Section Styling */
+section {
     margin: 20px 0;
-    font-size: 1rem;
 }
 
-/* Media Query for Mobile */
+/* Subtitle Styling */
+.subtitle {
+    color: rgba(125, 125, 125, 0.75);
+}
+
+/* Horizontal Line */
+hr {
+    border: 0;
+    border-top: 1px solid teal;
+    margin: 20px 0;
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 20px;
+    color: teal;
+    font-size: 0.8rem;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding: 10px;
-        font-size: 0.9rem; /* Adjust font size for smaller screens */
+        font-size: 0.9rem;
+    }
+
+    nav .menu li {
+        margin: 5px;
+    }
+
+    .scaled-image {
+        max-width: 100px;
     }
 }
-
