@@ -10,7 +10,7 @@ body {
 header {
     text-align: center;
     padding: 20px 0;
-    margin-bottom: 40px; /* Add more space between the menu and the image */
+    margin-bottom: 60px; /* Add more space between the menu and the image */
 }
 
 /* Ensure the image is responsive and maintains aspect ratio */
@@ -30,7 +30,7 @@ header img {
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 20px 0; /* Add bottom margin to the menu */
     display: flex;  /* Use Flexbox to align menu items horizontally */
     justify-content: center;
     gap: 20px;  /* Space between menu items */
