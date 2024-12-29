@@ -78,3 +78,36 @@ nav {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
 }
 
+/* General Body Styling */
+body {
+    background-color: black;
+    color: teal;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling Links */
+a {
+    color: teal;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #00ffff; /* Light teal on hover */
+}
+
+/* Headings Styling */
+h1, h2, h3, h4, h5, h6 {
+    color: teal;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Paragraph Styling */
+p {
+    margin: 20px;
+    color: teal;
+    font-size: 1rem;
+}
