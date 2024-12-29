@@ -30,9 +30,11 @@ nav .menu li {
     margin: 0 15px;
 }
 
+/* Menu Text Size */
 nav .menu a {
     color: teal;
     text-decoration: none;
+    font-size: 18px; /* Modify this value to adjust the size */
 }
 
 nav .menu a:hover {
