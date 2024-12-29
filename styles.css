@@ -46,3 +46,35 @@ nav {
     display: block; /* Remove extra whitespace around the image */
 }
 
+/* Navigation Menu Styling */
+.menu {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between menu items */
+    padding: 10px;
+    background-color: black;
+    margin: 0;
+}
+
+.menu a {
+    color: teal;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    color: #00ffff; /* Lighter teal on hover */
+}
+
+/* Scaled Image Styling */
+.scaled-image {
+    display: block;
+    margin: 20px auto; /* Center the image horizontally */
+    width: 200px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+}
+
