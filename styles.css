@@ -67,3 +67,17 @@ nav ul li a:hover {
         font-size: 14px; /* Reduce text size even further for tiny screens */
     }
 }
+
+/* Make the image scale responsively */
+.scaled-image {
+    max-width: 100%;    /* Ensures the image can never exceed the width of its container */
+    height: auto;       /* Maintains the aspect ratio of the image */
+    display: block;     /* Removes any bottom space that might appear under the image */
+    margin: 0 auto;     /* Centers the image horizontally if needed */
+}
+
+/* Optional: You can also add a max-height if needed to avoid the image becoming too tall */
+header img {
+    max-height: 400px;  /* Adjust this value based on your desired image height */
+    width: auto;        /* Ensure the width adjusts automatically */
+}
