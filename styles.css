@@ -38,3 +38,11 @@ nav {
 .menu a:hover {
     color: #00ffff; /* Lighter teal on hover */
 }
+
+/* Header Image Styling */
+.header-image {
+    width: 100%; /* Adjust to fit the header */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra whitespace around the image */
+}
+
