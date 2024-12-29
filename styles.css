@@ -50,7 +50,12 @@ nav .menu a:hover {
 .container {
     max-width: 900px;
     padding: 30px 40px; /* Expanded margins for wider spacing */
-    text-align: left; /* Left justification */
+    text-align: left; /* Left justification for content */
+}
+
+/* Centered Title and Subtitle */
+header h1, header .subtitle {
+    text-align: center;
 }
 
 /* Section Styling */
