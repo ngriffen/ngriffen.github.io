@@ -15,37 +15,108 @@
     <meta property="og:url" content="http://ngriffen.github.io">
     <meta property="og:type" content="website">
 
-    <!-- Favicon Link for the 'face.gif' -->
+    <!-- Favicon -->
     <link rel="icon" href="face.gif" type="image/gif">
 
     <title>Nicholas Griffen</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background: url('clouds.jpeg') no-repeat center center fixed;
+            background-image: url('clouds.jpeg');
             background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            position: relative;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
 
-        .container {
-            background-color: rgba(255, 255, 255, 0.85);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 1000px;
-            margin: 0 auto;
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: -1;
         }
 
-        .header-images {
+        header {
+            padding: 1rem 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+
+        .menu {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .menu li a {
+            text-decoration: none;
+            color: teal;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu li a:hover {
+            background-color: rgba(0, 128, 128, 0.1);
+        }
+
+        .top-images {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             margin-top: 20px;
         }
 
-        .header-images img {
-            width: 300px;
+        .top-images img {
+            width: 280px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        .gif-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .gif-container img {
+            width: 250px;
             height: auto;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: teal;
         }
     </style>
 </head>
@@ -61,15 +132,13 @@
             <li><a href="https://drive.google.com/file/d/1-Owm50OAXq7F185vKbxGkyLGWOBTOzlJ/view?usp=sharing" target="_blank">CV</a></li>
         </ul>
     </nav>
+    <div class="top-images">
+        <img src="IMG_7597.jpg" alt="Nicholas Griffen">
+        <img src="presentation.jpeg" alt="Presentation">
+    </div>
 </header>
 
 <main class="container">
-    <div class="header-images">
-        <img src="IMG_7597.jpg" alt="Nicholas Griffen">
-        <img src="presentation.jpeg" alt="Nicholas Griffen presenting">
-    </div>
-
-    <!-- Centered Name and Title -->
     <section class="centered">
         <h1>Nicholas Griffen</h1>
         <span class="subtitle"><i>Language Researcher</i></span>
@@ -78,7 +147,7 @@
     <hr>
 
     <section>
-        <p>I am currently a PhD student at Université Paris Cité under the supervision of Ira Noveck. In the Fall of 2025, I plan to submit my doctoral thesis on "What Makes the Processing of Idioms Unique?"</p>
+        <p>I am currently a PhD student at Université Paris Cité under the supervision of Ira Noveck. In the Fall of 2025, I plan to submit my doctoral thesis on "What Makes the Processing of Idioms Unique?".</p>
         <p>Prior to beginning my doctoral studies in Paris, I was awarded a Master's Degree in Linguistics at Universität Göttingen. Under the supervision of Clemens Steiner-Mayr, I completed a thesis on the topic of "The Vagueness of Indeterminate Gradable Adjectives". During this project, I rapidly developed a strong interest in Experimental Pragmatics.</p>
         <p>Subsequently, I was awarded a <a href="https://mobility.smarts-up.fr/" target="_blank">SMARTS-UP</a> mobility scholarship and a <a href="https://en.labex-efl.fr/formation" target="_blank">LabEx Master’s Thesis Grant</a> which led me to begin empirical research on language processing at Université Paris Cité.</p>
     </section>
@@ -89,13 +158,13 @@
         <p>During my PhD, we’ve implemented a variety of experimental techniques to investigate idiom processing. In the beginning of this project, the tasks we assigned were largely internet-based experiments (e.g., self-paced reading & norming tasks). Presently, I am in the midst of conducting an electroencephalogram (EEG) experiment to gain insight on the neural correlates of idiom processing.</p>
     </section>
 
-    <div class="gif-container" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 10px;">
-        <img src="topomap_IPS.gif" alt="Topographic map IPS" style="max-width: 100%; width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s;">
-        <img src="topomap_IPU.gif" alt="Topographic map IPU" style="max-width: 100%; width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s;">
+    <div class="gif-container">
+        <img src="topomap_IPS.gif" alt="Topographic map IPS">
+        <img src="topomap_IPU.gif" alt="Topographic map IPU">
     </div>
 
     <section>
-        <p>In addition, I’ve led a bi-weekly <a target="_blank" href="https://sites.google.com/view/xlingparis/home">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
+        <p>In addition, I’ve led a bi-weekly <a href="https://sites.google.com/view/xlingparis/home" target="_blank">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
     </section>
 
     <hr>
@@ -106,7 +175,7 @@
 </main>
 
 <footer>
-    <div class="footer-content" style="text-align: center; font-size: 0.8rem; color: teal;">
+    <div class="footer-content">
         <span>&copy; Nicholas Griffen 2025</span>
         <img src="face.gif" alt="Nicholas Griffen's logo" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
     </div>
