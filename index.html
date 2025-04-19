@@ -20,22 +20,22 @@
 
     <title>Nicholas Griffen</title>
     <link rel="stylesheet" href="styles.css">
- <style>
+    <style>
     body {
-        background-color: black; /* Set background to solid black */
-        color: teal; /* Set body text color to teal green */
+        background-color: black;
+        color: teal;
         font-family: Arial, sans-serif;
         margin: 0;
         position: relative;
     }
 
     body::before {
-        content: ""; /* Ensure no overlay is applied */
+        content: none;
     }
 
     header {
         padding: 1rem 0 0 0;
-        background-color: black; /* Set header background to black */
+        background-color: black;
         text-align: center;
     }
 
@@ -48,12 +48,11 @@
         padding: 0;
         margin: 10px 0 30px 0;
         font-size: 1.1rem;
-        background-color: black; /* Make sure the menu has a black background */
     }
 
     .menu li a {
         text-decoration: none;
-        color: teal; /* Menu text color */
+        color: teal;
         padding: 5px 10px;
         border-radius: 5px;
         transition: background-color 0.3s;
@@ -68,12 +67,12 @@
         justify-content: center;
         gap: 30px;
         margin-top: 20px;
-        margin-bottom: 5px;
-        background-color: black; /* Ensure the top images section is black */
+        margin-bottom: 0px;
+        background-color: black;
     }
 
     .top-images img {
-        width: 400px;  /* Increased size by 1/4 */
+        width: 400px;
         height: auto;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -82,8 +81,9 @@
     .container {
         max-width: 900px;
         margin: auto;
-        padding: 10px 20px 30px 20px;
-        background-color: transparent; /* Make background transparent */
+        margin-top: -10px;
+        padding: 0px 20px 30px 20px;
+        background-color: transparent;
         border-radius: 10px;
     }
 
@@ -116,9 +116,9 @@
         margin-top: 30px;
         text-align: center;
         font-size: 0.8rem;
-        color: teal; /* Footer text color */
+        color: teal;
     }
-</style>
+    </style>
 </head>
 <body>
 <header>
