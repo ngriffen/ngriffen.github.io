@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
     <!-- Meta Tags for SEO -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Nicholas Griffen's personal website. A language researcher focused on experimental pragmatics and idiom processing.">
     <meta name="keywords" content="Nicholas Griffen, Language Researcher, Cognitive Science, Social Cognition, Pragmatics, Experimental Pragmatics, Idiom Processing, Linguistics">
     <meta name="author" content="Nicholas Griffen">
@@ -7,19 +11,49 @@
     <!-- Open Graph Tags for Social Media Sharing -->
     <meta property="og:title" content="Nicholas Griffen - Language Researcher">
     <meta property="og:description" content="A language researcher focused on experimental pragmatics, figurative language processing, and idiom processing.">
-    <meta property="og:image" content="IMG_7597.jpg"> <!-- Link to your image -->
-    <meta property="og:url" content="http://ngriffen.github.io>
+    <meta property="og:image" content="IMG_7597.jpg">
+    <meta property="og:url" content="http://ngriffen.github.io">
     <meta property="og:type" content="website">
 
     <!-- Favicon Link for the 'face.gif' -->
-    <link rel="icon" href="face.gif" type="image/gif"> <!-- Adjust the path if necessary -->
+    <link rel="icon" href="face.gif" type="image/gif">
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nicholas Griffen</title>
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            background-image: url('clouds.jpeg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #222;
+        }
+
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .header-images img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -33,9 +67,13 @@
             <li><a href="https://drive.google.com/file/d/1-Owm50OAXq7F185vKbxGkyLGWOBTOzlJ/view?usp=sharing" target="_blank">CV</a></li>
         </ul>
     </nav>
-    <img src="IMG_7597.jpg" alt="Nicholas Griffen" class="scaled-image">
+    <div class="header-images">
+        <img src="IMG_7597.jpg" alt="Nicholas Griffen">
+        <img src="presentation.jpeg" alt="Research Presentation">
+    </div>
 </header>
 
+<div class="content-wrapper">
 <main class="container">
     <!-- Centered Name and Title -->
     <section class="centered">
@@ -58,28 +96,28 @@
     </section>
 
     <div class="gif-container" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 10px;">
-    <img src="topomap_IPS.gif" alt="Topographic map IPS" style="max-width: 100%; width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s;">
-    <img src="topomap_IPU.gif" alt="Topographic map IPU" style="max-width: 100%; width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s;">
-</div>
+        <img src="topomap_IPS.gif" alt="Topographic map IPS" style="max-width: 100%; width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s;">
+        <img src="topomap_IPU.gif" alt="Topographic map IPU" style="max-width: 100%; width: 250px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.3s;">
+    </div>
 
-<section>
-     <p>In addition, I’ve led a bi-weekly <a target="_blank" href="https://sites.google.com/view/xlingparis/home">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
-</section>
-    
+    <section>
+        <p>In addition, I’ve led a bi-weekly <a target="_blank" href="https://sites.google.com/view/xlingparis/home">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
+    </section>
+
     <hr>
 
     <section>
         <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
     </section>
 </main>
+</div>
+
 <footer>
-    <!-- Footer content with copyright symbol and logo -->
     <div class="footer-content" style="text-align: center; font-size: 0.8rem; color: teal;">
-        <span>&copy; Nicholas Griffen 2025</span> 
+        <span>&copy; Nicholas Griffen 2025</span>
         <img src="face.gif" alt="Nicholas Griffen's logo" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
     </div>
 </footer>
-
 
 <script src="script.js"></script>
 </body>
