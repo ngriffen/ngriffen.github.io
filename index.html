@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta Tags for SEO -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Nicholas Griffen's personal website. A language researcher focused on experimental pragmatics and idiom processing.">
     <meta name="keywords" content="Nicholas Griffen, Language Researcher, Cognitive Science, Social Cognition, Pragmatics, Experimental Pragmatics, Idiom Processing, Linguistics">
     <meta name="author" content="Nicholas Griffen">
 
+    <!-- Open Graph Tags for Social Media Sharing -->
     <meta property="og:title" content="Nicholas Griffen - Language Researcher">
     <meta property="og:description" content="A language researcher focused on experimental pragmatics, figurative language processing, and idiom processing.">
     <meta property="og:image" content="IMG_7597.jpg">
     <meta property="og:url" content="http://ngriffen.github.io">
     <meta property="og:type" content="website">
 
+    <!-- Favicon -->
     <link rel="icon" href="face.gif" type="image/gif">
 
     <title>Nicholas Griffen</title>
@@ -24,6 +27,9 @@
         font-family: Arial, sans-serif;
         margin: 0;
         position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     header {
@@ -76,6 +82,7 @@
         padding: 0px 20px 30px 20px;
         background-color: transparent;
         border-radius: 10px;
+        flex: 1;
     }
 
     .container section p {
@@ -104,131 +111,144 @@
     }
 
     footer {
-        margin-top: 30px;
+        margin-top: auto;
         text-align: center;
         font-size: 0.8rem;
         color: teal;
-    }
-
-    /* Timeline Styles */
-    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html {
-        font-family: "Montserrat";
-    }
-
-    .timeline {
-        width: 80%;
-        height: auto;
-        max-width: 800px;
-        margin: 50px auto; /* Added margin to create space after content */
-        position: relative;
-    }
-
-    .timeline ul {
-        list-style: none;
-    }
-
-    .timeline ul li {
         padding: 20px;
-        background-color: #1e1f22;
-        color: white;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        position: relative;
+        background-color: black;
     }
 
-    .timeline ul li:last-child {
-        margin-bottom: 0;
-    }
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
 
-    .timeline-content h1 {
-        font-weight: 500;
-        font-size: 25px;
-        line-height: 30px;
-        margin-bottom: 10px;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    .timeline-content p {
-        font-size: 16px;
-        line-height: 30px;
-        font-weight: 300;
-    }
+html {
+  font-family: "Montserrat";
+}
 
-    .timeline-content .date {
-        font-size: 12px;
-        font-weight: 300;
-        margin-bottom: 10px;
-        letter-spacing: 2px;
-    }
+.container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  background-color: #111;
+}
 
-    @media only screen and (min-width: 768px) {
-        .timeline:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background-color: gray;
-        }
+.timeline {
+  width: 80%;
+  height: auto;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
 
-        .timeline ul li {
-            width: 50%;
-            position: relative;
-            margin-bottom: 50px;
-        }
+.timeline ul {
+  list-style: none;
+}
 
-        .timeline ul li:nth-child(odd) {
-            float: left;
-            clear: right;
-            transform: translateX(-30px);
-            border-radius: 20px 0px 20px 20px;
-        }
+.timeline ul li {
+  padding: 20px;
+  background-color: #1e1f22;
+  color: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  position: relative;
+}
 
-        .timeline ul li:nth-child(even) {
-            float: right;
-            clear: left;
-            transform: translateX(30px);
-            border-radius: 0px 20px 20px 20px;
-        }
+.timeline ul li:last-child {
+  margin-bottom: 0;
+}
 
-        .timeline ul li::before {
-            content: "";
-            position: absolute;
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background-color: gray;
-            top: 0px;
-        }
+.timeline-content h1 {
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
 
-        .timeline ul li:nth-child(odd)::before {
-            transform: translate(50%, -50%);
-            right: -30px;
-        }
+.timeline-content p {
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 300;
+}
 
-        .timeline ul li:nth-child(even)::before {
-            transform: translate(-50%, -50%);
-            left: -30px;
-        }
+.timeline-content .date {
+  font-size: 12px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
 
-        .timeline-content .date {
-            position: absolute;
-            top: -30px;
-        }
+@media only screen and (min-width: 768px) {
+  .timeline:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background-color: gray;
+  }
 
-        .timeline ul li:hover::before {
-            background-color: aqua;
-        }
-    }
+  .timeline ul li {
+    width: 50%;
+    position: relative;
+    margin-bottom: 50px;
+  }
+
+  .timeline ul li:nth-child(odd) {
+    float: left;
+    clear: right;
+    transform: translateX(-30px);
+    border-radius: 20px 0px 20px 20px;
+  }
+
+  .timeline ul li:nth-child(even) {
+    float: right;
+    clear: left;
+    transform: translateX(30px);
+    border-radius: 0px 20px 20px 20px;
+  }
+
+  .timeline ul li::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    top: 0px;
+  }
+
+  .timeline ul li:nth-child(odd)::before {
+    transform: translate(50%, -50%);
+    right: -30px;
+  }
+
+  .timeline ul li:nth-child(even)::before {
+    transform: translate(-50%, -50%);
+    left: -30px;
+  }
+
+  .timeline-content .date {
+    position: absolute;
+    top: -30px;
+  }
+
+  .timeline ul li:hover::before {
+    background-color: aqua;
+  }
+}
+
+
     </style>
 </head>
 <body>
@@ -257,13 +277,15 @@
     <hr>
 
     <section>
-        <p>I am currently a PhD student at Université Paris Cité under the supervision of Ira Noveck...</p>
+        <p>I am currently a PhD student at Université Paris Cité under the supervision of Ira Noveck. In the Fall of 2025, I plan to submit my doctoral thesis on "What Makes the Processing of Idioms Unique?".</p>
+        <p>Prior to beginning my doctoral studies in Paris, I was awarded a Master's Degree in Linguistics at Universität Göttingen. Under the supervision of Clemens Steiner-Mayr, I completed a thesis on the topic of "The Vagueness of Indeterminate Gradable Adjectives". During this project, I rapidly developed a strong interest in Experimental Pragmatics.</p>
+        <p>Subsequently, I was awarded a <a href="https://mobility.smarts-up.fr/" target="_blank">SMARTS-UP</a> mobility scholarship and a <a href="https://en.labex-efl.fr/formation" target="_blank">LabEx Master’s Thesis Grant</a> which led me to begin empirical research on language processing at Université Paris Cité.</p>
     </section>
 
     <hr>
 
     <section>
-        <p>During my PhD, we’ve implemented a variety of experimental techniques...</p>
+        <p>During my PhD, we’ve implemented a variety of experimental techniques to investigate idiom processing. In the beginning of this project, the tasks we assigned were largely internet-based experiments (e.g., self-paced reading & norming tasks). Presently, I am in the midst of conducting an electroencephalogram (EEG) experiment to gain insight on the neural correlates of idiom processing.</p>
     </section>
 
     <div class="gif-container">
@@ -272,61 +294,64 @@
     </div>
 
     <section>
-        <p>In addition, I’ve led a bi-weekly <a href="https://sites.google.com/view/xlingparis/home" target="_blank">Experimental Linguistics Workshop</a>...</p>
+        <p>In addition, I’ve led a bi-weekly <a href="https://sites.google.com/view/xlingparis/home" target="_blank">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
     </section>
 
     <hr>
 
-    <div class="timeline">
-        <ul>
-            <li>
-                <div class="timeline-content">
-                    <h3 class="date">2015–2017</h3>
-                    <h1>UC Davis</h1>
-                    <p>BA, English Literature</p>
-                </div>
-            </li>
-            <li>
-                <div class="timeline-content">
-                    <h3 class="date">2018–2021</h3>
-                    <h1>Universität Göttingen</h1>
-                    <p>MA, Linguistics</p>
-                </div>
-            </li>
-            <li>
-                <div class="timeline-content">
-                    <h3 class="date">2021</h3>
-                    <h1>SMARTS-UP Scholarship</h1>
-                    <p>€8,000 Mobility Grant</p>
-                </div>
-            </li>
-            <li>
-                <div class="timeline-content">
-                    <h3 class="date">2021–2022</h3>
-                    <h1>Université Paris Cité</h1>
-                    <p>M2, Language Sciences</p>
-                </div>
-            </li>
-            <li>
-                <div class="timeline-content">
-                    <h3 class="date">2022</h3>
-                    <h1>LabEx EFL Grant</h1>
-                    <p>€3,000 + Lab Internship</p>
-                </div>
-            </li>
-            <li>
-                <div class="timeline-content">
-                    <h3 class="date">2022–2025</h3>
-                    <h1>Université Paris Cité</h1>
-                    <p>PhD, Language Sciences</p>
-                </div>
-            </li>
-        </ul>
+    <div class="container">
+        <div class="timeline">
+            <ul>
+                <li>
+                    <div class="timeline-content">
+                        <h3 class="date">2015–2017</h3>
+                        <h1>UC Davis</h1>
+                        <p>BA, English Literature</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-content">
+                        <h3 class="date">2018–2021</h3>
+                        <h1>Universität Göttingen</h1>
+                        <p>MA, Linguistics</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-content">
+                        <h3 class="date">2021</h3>
+                        <h1>SMARTS-UP Scholarship</h1>
+                        <p>€8,000 Mobility Grant</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-content">
+                        <h3 class="date">2021–2022</h3>
+                        <h1>Université Paris Cité</h1>
+                        <p>M2, Language Sciences</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-content">
+                        <h3 class="date">2022</h3>
+                        <h1>LabEx EFL Grant</h1>
+                        <p>€3,000 + Lab Internship</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-content">
+                        <h3 class="date">2022–2025</h3>
+                        <h1>Université Paris Cité</h1>
+                        <p>PhD, Language Sciences</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    
+
     <section>
         <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
     </section>
+
 </main>
 
 <footer>
