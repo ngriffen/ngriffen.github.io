@@ -20,6 +20,7 @@
 
     <title>Nicholas Griffen</title>
     <link rel="stylesheet" href="styles.css">
+
 <style>
   body {
     background-color: black;
@@ -135,6 +136,7 @@
     overflow-x: auto; /* Enable horizontal scrolling if needed */
     padding: 20px 0;
     background-color: #111;
+    margin-top: 20px; /* Add some space above the timeline */
   }
 
   .timeline {
@@ -143,20 +145,55 @@
     padding: 0;
     width: fit-content; /* Adjust width to content */
     margin: 0 auto; /* Center the timeline */
+    position: relative; /* For the connecting line */
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: gray;
+    transform: translateY(-50%);
+    z-index: -1; /* Place behind the circles */
   }
 
   .timeline li {
     background-color: #1e1f22;
     color: white;
     border-radius: 10px;
-    margin: 0 15px 0 0; /* Space between items */
+    margin: 0 30px 0 0; /* More space for the 'line' */
     padding: 15px;
     min-width: 200px; /* Adjust minimum width of each item */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative; /* For the circles */
   }
 
   .timeline li:last-child {
     margin-right: 0; /* No margin on the last item */
+  }
+
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -15px; /* Adjust to center on the 'line' */
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
+  .timeline li:first-child::before {
+    left: 0; /* Adjust for the first circle */
+  }
+
+  .timeline li:last-child::before {
+    right: -15px; /* Adjust for the last circle */
+    left: auto;
   }
 
   .timeline-content h3.date {
@@ -180,7 +217,12 @@
     font-weight: 300;
   }
 
-  /* Hide the vertical line */
+  /* Center the research interests */
+  .container section:last-of-type {
+    text-align: center;
+  }
+
+  /* Hide the vertical line from the original vertical timeline */
   @media only screen and (min-width: 768px) {
     .timeline:before {
       display: none;
