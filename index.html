@@ -21,211 +21,250 @@
     <title>Nicholas Griffen</title>
     <link rel="stylesheet" href="styles.css">
 
-<style>
-  body {
-    background-color: black;
-    color: teal;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
 
-  header {
-    padding: 1rem 0 0 0;
-    background-color: black;
-    text-align: center;
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .menu {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    list-style-type: none;
-    padding: 0;
-    margin: 10px 0 30px 0;
-    font-size: 1.1rem;
-  }
+        html {
+            font-family: "Montserrat";
+        }
 
-  .menu li a {
-    text-decoration: none;
-    color: teal;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
+        body {
+            background-color: black;
+            color: teal;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-  .menu li a:hover {
-    background-color: rgba(0, 128, 128, 0.1);
-  }
+        header {
+            padding: 1rem 0 0 0;
+            background-color: black;
+            text-align: center;
+        }
 
-  .top-images {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 20px;
-    background-color: black;
-  }
+        h1 {
+            color: white;
+        }
 
-  .top-images img {
-    width: 400px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
+        .subtitle {
+            color: white;
+            font-size: 1.2rem;
+        }
 
-  .container {
-    max-width: 900px;
-    margin: auto;
-    padding: 0px 20px 30px 20px;
-    background-color: transparent;
-    border-radius: 10px;
-    flex: 1;
-  }
+        .menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0 30px 0;
+            font-size: 1.1rem;
+        }
 
-  .container section p {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: left;  /* Ensure left alignment here */
-  }
+        .menu li a {
+            text-decoration: none;
+            color: teal;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-  .centered {
-    text-align: center;
-  }
+        .menu li a:hover {
+            background-color: rgba(0, 128, 128, 0.1);
+        }
 
-  .gif-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 10px;
-  }
+        .top-images {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            background-color: black;
+        }
 
-  .gif-container img {
-    width: 250px;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: transform 0.3s;
-  }
+        .top-images img {
+            width: 400px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-  footer {
-    text-align: center;
-    font-size: 0.8rem;
-    color: teal;
-    padding: 20px;
-    background-color: black;
-  }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 0px 20px 30px 20px;
+            background-color: transparent;
+            border-radius: 10px;
+            flex: 1;
+        }
 
-  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
+        .container section p {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+        .centered {
+            text-align: center;
+        }
 
-  html {
-    font-family: "Montserrat";
-  }
+        .gif-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
-  .timeline-container {
-    width: 100%;
-    overflow-x: auto; /* Enable horizontal scrolling if needed */
-    padding: 20px 0;
-    background-color: #111;
-    margin-top: 20px; /* Add some space above the timeline */
-  }
+        .gif-container img {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
 
-  .timeline {
-    display: flex; /* Make the timeline horizontal */
-    list-style: none;
-    padding: 0;
-    width: fit-content; /* Adjust width to content */
-    margin: 0 auto; /* Center the timeline */
-    position: relative; /* For the connecting line */
-  }
+        hr {
+            border: none;
+            border-top: 1px solid teal;
+            margin: 40px 0;
+            width: 100%;
+        }
 
-  .timeline::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 15px; /* Start after the first circle */
-    right: 15px; /* End before the last circle */
-    height: 2px;
-    background-color: gray;
-    transform: translateY(-50%);
-    z-index: -1; /* Place behind the circles */
-  }
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: teal;
+            padding: 20px;
+            background-color: black;
+        }
 
-  .timeline li {
-    background-color: #1e1f22;
-    color: white;
-    border-radius: 10px;
-    margin: 0 30px 0 0; /* More space for the 'line' */
-    padding: 15px;
-    min-width: 200px; /* Adjust minimum width of each item */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    position: relative; /* For the circles */
-  }
+        .timeline-container {
+            width: 100%;
+            overflow-x: auto;
+            padding: 20px 0;
+            background-color: #111;
+            margin-top: 20px;
+        }
 
-  .timeline li:last-child {
-    margin-right: 0; /* No margin on the last item */
-  }
+        .timeline {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            width: fit-content;
+            margin: 0 auto;
+            position: relative;
+        }
 
-  .timeline li::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0; /* Position at the beginning of the item */
-    width: 10px;
-    height: 10px;
-    background-color: gray;
-    border-radius: 50%;
-    transform: translateY(-50%);
-    transform: translateX(-50%) translateY(-50%); /* Center on the 'line' */
-  }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            right: 15px;
+            height: 2px;
+            background-color: gray;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
 
-  .timeline li:first-child::before {
-    left: 0; /* Adjust for the first circle */
-  }
+        .timeline li {
+            background-color: #1e1f22;
+            color: white;
+            border-radius: 10px;
+            margin: 0 30px 0 0;
+            padding: 15px;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
 
-  .timeline li:last-child::before {
-    right: 0; /* Adjust for the last circle */
-    left: auto;
-    transform: translateX(50%) translateY(-50%);
-  }
+        .timeline li:last-child {
+            margin-right: 0;
+        }
 
-  .timeline-content h3.date {
-    font-size: 12px;
-    font-weight: 300;
-    margin-bottom: 5px;
-    letter-spacing: 2px;
-    color: #aaa;
-  }
+        .timeline li::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background-color: gray;
+            border-radius: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
 
-  .timeline-content h1 {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
-    margin-bottom: 5px;
-  }
+        .timeline li:last-child::before {
+            right: 0;
+            left: auto;
+            transform: translateX(50%) translateY(-50%);
+        }
 
-  .timeline-content p {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 300;
-  }
+        .timeline-content h3.date {
+            font-size: 12px;
+            font-weight: 300;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            color: #aaa;
+        }
 
-  /* Center the research interests */
-  .container section:last-of-type {
-    text-align: center;
-  }
-</style>
+        .timeline-content h1 {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+            margin-bottom: 5px;
+        }
 
+        .timeline-content p {
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 300;
+        }
+
+        .container section:last-of-type {
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .top-images img,
+            .gif-container img {
+                width: 90%;
+                max-width: 300px;
+            }
+
+            .menu {
+                font-size: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .timeline li {
+                min-width: 80vw;
+            }
+
+            .container {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -256,22 +295,14 @@
         <p>Subsequently, I was awarded a <a href="https://mobility.smarts-up.fr/" target="_blank">SMARTS-UP</a> mobility scholarship and a <a href="https://en.labex-efl.fr/formation" target="_blank">LabEx Master’s Thesis Grant</a> which led me to begin empirical research on language processing at Université Paris Cité.</p>
     </section>
 
-     <section>
-         <p></p>
-        <p>✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺</p>
-        <p></p>
-    </section>
+    <hr>
 
     <section>
         <p>During my PhD, we’ve implemented a variety of experimental techniques to investigate idiom processing. In the beginning of this project, the tasks we assigned were largely internet-based experiments (e.g., self-paced reading & norming tasks). Presently, I am in the midst of conducting an electroencephalogram (EEG) experiment to gain insight on the neural correlates of idiom processing.</p>
         <p>In addition, I’ve led a bi-weekly <a href="https://sites.google.com/view/xlingparis/home" target="_blank">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
     </section>
 
-    <section>
-        <p></p>
-        <p>✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺✺</p>
-        <p></p>
-    </section>
+    <hr>
 
     <div class="gif-container">
         <img src="topomap_IPS.gif" alt="Topographic map IPS">
@@ -280,10 +311,10 @@
 </main>
 
 <footer>
-  <div class="footer-content">
-    <span>&copy; Nicholas Griffen 2025</span>
-    <img src="face.gif" alt="Nicholas Griffen's logo" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
-  </div>
+    <div class="footer-content">
+        <span>&copy; Nicholas Griffen 2025</span>
+        <img src="face.gif" alt="Nicholas Griffen's logo" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+    </div>
 </footer>
 
 <script src="script.js"></script>
