@@ -20,236 +20,193 @@
 
     <title>Nicholas Griffen</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-    body {
-        background-color: black;
-        color: teal;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        position: relative;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    header {
-        padding: 1rem 0 0 0;
-        background-color: black;
-        text-align: center;
-    }
-
-    .menu {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 15px;
-        list-style-type: none;
-        padding: 0;
-        margin: 10px 0 30px 0;
-        font-size: 1.1rem;
-    }
-
-    .menu li a {
-        text-decoration: none;
-        color: teal;
-        padding: 5px 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
-
-    .menu li a:hover {
-        background-color: rgba(0, 128, 128, 0.1);
-    }
-
-    .top-images {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin-top: 20px;
-        background-color: black;
-    }
-
-    .top-images img {
-        width: 400px;
-        height: auto;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .container {
-        max-width: 900px;
-        margin: auto;
-        padding: 0px 20px 30px 20px;
-        background-color: transparent;
-        border-radius: 10px;
-        flex: 1;
-    }
-
-    .container section p {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .centered {
-        text-align: center;
-    }
-
-    .gif-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .gif-container img {
-        width: 250px;
-        height: auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        transition: transform 0.3s;
-    }
-
-    footer {
-        margin-top: auto;
-        text-align: center;
-        font-size: 0.8rem;
-        color: teal;
-        padding: 20px;
-        background-color: black;
-    }
-
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  font-family: "Montserrat";
-}
-
-.container {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 0;
-  background-color: #111;
-}
-
-.timeline {
-  width: 80%;
-  height: auto;
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.timeline ul {
-  list-style: none;
-}
-
-.timeline ul li {
-  padding: 20px;
-  background-color: #1e1f22;
-  color: white;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.timeline ul li:last-child {
-  margin-bottom: 0;
-}
-
-.timeline-content h1 {
-  font-weight: 500;
-  font-size: 25px;
-  line-height: 30px;
-  margin-bottom: 10px;
-}
-
-.timeline-content p {
-  font-size: 16px;
-  line-height: 30px;
-  font-weight: 300;
-}
-
-.timeline-content .date {
-  font-size: 12px;
-  font-weight: 300;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-}
-
-@media only screen and (min-width: 768px) {
-  .timeline:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 100%;
-    background-color: gray;
-  }
-
-  .timeline ul li {
-    width: 50%;
+<style>
+  body {
+    background-color: black;
+    color: teal;
+    font-family: Arial, sans-serif;
+    margin: 0;
     position: relative;
-    margin-bottom: 50px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
-  .timeline ul li:nth-child(odd) {
-    float: left;
-    clear: right;
-    transform: translateX(-30px);
-    border-radius: 20px 0px 20px 20px;
+  header {
+    padding: 1rem 0 0 0;
+    background-color: black;
+    text-align: center;
   }
 
-  .timeline ul li:nth-child(even) {
-    float: right;
-    clear: left;
-    transform: translateX(30px);
-    border-radius: 0px 20px 20px 20px;
+  .menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 30px 0;
+    font-size: 1.1rem;
   }
 
-  .timeline ul li::before {
-    content: "";
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background-color: gray;
-    top: 0px;
+  .menu li a {
+    text-decoration: none;
+    color: teal;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
   }
 
-  .timeline ul li:nth-child(odd)::before {
-    transform: translate(50%, -50%);
-    right: -30px;
+  .menu li a:hover {
+    background-color: rgba(0, 128, 128, 0.1);
   }
 
-  .timeline ul li:nth-child(even)::before {
-    transform: translate(-50%, -50%);
-    left: -30px;
+  .top-images {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    background-color: black;
   }
 
-  .timeline-content .date {
-    position: absolute;
-    top: -30px;
+  .top-images img {
+    width: 400px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
-  .timeline ul li:hover::before {
-    background-color: aqua;
+  .container {
+    max-width: 900px;
+    margin: auto;
+    padding: 0px 20px 30px 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    flex: 1;
   }
-}
 
+  .container section p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 
-    </style>
+  .centered {
+    text-align: center;
+  }
+
+  .gif-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .gif-container img {
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.8rem;
+    color: teal;
+    padding: 20px;
+    background-color: black;
+  }
+
+  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap");
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: "Montserrat";
+  }
+
+  .timeline-container {
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+    padding: 20px 0;
+    background-color: #111;
+  }
+
+  .timeline {
+    display: flex; /* Make the timeline horizontal */
+    list-style: none;
+    padding: 0;
+    width: fit-content; /* Adjust width to content */
+    margin: 0 auto; /* Center the timeline */
+  }
+
+  .timeline li {
+    background-color: #1e1f22;
+    color: white;
+    border-radius: 10px;
+    margin: 0 15px 0 0; /* Space between items */
+    padding: 15px;
+    min-width: 200px; /* Adjust minimum width of each item */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .timeline li:last-child {
+    margin-right: 0; /* No margin on the last item */
+  }
+
+  .timeline-content h3.date {
+    font-size: 12px;
+    font-weight: 300;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+    color: #aaa;
+  }
+
+  .timeline-content h1 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 5px;
+  }
+
+  .timeline-content p {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 300;
+  }
+
+  /* Hide the vertical line */
+  @media only screen and (min-width: 768px) {
+    .timeline:before {
+      display: none;
+    }
+
+    /* Reset styles that were for vertical layout */
+    .timeline ul li {
+      width: auto;
+      float: none;
+      clear: none;
+      transform: none;
+      border-radius: 10px;
+      margin-bottom: 0;
+    }
+
+    .timeline ul li::before {
+      display: none;
+    }
+
+    .timeline-content .date {
+      position: static;
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
 </head>
 <body>
 <header>
@@ -297,68 +254,64 @@ html {
         <p>In addition, I’ve led a bi-weekly <a href="https://sites.google.com/view/xlingparis/home" target="_blank">Experimental Linguistics Workshop</a> which takes place at the Laboratoire Linguistique Formelle and co-instructed a course on Psycholinguistics with Barbara Hemforth.</p>
     </section>
 
-    <hr>
+ </main>
 
-    <div class="container">
-        <div class="timeline">
-            <ul>
-                <li>
-                    <div class="timeline-content">
-                        <h3 class="date">2015–2017</h3>
-                        <h1>UC Davis</h1>
-                        <p>BA, English Literature</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="timeline-content">
-                        <h3 class="date">2018–2021</h3>
-                        <h1>Universität Göttingen</h1>
-                        <p>MA, Linguistics</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="timeline-content">
-                        <h3 class="date">2021</h3>
-                        <h1>SMARTS-UP Scholarship</h1>
-                        <p>€8,000 Mobility Grant</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="timeline-content">
-                        <h3 class="date">2021–2022</h3>
-                        <h1>Université Paris Cité</h1>
-                        <p>M2, Language Sciences</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="timeline-content">
-                        <h3 class="date">2022</h3>
-                        <h1>LabEx EFL Grant</h1>
-                        <p>€3,000 + Lab Internship</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="timeline-content">
-                        <h3 class="date">2022–2025</h3>
-                        <h1>Université Paris Cité</h1>
-                        <p>PhD, Language Sciences</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+<div class="timeline-container">
+  <ul class="timeline">
+    <li>
+      <div class="timeline-content">
+        <h3 class="date">2015–2017</h3>
+        <h1>UC Davis</h1>
+        <p>BA, English Literature</p>
+      </div>
+    </li>
+    <li>
+      <div class="timeline-content">
+        <h3 class="date">2018–2021</h3>
+        <h1>Universität Göttingen</h1>
+        <p>MA, Linguistics</p>
+      </div>
+    </li>
+    <li>
+      <div class="timeline-content">
+        <h3 class="date">2021</h3>
+        <h1>SMARTS-UP Scholarship</h1>
+        <p>€8,000 Mobility Grant</p>
+      </div>
+    </li>
+    <li>
+      <div class="timeline-content">
+        <h3 class="date">2021–2022</h3>
+        <h1>Université Paris Cité</h1>
+        <p>M2, Language Sciences</p>
+      </div>
+    </li>
+    <li>
+      <div class="timeline-content">
+        <h3 class="date">2022</h3>
+        <h1>LabEx EFL Grant</h1>
+        <p>€3,000 + Lab Internship</p>
+      </div>
+    </li>
+    <li>
+      <div class="timeline-content">
+        <h3 class="date">2022–2025</h3>
+        <h1>Université Paris Cité</h1>
+        <p>PhD, Language Sciences</p>
+      </div>
+    </li>
+  </ul>
+</div>
 
-    <section>
-        <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
-    </section>
-
-</main>
+<section>
+  <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
+</section>
 
 <footer>
-    <div class="footer-content">
-        <span>&copy; Nicholas Griffen 2025</span>
-        <img src="face.gif" alt="Nicholas Griffen's logo" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
-    </div>
+  <div class="footer-content">
+    <span>&copy; Nicholas Griffen 2025</span>
+    <img src="face.gif" alt="Nicholas Griffen's logo" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+  </div>
 </footer>
 
 <script src="script.js"></script>
