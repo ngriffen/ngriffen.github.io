@@ -114,58 +114,85 @@
     }
 
     /* Horizontal Timeline */
-    #timeline {
-        margin-top: 50px;
-    }
+#timeline {
+    margin-top: 50px;
+}
 
-    .timeline-horizontal {
-        display: flex;
-        overflow-x: auto;
-        padding: 2rem 1rem;
-        margin-top: 20px;
-        border-top: 2px solid #555;
-        position: relative;
-    }
+.timeline-horizontal {
+    display: flex;
+    overflow-x: auto;
+    padding: 2rem 1rem;
+    margin-top: 20px;
+    border-top: 2px solid #555;
+    position: relative;
+}
 
-    .timeline-event {
-        flex: 0 0 auto;
-        width: 200px;
-        margin-right: 40px;
-        position: relative;
-        text-align: center;
-        color: #ccc;
-    }
+.timeline-event {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 40px;
+    position: relative;
+    text-align: center;
+    color: #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-    .timeline-event:last-child {
-        margin-right: 0;
-    }
+.timeline-event:last-child {
+    margin-right: 0;
+}
 
-    .timeline-event .dot {
-        width: 14px;
-        height: 14px;
-        background-color: #80cbc4;
-        border-radius: 50%;
-        margin: 0 auto 10px;
-        position: relative;
-        top: -8px;
-        border: 2px solid black;
-    }
+.timeline-event .dot {
+    width: 14px;
+    height: 14px;
+    background-color: #80cbc4;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    position: relative;
+    top: -8px;
+    border: 2px solid black;
+    transition: background-color 0.3s;
+}
 
-    .timeline-event .label .date {
-        font-size: 0.9rem;
-        color: #999;
-    }
+.timeline-event .label .date {
+    font-size: 0.9rem;
+    color: #999;
+    transition: color 0.3s;
+}
 
-    .timeline-event .label .title {
-        font-weight: bold;
-        margin: 4px 0;
-        color: #fff;
-    }
+.timeline-event .label .title {
+    font-weight: bold;
+    margin: 4px 0;
+    color: #fff;
+    transition: color 0.3s;
+}
 
-    .timeline-event .label .desc {
-        font-size: 0.85rem;
-        color: #bbb;
-    }
+.timeline-event .label .desc {
+    font-size: 0.85rem;
+    color: #bbb;
+    transition: color 0.3s;
+}
+
+/* NEW: Hover Effects */
+.timeline-event:hover {
+    background-color: rgba(0, 150, 136, 0.1);
+    color: #fff;
+}
+
+.timeline-event:hover .dot {
+    background-color: #26a69a;
+}
+
+.timeline-event:hover .label .date,
+.timeline-event:hover .label .desc {
+    color: #ddd;
+}
+
+.timeline-event:hover .label .title {
+    color: #fff;
+}
+
     </style>
 </head>
 <body>
@@ -223,16 +250,16 @@
                 <div class="dot"></div>
                 <div class="label">
                     <div class="date">2015–2017</div>
-                    <div class="title">BA, UC Davis</div>
-                    <div class="desc">English Literature</div>
+                    <div class="title">UC Davis</div>
+                    <div class="desc">BA, English Literature</div>
                 </div>
             </div>
             <div class="timeline-event">
                 <div class="dot"></div>
                 <div class="label">
                     <div class="date">2018–2021</div>
-                    <div class="title">MA, Universität Göttingen</div>
-                    <div class="desc">Linguistics</div>
+                    <div class="title">Universität Göttingen</div>
+                    <div class="desc">MA, Linguistics</div>
                 </div>
             </div>
             <div class="timeline-event">
@@ -247,8 +274,8 @@
                 <div class="dot"></div>
                 <div class="label">
                     <div class="date">2021–2022</div>
-                    <div class="title">M2, Université Paris Cité</div>
-                    <div class="desc">Language Sciences</div>
+                    <div class="title">Université Paris Cité</div>
+                    <div class="desc">M2, Language Sciences</div>
                 </div>
             </div>
             <div class="timeline-event">
@@ -263,8 +290,8 @@
                 <div class="dot"></div>
                 <div class="label">
                     <div class="date">2022–2025</div>
-                    <div class="title">PhD, Université Paris Cité</div>
-                    <div class="desc">Language Sciences</div>
+                    <div class="title">Université Paris Cité</div>
+                    <div class="desc">PhD, Language Sciences</div>
                 </div>
             </div>
         </div>
