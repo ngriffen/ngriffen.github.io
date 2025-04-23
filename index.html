@@ -63,7 +63,6 @@
         justify-content: center;
         gap: 30px;
         margin-top: 20px;
-        margin-bottom: 0px;
         background-color: black;
     }
 
@@ -77,7 +76,6 @@
     .container {
         max-width: 900px;
         margin: auto;
-        margin-top: -10px;
         padding: 0px 20px 30px 20px;
         background-color: transparent;
         border-radius: 10px;
@@ -115,65 +113,58 @@
         color: teal;
     }
 
-    /* Timeline Styling */
+    /* Horizontal Timeline */
     #timeline {
+        margin-top: 50px;
+    }
+
+    .timeline-horizontal {
+        display: flex;
+        overflow-x: auto;
         padding: 2rem 1rem;
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .timeline-container {
-        border-left: 2px solid #555;
-        padding-left: 20px;
-        margin-top: 2rem;
-    }
-
-    .timeline-item {
-        margin-bottom: 2rem;
+        margin-top: 20px;
+        border-top: 2px solid #555;
         position: relative;
     }
 
-    .timeline-date {
-        font-weight: bold;
-        color: #888;
-        margin-bottom: 0.3rem;
+    .timeline-event {
+        flex: 0 0 auto;
+        width: 200px;
+        margin-right: 40px;
+        position: relative;
+        text-align: center;
+        color: #ccc;
     }
 
-    .timeline-content h3 {
-        margin: 0;
-        font-size: 1.2rem;
+    .timeline-event:last-child {
+        margin-right: 0;
+    }
+
+    .timeline-event .dot {
+        width: 14px;
+        height: 14px;
+        background-color: #80cbc4;
+        border-radius: 50%;
+        margin: 0 auto 10px;
+        position: relative;
+        top: -8px;
+        border: 2px solid black;
+    }
+
+    .timeline-event .label .date {
+        font-size: 0.9rem;
+        color: #999;
+    }
+
+    .timeline-event .label .title {
+        font-weight: bold;
+        margin: 4px 0;
         color: #fff;
     }
 
-    .timeline-content h4 {
-        margin: 0.2rem 0 0;
-        font-size: 1rem;
-        color: #ccc;
-        font-weight: normal;
-    }
-
-    .timeline-content p {
-        margin: 0.3rem 0 0;
+    .timeline-event .label .desc {
+        font-size: 0.85rem;
         color: #bbb;
-    }
-
-    .timeline-item::before {
-        content: "";
-        position: absolute;
-        left: -10px;
-        top: 0.3rem;
-        width: 10px;
-        height: 10px;
-        background: #f0f0f0;
-        border-radius: 50%;
-    }
-
-    .special-event h3 {
-        color: #80cbc4;
-    }
-
-    .special-event p {
-        color: #a5d6a7;
     }
     </style>
 </head>
@@ -225,68 +216,64 @@
 
     <hr>
 
-    <section>
-        <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
-    </section>
-
-    <!-- TIMELINE SECTION -->
     <section id="timeline">
-        <h2>Academic Timeline</h2>
-        <div class="timeline-container">
-            <div class="timeline-item">
-                <div class="timeline-date">2015 – 2017</div>
-                <div class="timeline-content">
-                    <h3>BA in English Literature</h3>
-                    <h4>UC Davis</h4>
-                    <p></p>
+        <h2 class="centered">Academic Timeline</h2>
+        <div class="timeline-horizontal">
+            <div class="timeline-event">
+                <div class="dot"></div>
+                <div class="label">
+                    <div class="date">2015–2017</div>
+                    <div class="title">BA, UC Davis</div>
+                    <div class="desc">English Literature</div>
                 </div>
             </div>
-
-            <div class="timeline-item">
-                <div class="timeline-date">2018 – 2021</div>
-                <div class="timeline-content">
-                    <h3>MA in Linguistics</h3>
-                    <h4>Universität Göttingen</h4>
-                    <p>Vagueness of Gradable Adjectives</p>
+            <div class="timeline-event">
+                <div class="dot"></div>
+                <div class="label">
+                    <div class="date">2018–2021</div>
+                    <div class="title">MA, Göttingen</div>
+                    <div class="desc">Vagueness of Gradable Adjectives</div>
                 </div>
             </div>
-
-            <div class="timeline-item special-event">
-                <div class="timeline-date">2021</div>
-                <div class="timeline-content">
-                    <h3>SMARTS-UP Scholarship</h3>
-                    <p>A scholarship (€8,000) funded by the French government intended to recruit foreign nationals into research programs at the Université Paris Cité.</p>
+            <div class="timeline-event">
+                <div class="dot"></div>
+                <div class="label">
+                    <div class="date">2021</div>
+                    <div class="title">SMARTS-UP Scholarship</div>
+                    <div class="desc">€8,000 mobility grant</div>
                 </div>
             </div>
-
-            <div class="timeline-item">
-                <div class="timeline-date">2021 – 2022</div>
-                <div class="timeline-content">
-                    <h3>M2 in Language Sciences</h3>
-                    <h4>Université Paris Cité</h4>
-                    <p>Uncovering the Presuppositional Content of Idioms</p>
+            <div class="timeline-event">
+                <div class="dot"></div>
+                <div class="label">
+                    <div class="date">2021–2022</div>
+                    <div class="title">M2, Université Paris Cité</div>
+                    <div class="desc">Presuppositional Content of Idioms</div>
                 </div>
             </div>
-
-            <div class="timeline-item special-event">
-                <div class="timeline-date">2022</div>
-                <div class="timeline-content">
-                    <h3>LabEx EFL Master’s Thesis Grant</h3>
-                    <p>A grant (€3,000) that supported the completion of my mémoire & included a research internship at the Laboratoire de Linguistique Formelle (LLF).</p>
+            <div class="timeline-event">
+                <div class="dot"></div>
+                <div class="label">
+                    <div class="date">2022</div>
+                    <div class="title">LabEx EFL Grant</div>
+                    <div class="desc">€3,000 + internship at LLF</div>
                 </div>
             </div>
-
-            <div class="timeline-item">
-                <div class="timeline-date">2022 – 2025</div>
-                <div class="timeline-content">
-                    <h3>PhD in Language Sciences</h3>
-                    <h4>Université Paris Cité</h4>
-                    <p>What Makes the Processing of Idioms Unique?</p>
+            <div class="timeline-event">
+                <div class="dot"></div>
+                <div class="label">
+                    <div class="date">2022–2025</div>
+                    <div class="title">PhD, Université Paris Cité</div>
+                    <div class="desc">Idiom Processing</div>
                 </div>
             </div>
         </div>
     </section>
 </main>
+    
+    <section>
+        <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
+    </section>
 
 <footer>
     <div class="footer-content">
