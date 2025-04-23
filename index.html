@@ -152,8 +152,8 @@
     content: '';
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
+    left: 15px; /* Start after the first circle */
+    right: 15px; /* End before the last circle */
     height: 2px;
     background-color: gray;
     transform: translateY(-50%);
@@ -179,12 +179,13 @@
     content: '';
     position: absolute;
     top: 50%;
-    left: -15px; /* Adjust to center on the 'line' */
+    left: 0; /* Position at the beginning of the item */
     width: 10px;
     height: 10px;
     background-color: gray;
     border-radius: 50%;
     transform: translateY(-50%);
+    transform: translateX(-50%) translateY(-50%); /* Center on the 'line' */
   }
 
   .timeline li:first-child::before {
@@ -192,8 +193,9 @@
   }
 
   .timeline li:last-child::before {
-    right: -15px; /* Adjust for the last circle */
+    right: 0; /* Adjust for the last circle */
     left: auto;
+    transform: translateX(50%) translateY(-50%);
   }
 
   .timeline-content h3.date {
@@ -220,32 +222,6 @@
   /* Center the research interests */
   .container section:last-of-type {
     text-align: center;
-  }
-
-  /* Hide the vertical line from the original vertical timeline */
-  @media only screen and (min-width: 768px) {
-    .timeline:before {
-      display: none;
-    }
-
-    /* Reset styles that were for vertical layout */
-    .timeline ul li {
-      width: auto;
-      float: none;
-      clear: none;
-      transform: none;
-      border-radius: 10px;
-      margin-bottom: 0;
-    }
-
-    .timeline ul li::before {
-      display: none;
-    }
-
-    .timeline-content .date {
-      position: static;
-      margin-bottom: 5px;
-    }
   }
 </style>
 
