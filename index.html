@@ -29,10 +29,6 @@
         position: relative;
     }
 
-    body::before {
-        content: none;
-    }
-
     header {
         padding: 1rem 0 0 0;
         background-color: black;
@@ -118,6 +114,67 @@
         font-size: 0.8rem;
         color: teal;
     }
+
+    /* Timeline Styling */
+    #timeline {
+        padding: 2rem 1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .timeline-container {
+        border-left: 2px solid #555;
+        padding-left: 20px;
+        margin-top: 2rem;
+    }
+
+    .timeline-item {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .timeline-date {
+        font-weight: bold;
+        color: #888;
+        margin-bottom: 0.3rem;
+    }
+
+    .timeline-content h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #fff;
+    }
+
+    .timeline-content h4 {
+        margin: 0.2rem 0 0;
+        font-size: 1rem;
+        color: #ccc;
+        font-weight: normal;
+    }
+
+    .timeline-content p {
+        margin: 0.3rem 0 0;
+        color: #bbb;
+    }
+
+    .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 0.3rem;
+        width: 10px;
+        height: 10px;
+        background: #f0f0f0;
+        border-radius: 50%;
+    }
+
+    .special-event h3 {
+        color: #80cbc4;
+    }
+
+    .special-event p {
+        color: #a5d6a7;
+    }
     </style>
 </head>
 <body>
@@ -170,6 +227,64 @@
 
     <section>
         <b>Research Interests</b>: <i>Figurative language processing, Presuppositions, Politeness, Beliefs, Deception, Theory of Mind, Perspective taking.</i>
+    </section>
+
+    <!-- TIMELINE SECTION -->
+    <section id="timeline">
+        <h2>Academic Timeline</h2>
+        <div class="timeline-container">
+            <div class="timeline-item">
+                <div class="timeline-date">2015 – 2017</div>
+                <div class="timeline-content">
+                    <h3>BA in English Literature</h3>
+                    <h4>UC Davis</h4>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2018 – 2021</div>
+                <div class="timeline-content">
+                    <h3>MA in Linguistics</h3>
+                    <h4>Universität Göttingen</h4>
+                    <p>Vagueness of Gradable Adjectives</p>
+                </div>
+            </div>
+
+            <div class="timeline-item special-event">
+                <div class="timeline-date">2021</div>
+                <div class="timeline-content">
+                    <h3>SMARTS-UP Scholarship</h3>
+                    <p>A scholarship (€8,000) funded by the French government intended to recruit foreign nationals into research programs at the Université Paris Cité.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2021 – 2022</div>
+                <div class="timeline-content">
+                    <h3>M2 in Language Sciences</h3>
+                    <h4>Université Paris Cité</h4>
+                    <p>Uncovering the Presuppositional Content of Idioms</p>
+                </div>
+            </div>
+
+            <div class="timeline-item special-event">
+                <div class="timeline-date">2022</div>
+                <div class="timeline-content">
+                    <h3>LabEx EFL Master’s Thesis Grant</h3>
+                    <p>A grant (€3,000) that supported the completion of my mémoire & included a research internship at the Laboratoire de Linguistique Formelle (LLF).</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2022 – 2025</div>
+                <div class="timeline-content">
+                    <h3>PhD in Language Sciences</h3>
+                    <h4>Université Paris Cité</h4>
+                    <p>What Makes the Processing of Idioms Unique?</p>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 
