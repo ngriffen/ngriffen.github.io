@@ -41,25 +41,48 @@
 
 .gif-container {
     display: flex;
-    justify-content: center; /* Centers the images horizontally */
-    align-items: center; /* Centers the images vertically */
-    gap: 20px; /* Space between the images */
-    margin-top: 20px; /* Add space above */
-    text-align: center; /* Ensure text inside is centered */
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.gif-container img {
-    width: 250px;
+.gif-table {
+    display: none; /* Hidden by default */
+}
+
+.gif-table img {
+    width: 100%;
     height: auto;
+    display: block;
+    margin: auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s;
 }
 
-@media (max-width: 200px) {
+/* Show table layout only on small screens */
+@media (max-width: 600px) {
+    .gif-container {
+        justify-content: center;
+    }
+
     .gif-container img {
-        width: 60%; /* Reduce image width on mobile */
-        max-width: 95px; /* Max-width for mobile screens */
+        display: none; /* Hide default layout GIFs */
+    }
+
+    .gif-table {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .gif-table td {
+        padding: 5px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .gif-table img {
+        max-width: 100%;
+        height: auto;
     }
 }
 
@@ -176,11 +199,15 @@
 </section>
 
 <hr>
-
 <div class="gif-container">
-    <img src="topomap_IPS.gif" alt="Topographic map IPS">
-    <img src="topomap_IPU.gif" alt="Topographic map IPU">
+    <table class="gif-table">
+        <tr>
+            <td><img src="topomap_IPS.gif" alt="Topographic map IPS"></td>
+            <td><img src="topomap_IPU.gif" alt="Topographic map IPU"></td>
+        </tr>
+    </table>
 </div>
+
 </main>
 
 <footer>
