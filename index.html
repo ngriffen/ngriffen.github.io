@@ -55,12 +55,15 @@
     transition: transform 0.3s;
 }
 
-/* Mobile layout */
-@media (max-width: 600px) {
-    .gif-container {
-        flex-direction: column;
-        align-items: center;
+@media (min-width: 601px) {
+    .menu {
+        display: flex !important; /* Always show menu on desktop */
     }
+
+    .menu-toggle {
+        display: none; /* Hide hamburger on desktop */
+    }
+}
 
     .gif-container img {
         width: 90%;
