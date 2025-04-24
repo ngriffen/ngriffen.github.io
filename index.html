@@ -42,49 +42,32 @@
 .gif-container {
     display: flex;
     justify-content: center;
+    gap: 20px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-.gif-table {
-    display: none; /* Hidden by default */
-}
-
-.gif-table img {
-    width: 100%;
+.gif-container img {
+    width: 250px;
     height: auto;
-    display: block;
-    margin: auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s;
 }
 
-/* Show table layout only on small screens */
+/* Mobile layout */
 @media (max-width: 600px) {
     .gif-container {
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 
     .gif-container img {
-        display: none; /* Hide default layout GIFs */
-    }
-
-    .gif-table {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    .gif-table td {
-        padding: 5px;
-        vertical-align: middle;
-        text-align: center;
-    }
-
-    .gif-table img {
-        max-width: 100%;
-        height: auto;
+        width: 90%;
+        max-width: 300px;
     }
 }
+
 
 
     .menu {
@@ -199,14 +182,12 @@
 </section>
 
 <hr>
+    
 <div class="gif-container">
-    <table class="gif-table">
-        <tr>
-            <td><img src="topomap_IPS.gif" alt="Topographic map IPS"></td>
-            <td><img src="topomap_IPU.gif" alt="Topographic map IPU"></td>
-        </tr>
-    </table>
+    <img src="topomap_IPS.gif" alt="Topographic map IPS">
+    <img src="topomap_IPU.gif" alt="Topographic map IPU">
 </div>
+
 
 </main>
 
