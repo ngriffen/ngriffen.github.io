@@ -38,23 +38,31 @@
         .container section p { margin-top: 10px; margin-bottom: 10px; text-align: left; }
         .centered { text-align: center; }
       /* Existing style for gif-container img remains */
+
+.gif-container {
+    display: flex;
+    justify-content: center; /* Centers the images horizontally */
+    align-items: center; /* Centers the images vertically */
+    gap: 20px; /* Space between the images */
+    margin-top: 20px; /* Add space above */
+    text-align: center; /* Ensure text inside is centered */
+}
+
 .gif-container img {
     width: 250px;
     height: auto;
-    align-items: center;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s;
 }
 
-/* Mobile-specific adjustment */
 @media (max-width: 600px) {
-    .top-images img,
     .gif-container img {
-        align-items: center;
-        width: 50%;
-        max-width: 200px; /* Reduce max-width just for mobile */
+        width: 50%; /* Reduce image width on mobile */
+        max-width: 300px; /* Max-width for mobile screens */
     }
+}
+
 
     .menu {
         font-size: 1rem;
