@@ -127,6 +127,51 @@
       nav { padding: 20px 24px; }
       .project-hero { padding: 120px 24px 40px; }
     }
+
+    /* Logo Link Fix */
+    a.nav-logo {
+      text-decoration: none;
+      cursor: none; /* Maintains your custom cursor */
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: var(--card);
+      color: var(--teal);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, background 0.2s, box-shadow 0.2s;
+      cursor: none; 
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: var(--teal-faint);
+      border-color: var(--teal);
+      box-shadow: 0 0 10px var(--teal-glow);
+    }
+    
+    @media (max-width: 900px) {
+      .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -222,7 +267,10 @@
 
         <p style="font-style: italic; color: var(--muted); font-size: 12px; margin-top: 40px; border-left: 1px solid var(--teal); padding-left: 12px;">Fully interactive dashboard available upon request.</p>
 
+<button id="backToTop" class="back-to-top">↑ SEND ME UP</button>
+
 <script>
+  // Custom Cursor
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursor-ring');
   document.addEventListener('mousemove', (e) => {
@@ -232,6 +280,25 @@
       cursorRing.style.left = e.clientX + 'px';
       cursorRing.style.top = e.clientY + 'px';
     }, 50);
+  });
+
+  // Back to Top Button Logic
+  const backToTopBtn = document.getElementById("backToTop");
+  
+  window.addEventListener("scroll", () => {
+    // Show button after scrolling down 300px
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add("show");
+    } else {
+      backToTopBtn.classList.remove("show");
+    }
+  });
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   });
 </script>
 </body>
