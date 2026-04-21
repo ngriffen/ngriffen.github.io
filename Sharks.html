@@ -62,13 +62,13 @@
     li { margin-bottom: 8px; }
     li strong { color: var(--teal); }
 
-    /* RESPONSIVE FIGURES */
-    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
-    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
-    .figure-image-wrapper { padding: 20px; display: flex; justify-content: center; background: #000; overflow: hidden; }
-    .figure-image-wrapper img { max-width: 100%; height: auto; border: 1px solid #333; }
-    .figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
-    .figure-caption strong { color: var(--teal); }
+/* RESPONSIVE FIGURES */
+.figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
+.figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
+.figure-image-wrapper { padding: 40px 20px; display: flex; justify-content: center; background: #000; overflow: hidden; max-height: 500px; }
+.figure-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+.figure-caption strong { color: var(--teal); }
 
     /* SIDEBAR (Preserved from user request) */
     .sidebar-column { position: relative; height: 100%; }
@@ -155,7 +155,7 @@
     <div class="figure-block">
       <div class="figure-header"><span>VISUALIZATION // DESCRIPTIVE_ANALYSIS</span><span>KPI_DASHBOARD</span></div>
       <div class="figure-image-wrapper">
-        <img src="Screenshot 2026-04-14 at 23.15.33.jpg" alt="Shark Attack Tableau Dashboard" />
+        <img src="Images/Screenshot 2026-04-14 at 23.15.33.jpg" alt="Shark Attack Tableau Dashboard" />
       </div>
       <div class="figure-caption"><strong>Fig 1.</strong> Tableau Dashboard showing that <strong>85%</strong> of injuries are caused by Great Whites and <strong>37%</strong> of all incidents involve surfers.</div>
     </div>
