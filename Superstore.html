@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2Market Business Intelligence | Nicholas Griffen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal: #00e5cc;
+      --teal-dim: #00b8a3;
+      --teal-glow: rgba(0, 229, 204, 0.15);
+      --teal-faint: rgba(0, 229, 204, 0.06);
+      --black: #000000;
+      --surface: #080f0e;
+      --card: #0c1614;
+      --border: rgba(0, 229, 204, 0.18);
+      --text: #e0f7f4;
+      --muted: #6b9e97;
+      --mono: 'Space Mono', monospace;
+      --display: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--text); font-family: var(--mono); 
+      font-size: 14px; line-height: 1.7; overflow-x: hidden; cursor: none;
+    }
+
+    /* Custom Cursor */
+    #cursor { position: fixed; width: 12px; height: 12px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: screen; }
+    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--teal); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all 0.12s ease; opacity: 0.5; }
+    
+    /* Grid Background */
+    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); }
+    .nav-logo { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--teal); letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--text); }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+
+    /* HERO */
+    .project-hero { padding: 160px 60px 80px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--teal); }
+    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    h1 .accent { color: var(--teal); }
+    .hero-meta { color: var(--muted); font-size: 13px; margin-bottom: 40px; display: flex; gap: 24px; }
+    .hero-meta span { border-left: 1px solid var(--teal); padding-left: 12px; }
+
+    /* LAYOUT */
+    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 0 60px 80px; position: relative; z-index: 1; align-items: start; }
+    h2 { font-family: var(--display); font-size: 28px; color: var(--text); margin-bottom: 24px; letter-spacing: -0.5px; }
+    p { color: var(--muted); margin-bottom: 20px; font-size: 14px; line-height: 1.8; }
+    ul { color: var(--muted); margin-bottom: 20px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+    li { margin-bottom: 8px; }
+    li strong { color: var(--teal); }
+
+    /* RESPONSIVE FIGURES */
+    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
+    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
+    .figure-image-wrapper { padding: 40px 20px; display: flex; justify-content: center; background: #000; overflow: hidden; }
+    .figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+    .figure-caption strong { color: var(--teal); }
+
+    /* SIDEBAR */
+    .sidebar-column { position: sticky; top: 120px; }
+    .sidebar-widget { background: var(--card); border: 1px solid var(--border); padding: 30px; }
+    .widget-title { font-size: 11px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-pill { font-size: 11px; color: var(--teal); letter-spacing: 0.04em; border: 1px solid rgba(0,229,204,0.25); background: var(--teal-faint); padding: 6px 12px; }
+
+    /* FUNNEL SVG */
+    .funnel-svg { width: 100%; max-width: 550px; height: auto; }
+    .funnel-layer { stroke: var(--teal); stroke-width: 1; fill: var(--teal-faint); transition: opacity 0.3s; }
+    .funnel-layer:hover { fill: var(--teal-glow); }
+    .funnel-text { fill: var(--text); font-family: var(--mono); font-size: 12px; font-weight: bold; }
+    .funnel-label { fill: var(--muted); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; }
+
+    @media (max-width: 900px) {
+      .content-grid { grid-template-columns: 1fr; }
+      nav { padding: 20px 24px; }
+      .project-hero { padding: 120px 24px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">Nicholas<span> Griffen</span></div>
+  <a href="index.html" class="back-link">← Return to Portfolio</a>
+</nav>
+
+<header class="project-hero">
+  <div class="hero-tag">Understanding Customer Purchase Behavior</div>
+  <h1>Using Tableau <br/><span class="accent"> to optimize business strategy</span></h1>
+  <div class="hero-meta">
+  </div>
+
+    <aside class="sidebar">
+    <div class="sidebar-widget">
+      <div class="widget-title">Stack</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Tableau</span>
+        <span class="skill-pill">Excel</span>
+        <span class="skill-pill">SQL</span>
+        <span class="skill-pill">BI Reporting</span>
+      </div>
+    </div>
+  </aside>
+  
+  <div style="max-width: 800px; font-size: 16px; margin-top: 40px;">
+    <p>2Market required an analysis of customer purchase behavior across their global enterprise. This report details the transformation of raw marketing datasets into actionable intelligence, providing trends about product sales, and advertising efficacy.</p>
+  </div>
+</header>
+
+<div class="content-grid">
+  <div class="main-content">
+    
+    <h2>1. Data Cleaning</h2>
+    <p>Data integrity was the first priority. Using Excel, I conducted a principled inspection of <code>marketing_data.csv</code> and <code>ad_data.csv</code>:</p>
+    <ul>
+      <li><strong>Invalid Entries:</strong> Removed impossible birth year records (e.g., 1894, 1900) to ensure demographic accuracy.</li>
+      <li><strong>Category Optimization:</strong> Normalised marital status conventions (e.g., getting rid of insufficient values like "Absurd" and "YOLO") for cleaner grouping.</li>
+      <li><strong>Financial Data Correction:</strong> Addressed missing income values by adjusting their format for proper entry as currency.</li>
+    </ul>
+    
+    <h2>2. Assessing Market Performance</h2>
+    <p>The Spanish market emerged as the leading market, contributing <b>$0.7M</b> of the <b>$1.3M</b> total global sales. Despite this regional strength, overall ad performance remains a challenge with a <b>6% success rate</b>.</p>
+
+    <div class="figure-block">
+      <div class="figure-header"><span>ANALYSIS // REVENUE_CONVERSION_STRUCTURE</span><span>ID: 2M-BI-01</span></div>
+      <div class="figure-image-wrapper">
+        <svg class="funnel-svg" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,20 450,20 400,100 100,100" class="funnel-layer" />
+          <text x="250" y="55" text-anchor="middle" class="funnel-text">TOTAL SALES: $1.3M</text>
+          <text x="250" y="75" text-anchor="middle" class="funnel-label">GLOBAL MARKET (8 COUNTRIES)</text>
+
+          <polygon points="110,110 390,110 350,190 150,190" class="funnel-layer" style="fill: var(--teal-glow);" />
+          <text x="250" y="145" text-anchor="middle" class="funnel-text">SPANISH MARKET: $0.7M</text>
+          <text x="250" y="165" text-anchor="middle" class="funnel-label">PRIMARY REVENUE HUB (54% SHARE)</text>
+
+          <polygon points="160,200 340,200 310,280 190,280" class="funnel-layer" />
+          <text x="250" y="235" text-anchor="middle" class="funnel-text">AD SUCCESS RATE: 6%</text>
+       
+<text x="250" y="255" text-anchor="middle" class="funnel-label" style="font-size: 8px !important;">AGGREGATE CAMPAIGN RESPONSE</text>
+
+          <line x1="250" y1="285" x2="250" y2="320" stroke="var(--teal)" stroke-width="1" stroke-dasharray="4" />
+          <circle cx="250" cy="325" r="5" fill="var(--teal)" />
+          <text x="265" y="330" class="funnel-text" style="font-size: 10px; fill: var(--teal);">OPPORTUNITY: INVESTIGATE CORE ISSUE</text>
+        </svg>
+      </div>
+      <div class="figure-caption"><strong>Fig 1.</strong> Hierarchical breakdown of 2Market performance, illustrating the sharp drop-off between market presence and campaign conversion.</div>
+    </div>
+
+<h2>3. Product Strategy</h2>
+    <p>Product performance remained statistically consistent across all eight countries. However, the contrast between product demand and campaign response indicates a necessary pivot in resource allocation:</p>
+    <ul>
+      <li><strong>Category Leaders:</strong> Identified "Liquor" and "Non-Vegetable" items as the primary volume drivers, maintaining high performance across all customer demographics.</li>
+      <li><strong>Efficiency Gap:</strong> Data analysis revealed that Social Media channels (Facebook, Instagram, Twitter) vastly outperformed traditional methods like Bulkmail and Brochures.</li>
+      <li><strong>Conversion Floor:</strong> A strategic shift to digital-first marketing may help elevate the current ad success rate from its <b>6%</b> baseline.</li>
+    </ul>
+
+    <h2>4. Dashboard Presentation</h2>
+    <p>In order to maximize the potential of these data-driven insights, a Tableau dashboard was created. This provided stakeholders with an easy to understand interactive graphic, which enabled actionable growth opportunities to be identified.</p>
+
+    <div class="figure-block">
+      <div class="figure-header"><span>DELIVERABLE // TABLEAU_UI</span><span>STATUS: DEPLOYED</span></div>
+      <div class="figure-image-wrapper">
+        <img src="tableau_dashboard.jpg" alt="Tableau Dashboard" />
+      </div>
+      <div class="figure-caption"><strong>Fig 2.</strong> A Tableau Dashboard presenting critical KPIs and visual representations of customer demographics.</div>
+    </div>
+  </div>
+
+    <p style="font-style: italic; color: var(--muted); font-size: 12px; margin-top: 40px; border-left: 1px solid var(--teal); padding-left: 12px;">Fully interactive dashboard available upon request.</p>
+
+<footer>
+  <p>Nicholas Griffen // Data Analyst</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 50);
+  });
+</script>
+</body>
+</html>
