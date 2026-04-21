@@ -103,6 +103,51 @@
     .ml-feature-svg .svg-axis { stroke: var(--border); stroke-width: 1; }
     .ml-feature-svg .svg-bar-teal { fill: var(--teal); filter: drop-shadow(0 0 2px rgba(0, 229, 204, 0.3)); }
     .ml-feature-svg .svg-grid-line { stroke: rgba(0, 229, 204, 0.05); stroke-width: 1; }
+    
+    /* Logo Link Fix */
+    a.nav-logo {
+      text-decoration: none;
+      cursor: none; /* Maintains your custom cursor */
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: var(--card);
+      color: var(--teal);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, background 0.2s, box-shadow 0.2s;
+      cursor: none; 
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: var(--teal-faint);
+      border-color: var(--teal);
+      box-shadow: 0 0 10px var(--teal-glow);
+    }
+    
+    @media (max-width: 900px) {
+      .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -239,7 +284,10 @@
       <p>The verdict is in: Shark attacks remain extremely rare, but to exercise appropriate caution it is best to avoid lingering in their hunting grounds, where they regularly feed. After all, when a shark is hunting for food it tends to bite hard and ask questions later. Fortunately, many incidents along the coast are merely exploratory bites where a shark is "investigating" before deciding to engage further with their potential prey. If a shark doesn't like what it finds it tends to swim away. This "bite-and-release" pattern generally results in minor injuries, which means that outside of their hunting grounds you're much more likely to swim away with your life.</p>
 
 
+<button id="backToTop" class="back-to-top">↑ SEND ME UP</button>
+
 <script>
+  // Custom Cursor
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursor-ring');
   document.addEventListener('mousemove', (e) => {
@@ -249,6 +297,25 @@
       cursorRing.style.left = e.clientX + 'px';
       cursorRing.style.top = e.clientY + 'px';
     }, 50);
+  });
+
+  // Back to Top Button Logic
+  const backToTopBtn = document.getElementById("backToTop");
+  
+  window.addEventListener("scroll", () => {
+    // Show button after scrolling down 300px
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add("show");
+    } else {
+      backToTopBtn.classList.remove("show");
+    }
+  });
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   });
 </script>
 </body>
