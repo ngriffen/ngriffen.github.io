@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predicting Shark Attacks | Nicholas Griffen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal: #00e5cc;
+      --teal-dim: #00b8a3;
+      --teal-glow: rgba(0, 229, 204, 0.15);
+      --teal-faint: rgba(0, 229, 204, 0.06);
+      --black: #000000;
+      --surface: #080f0e;
+      --card: #0c1614;
+      --border: rgba(0, 229, 204, 0.18);
+      --text: #e0f7f4;
+      --muted: #6b9e97;
+      --mono: 'Space Mono', monospace;
+      --display: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--text); font-family: var(--mono); 
+      font-size: 14px; line-height: 1.7; overflow-x: hidden; cursor: none;
+    }
+
+    /* Custom Cursor */
+    #cursor { position: fixed; width: 12px; height: 12px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: screen; }
+    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--teal); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all 0.12s ease; opacity: 0.5; }
+    
+    /* Grid Background */
+    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); }
+    .nav-logo { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--teal); letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--text); }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+
+    /* HERO */
+    .project-hero { 
+  padding: 160px 60px 20px; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  position: relative; 
+  z-index: 1;}
+    .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--teal); }
+    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    h1 .accent { color: var(--teal); }
+    
+    /* LAYOUT */
+    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 0 60px 80px; position: relative; z-index: 1; align-items: start; }
+    h2 { font-family: var(--display); font-size: 28px; color: var(--text); margin-top: 48px; margin-bottom: 24px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
+    h3 { font-family: var(--display); font-size: 20px; color: var(--teal); margin: 32px 0 16px; }
+    p { color: var(--muted); margin-bottom: 20px; font-size: 14px; line-height: 1.8; }
+    ul { color: var(--muted); margin-bottom: 20px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+    li { margin-bottom: 8px; }
+    li strong { color: var(--teal); }
+
+    /* RESPONSIVE FIGURES */
+    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
+    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
+    .figure-image-wrapper { padding: 20px; display: flex; justify-content: center; background: #000; overflow: hidden; }
+    .figure-image-wrapper img { max-width: 100%; height: auto; border: 1px solid #333; }
+    .figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+    .figure-caption strong { color: var(--teal); }
+
+    /* SIDEBAR (Preserved from user request) */
+    .sidebar-column { position: relative; height: 100%; }
+    .sidebar-widget.sticky { 
+      background: var(--card); border: 1px solid var(--border); padding: 30px; 
+      position: -webkit-sticky; 
+      position: sticky; 
+      top: 120px; 
+      z-index: 10;
+    }
+    .widget-title { font-size: 11px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-pill { font-size: 11px; color: var(--teal); letter-spacing: 0.04em; border: 1px solid rgba(0,229,204,0.25); background: var(--teal-faint); padding: 6px 12px; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; position: relative; z-index: 1;}
+
+    /* IMPACT STATEMENT */
+    .impact-statement {
+      margin-top: 80px; 
+      padding: 30px; 
+      border: 1px solid var(--border); 
+      background: var(--card);
+    }
+    .impact-statement p {
+      font-size: 13px; 
+      margin-bottom: 0;
+    }
+
+    /* SVG Styling */
+    .ml-feature-svg .svg-title { fill: var(--text); font-family: var(--display); font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
+    .ml-feature-svg .svg-label { fill: var(--muted); font-family: var(--mono); font-size: 12px; transition: fill 0.2s; }
+    .ml-feature-svg .svg-axis { stroke: var(--border); stroke-width: 1; }
+    .ml-feature-svg .svg-bar-teal { fill: var(--teal); filter: drop-shadow(0 0 2px rgba(0, 229, 204, 0.3)); }
+    .ml-feature-svg .svg-grid-line { stroke: rgba(0, 229, 204, 0.05); stroke-width: 1; }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">Nicholas<span> Griffen</span></div>
+  <a href="index.html" class="back-link">← Return to Portfolio</a>
+</nav>
+
+<header class="project-hero">
+  <div class="hero-tag">Predicting The Outcome of Shark Attacks</div>
+  <h1>Using Machine Learning <br/><span class="accent">to survive shark attacks</span></h1>
+  
+ <aside class="sidebar">
+    <div class="sidebar-widget">
+      <div class="widget-title">Stack</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Tableau</span>
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">Machine Learning</span>
+        <span class="skill-pill">Factor Analysis</span>
+      </div>
+    </div>
+  </aside>
+  
+   <div style="max-width: 800px; font-size: 16px; margin-top: 40px;">
+     <p>Shark attacks can have one of two different outcomes: <i>death</i> or <i>survival</i>. It's as simple as that, but what is it that sets these two outcomes apart? I sought to find out.</p>
+    
+    <p>By analyzing 70+ years of historical data recorded along the California coastline, I built a predictive model to see if we could <i>forecast</i> the outcome of an attack based on various factors, such as, <i>the species of shark, the time of year, and even the activity enacted by the person at the time of the attack</i>. This project turns decades of anecdotes about shark attacks into a methodological exploration of public data. </p>
+  </div>
+</header>
+
+<div class="content-grid">
+  <div class="main-content">
+    
+    <h2>1. Data Preparation</h2>
+    <p>Data integrity was a top priority. My goal was to prepare this longitudinal dataset for a full scale analysis:</p>
+    <ul>
+      <li><strong>Utilizing Time:</strong> Extracted "Season" and "Time of Day" from timestamps to get a full understanding of each incident.</li>
+      <li><strong>Categorical Pruning:</strong> Only injuries considered to be <i>minor, major, or fatal</i> were included in this analysis.</li>
+      <li><strong>Missing Values:</strong> Discarded "Unknown" entries for "Species" and filtered out "Incomplete" reports.</li>
+    </ul>
+    
+    <h2>2. Dashboard Presentation</h2>
+    <p>I developed a simplified dashboard which emphasized KPIs and trends. This visualization revealed that the most dangerous activity to do in the water is <i>surfing</i> and it reified the assumption that <i>Great Whites</i> are the most dangerous species.</p>
+    
+    <div class="figure-block">
+      <div class="figure-header"><span>VISUALIZATION // DESCRIPTIVE_ANALYSIS</span><span>KPI_DASHBOARD</span></div>
+      <div class="figure-image-wrapper">
+        <img src="Screenshot 2026-04-14 at 23.15.33.jpg" alt="Shark Attack Tableau Dashboard" />
+      </div>
+      <div class="figure-caption"><strong>Fig 1.</strong> Tableau Dashboard showing that <strong>85%</strong> of injuries are caused by Great Whites and <strong>37%</strong> of all incidents involve surfers.</div>
+    </div>
+    
+    <h2>3. Predictive Modeling (Random Forest)</h2>
+    <p>I deployed a Random Forest classifier to determine what drives the severity of shark attacks. The model achieved a <strong>64%</strong> accuracy rate, a strong performance given the inherent noise and class imbalance in fatal incidents.</p>
+
+<div class="figure-block">
+      <div class="figure-header"><span>MODELING // FEATURE_IMPORTANCE</span><span>TYPE: VECTOR_SVG</span></div>
+      <div class="figure-image-wrapper" style="padding: 60px 40px;">
+        <svg class="ml-feature-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; max-width: 700px;">
+          <style>
+            .svg-title { fill: var(--text); font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+            .svg-label { fill: var(--muted); font-family: var(--mono); font-size: 10px; transition: fill 0.2s; }
+            .svg-axis { stroke: var(--border); stroke-width: 1; }
+            .svg-bar-teal { fill: var(--teal); filter: drop-shadow(0 0 2px rgba(0, 229, 204, 0.3)); }
+            .svg-grid-line { stroke: rgba(0, 229, 204, 0.05); stroke-width: 1; }
+          </style>
+
+          <text x="0" y="-10" class="svg-title">Predictive Power: Random Forest Features</text>
+          
+          <g transform="translate(0, 40)">
+            <line x1="120" y1="0" x2="120" y2="320" class="svg-grid-line" />
+            <line x1="240" y1="0" x2="240" y2="320" class="svg-grid-line" />
+            <line x1="360" y1="0" x2="360" y2="320" class="svg-grid-line" />
+            <line x1="480" y1="0" x2="480" y2="320" class="svg-grid-line" />
+
+            <line x1="100" y1="0" x2="100" y2="320" class="svg-axis" />
+            
+            <text x="90" y="24" class="svg-label" text-anchor="end">Year</text>
+            <rect x="100" y="10" width="460" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="59" class="svg-label" text-anchor="end">County</text>
+            <rect x="100" y="45" width="440" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="94" class="svg-label" text-anchor="end">Month</text>
+            <rect x="100" y="80" width="260" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="129" class="svg-label" text-anchor="end">Activity</text>
+            <rect x="100" y="115" width="200" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="164" class="svg-label" text-anchor="end">Species</text>
+            <rect x="100" y="150" width="180" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="199" class="svg-label" text-anchor="end">Season</text>
+            <rect x="100" y="185" width="140" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="234" class="svg-label" text-anchor="end">Time of Day</text>
+            <rect x="100" y="220" width="120" height="18" class="svg-bar-teal" />
+            
+            <text x="90" y="269" class="svg-label" text-anchor="end">Depth</text>
+            <rect x="100" y="255" width="100" height="18" class="svg-bar-teal" />
+
+            <text x="90" y="304" class="svg-label" text-anchor="end">Submersion</text>
+            <rect x="100" y="290" width="40" height="18" class="svg-bar-teal" />
+            
+            <line x1="100" y1="335" x2="560" y2="335" class="svg-axis" />
+            <text x="100" y="355" class="svg-label" text-anchor="middle">0.0</text>
+            <text x="330" y="355" class="svg-label" text-anchor="middle" style="letter-spacing: 1px;">Feature Importance Score</text>
+            <text x="560" y="355" class="svg-label" text-anchor="middle">1.0</text>
+          </g>
+        </svg>
+      </div>
+      <div class="figure-caption"><strong>Fig 2.</strong> Feature Importance ranking. <strong>Year</strong> and <strong>County</strong> emerged as the primary indicators of incident severity.</div>
+    </div>
+
+ <h2>4. Feature Analysis</h2>
+    <p>This analysis reveals that there are, in fact, things you can do to prevent yourself from being the next victim of a shark attack:</p>
+    
+    <ul>
+      <li><strong>Year:</strong> The strongest single predictor is "Year," but this is likely a side-effect of there being an overall decrease in deaths from shark attacks. Medical advancements and more granular reporting of minor incidents are likely to have made "Year" as strong of a factor as it is.</li>
+      <li><strong>Activity:</strong> There is a clear "severity gap" between Surfing and Freediving/Scuba. So, while surfers represent the highest volume of incidents, they more frequently sustain <i>Minor</i> injuries. In contrast, Freediving/Scuba incidents skew heavily toward <i>Major or Fatal</i> outcomes, likely due to the lack of a board as a physical buffer and the obvious constraint of being confined to the depths of the ocean (i.e., without immediate oxygen, the ability to speak, or seek aid).</li>
+      <li><strong>Species:</strong> The data exhibits a near-total dominance of the <i>Great White</i> in high-severity incidents. Meaning that if you had a choice to meet one shark, and would prefer to live on to tell the tale, it ought not to be the <i>Great White</i>.</li>
+      <li><strong>Additional Factors:</strong> A striking finding is that near the major breeding grounds of seals and sea lions (Farallon Islands, Año Nuevo, Point Conception, Morro Bay area, San Miguel Island), <strong>71.6%</strong> of attacks resulted in "Major" or "Fatal" injuries. Outside of these areas, severe attacks drop to <strong>42.9%</strong>. This indicates that when Great Whites are in these distinct areas, they are in a heighted predatory state and thus <strong>hunting to kill</strong>.</li>
+    </ul>
+
+    <p style="font-style: italic; color: var(--muted); font-size: 12px; margin-top: 40px; border-left: 1px solid var(--teal); padding-left: 12px;">Full notebook and ML pipeline available upon request.</p>
+
+    <div class="impact-statement">
+      <div class="widget-title">Impact Statement</div>
+      <p>The verdict is in: Shark attacks remain extremely rare, but to exercise appropriate caution it is best to avoid lingering in their hunting grounds, where they regularly feed. After all, when a shark is hunting for food it tends to bite hard and ask questions later. Fortunately, many incidents along the coast are merely exploratory bites where a shark is "investigating" before deciding to engage further with their potential prey. If a shark doesn't like what it finds it tends to swim away. This "bite-and-release" pattern generally results in minor injuries, which means that outside of their hunting grounds you're much more likely to swim away with your life.</p>
+    </div>
+
+  </div> 
+</div> 
+  
+  <footer>
+  <p>Nicholas Griffen // Data Analyst</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 50);
+  });
+</script>
+</body>
+</html>
