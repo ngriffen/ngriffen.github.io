@@ -58,7 +58,7 @@
     li { margin-bottom: 8px; }
     li strong { color: var(--teal); }
 
-/* RESPONSIVE FIGURES - OPTIMIZED FOR GIFS */
+/* RESPONSIVE FIGURES */
 .figure-block { 
   background: var(--surface); 
   border: 1px solid var(--border); 
@@ -80,23 +80,18 @@
 }
 
 .figure-image-wrapper { 
-  /* Reduced padding slightly to give the GIF more "screen real estate" */
-  padding: 20px; 
+  padding: 40px 20px; 
   display: flex; 
   justify-content: center; 
+  align-items: center;
   background: #000; 
-  overflow: hidden; 
-  /* We remove the hard 500px limit or increase it significantly */
-  min-height: 300px; 
+  /* We removed the max-height constraint entirely */
 }
 
 .figure-image-wrapper img { 
-  /* This ensures the GIF stretches to fill the container width */
-  width: 100%; 
-  height: auto; 
-  /* Limits the size only on very large ultrawide monitors */
-  max-width: 1100px; 
-  object-fit: contain; 
+  max-width: 100%; /* Never stretch beyond native size, but shrink for mobile */
+  height: auto;    /* Always maintain correct proportions */
+  display: block;
 }
 
 .figure-caption { 
@@ -110,7 +105,6 @@
 .figure-caption strong { 
   color: var(--teal); 
 }
-
     /* SIDEBAR */
     .sidebar-column { position: sticky; top: 120px; }
     .sidebar-widget { background: var(--card); border: 1px solid var(--border); padding: 30px; }
