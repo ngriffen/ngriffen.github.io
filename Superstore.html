@@ -58,13 +58,58 @@
     li { margin-bottom: 8px; }
     li strong { color: var(--teal); }
 
-/* RESPONSIVE FIGURES */
-.figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
-.figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
-.figure-image-wrapper { padding: 40px 20px; display: flex; justify-content: center; background: #000; overflow: hidden; max-height: 500px; }
-.figure-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
-.figure-caption strong { color: var(--teal); }
+/* RESPONSIVE FIGURES - OPTIMIZED FOR GIFS */
+.figure-block { 
+  background: var(--surface); 
+  border: 1px solid var(--border); 
+  margin: 40px 0; 
+  position: relative; 
+  width: 100%; 
+}
+
+.figure-header { 
+  background: var(--teal-faint); 
+  border-bottom: 1px solid var(--border); 
+  padding: 10px 16px; 
+  font-size: 10px; 
+  color: var(--teal); 
+  letter-spacing: 0.15em; 
+  text-transform: uppercase; 
+  display: flex; 
+  justify-content: space-between; 
+}
+
+.figure-image-wrapper { 
+  /* Reduced padding slightly to give the GIF more "screen real estate" */
+  padding: 20px; 
+  display: flex; 
+  justify-content: center; 
+  background: #000; 
+  overflow: hidden; 
+  /* We remove the hard 500px limit or increase it significantly */
+  min-height: 300px; 
+}
+
+.figure-image-wrapper img { 
+  /* This ensures the GIF stretches to fill the container width */
+  width: 100%; 
+  height: auto; 
+  /* Limits the size only on very large ultrawide monitors */
+  max-width: 1100px; 
+  object-fit: contain; 
+}
+
+.figure-caption { 
+  padding: 16px; 
+  font-size: 12px; 
+  color: var(--muted); 
+  border-top: 1px solid var(--border); 
+  background: var(--card); 
+}
+
+.figure-caption strong { 
+  color: var(--teal); 
+}
 
     /* SIDEBAR */
     .sidebar-column { position: sticky; top: 120px; }
