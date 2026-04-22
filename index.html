@@ -1296,36 +1296,34 @@ const defs = document.createElementNS(ns, 'defs');
   let canvasW = 0;
   let canvasH = 0;
   
-  // Internal padding so lines don't bleed off the physical canvas edges
   const pad = 15; 
   let drawW = 0;
 
   function initPredCanvas() {
       const dpr = window.devicePixelRatio || 1;
-      
-      // 1. Temporarily remove canvas from layout to get the parent's TRUE collapsed width
-      predCanvas.style.display = 'none';
-      const rect = predCanvas.parentElement.getBoundingClientRect();
-      predCanvas.style.display = 'block';
+      const parent = predCanvas.parentElement;
 
-      // 2. Strictly cap the width to the viewport (minus a small safety margin)
-      canvasW = Math.min(rect.width, document.documentElement.clientWidth - 20);
-      canvasH = rect.height || 300; 
+      // 1. Measure parent dimensions (with fallbacks for mobile)
+      canvasW = parent.clientWidth || window.innerWidth;
+      canvasH = parent.clientHeight || 250; // Ensure a default height so it's not 0
 
+      // 2. Set internal pixel buffer
       predCanvas.width = canvasW * dpr;
       predCanvas.height = canvasH * dpr;
       
-      predCanvas.style.width = `${canvasW}px`;
-      predCanvas.style.height = `${canvasH}px`;
-      predCanvas.style.maxWidth = '100%'; // Force CSS containment
+      // 3. Set CSS dimensions to match parent exactly
+      predCanvas.style.width = '100%';
+      predCanvas.style.height = canvasH + 'px';
       
       pCtx.scale(dpr, dpr);
       
-      pointCount = canvasW < 500 ? 40 : 70;
+      // 4. Adapt point density
+      pointCount = canvasW < 500 ? 35 : 70;
       splitIdx = Math.floor(pointCount * 0.7); 
       
       drawW = canvasW - (pad * 2);
 
+      // Initialize points
       pPoints = Array.from({length: pointCount}, (_, i) => ({
           x: pad + (drawW / (pointCount - 1)) * i,
           y: (canvasH / 2) + (Math.random() - 0.5) * 40
@@ -1333,6 +1331,7 @@ const defs = document.createElementNS(ns, 'defs');
   }
 
   function drawPrediction() {
+      // Use the calculated canvasW/H to clear
       pCtx.clearRect(0, 0, canvasW, canvasH);
       pFrame++;
 
@@ -1343,11 +1342,10 @@ const defs = document.createElementNS(ns, 'defs');
               x: lastP.x + (drawW / (pointCount - 1)),
               y: (canvasH / 2) + Math.sin(pFrame * 0.05) * 20 + (Math.random() - 0.5) * 15
           });
-          // Recalculate X positions with padding
           pPoints.forEach((p, i) => p.x = pad + (drawW / (pointCount - 1)) * i);
       }
 
-      // 1. Confidence Interval (Predicted side)
+      // 1. Confidence Interval
       if(pPoints[splitIdx]) {
         pCtx.beginPath();
         pCtx.fillStyle = 'rgba(0, 229, 204, 0.08)';
@@ -1361,7 +1359,7 @@ const defs = document.createElementNS(ns, 'defs');
         pCtx.fill();
       }
 
-      // 2. Historical Data Line (Solid)
+      // 2. Historical Data Line
       pCtx.beginPath();
       pCtx.lineWidth = 2;
       pCtx.setLineDash([]);
@@ -1372,7 +1370,7 @@ const defs = document.createElementNS(ns, 'defs');
       }
       pCtx.stroke();
 
-      // 3. Predicted Data Line (Dashed)
+      // 3. Predicted Data Line
       pCtx.beginPath();
       pCtx.lineWidth = 2;
       pCtx.strokeStyle = 'rgba(0, 229, 204, 0.4)';
@@ -1400,10 +1398,9 @@ const defs = document.createElementNS(ns, 'defs');
       requestAnimationFrame(drawPrediction);
   }
 
-  let resizeTimer;
+  // Handle resizing/orientation change
   window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(initPredCanvas, 150);
+      initPredCanvas();
   });
   
   initPredCanvas();
