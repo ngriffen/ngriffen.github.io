@@ -106,12 +106,20 @@
 .figure-caption strong { 
   color: var(--teal); 
 }
-    /* SIDEBAR */
-    .sidebar-column { position: sticky; top: 120px; }
-    .sidebar-widget { background: var(--card); border: 1px solid var(--border); padding: 30px; }
+    /* SIDEBAR (Preserved from user request) */
+    .sidebar-column { position: relative; height: 100%; }
+    .sidebar-widget.sticky { 
+      background: var(--card); border: 1px solid var(--border); padding: 30px; 
+      position: -webkit-sticky; 
+      position: sticky; 
+      top: 120px; 
+      z-index: 10;
+    }
     .widget-title { font-size: 11px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
     .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .skill-pill { font-size: 11px; color: var(--teal); letter-spacing: 0.04em; border: 1px solid rgba(0,229,204,0.25); background: var(--teal-faint); padding: 6px 12px; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; position: relative; z-index: 1;}
 
     /* FUNNEL SVG */
     .funnel-svg { width: 100%; max-width: 550px; height: auto; }
