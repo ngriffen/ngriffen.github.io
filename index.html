@@ -1295,36 +1295,44 @@ const defs = document.createElementNS(ns, 'defs');
   let splitIdx = 42;   
   let canvasW = 0;
   let canvasH = 0;
+  
+  // Internal padding so lines don't bleed off the physical canvas edges
+  const pad = 15; 
+  let drawW = 0;
 
   function initPredCanvas() {
       const dpr = window.devicePixelRatio || 1;
-      const rect = predCanvas.parentElement.getBoundingClientRect();
       
-      canvasW = rect.width;
-      canvasH = rect.height;
+      // 1. Temporarily remove canvas from layout to get the parent's TRUE collapsed width
+      predCanvas.style.display = 'none';
+      const rect = predCanvas.parentElement.getBoundingClientRect();
+      predCanvas.style.display = 'block';
 
-      // Set internal pixel buffer for high DPI displays
+      // 2. Strictly cap the width to the viewport (minus a small safety margin)
+      canvasW = Math.min(rect.width, document.documentElement.clientWidth - 20);
+      canvasH = rect.height || 300; 
+
       predCanvas.width = canvasW * dpr;
       predCanvas.height = canvasH * dpr;
       
-      // Set explicit CSS display size (crucial for mobile scaling)
       predCanvas.style.width = `${canvasW}px`;
       predCanvas.style.height = `${canvasH}px`;
+      predCanvas.style.maxWidth = '100%'; // Force CSS containment
       
       pCtx.scale(dpr, dpr);
       
-      // Adapt point density based on screen width
       pointCount = canvasW < 500 ? 40 : 70;
       splitIdx = Math.floor(pointCount * 0.7); 
       
+      drawW = canvasW - (pad * 2);
+
       pPoints = Array.from({length: pointCount}, (_, i) => ({
-          x: (canvasW / (pointCount - 1)) * i,
+          x: pad + (drawW / (pointCount - 1)) * i,
           y: (canvasH / 2) + (Math.random() - 0.5) * 40
       }));
   }
 
   function drawPrediction() {
-      // Use cached canvasW/H instead of getBoundingClientRect() to prevent mobile layout thrashing
       pCtx.clearRect(0, 0, canvasW, canvasH);
       pFrame++;
 
@@ -1332,10 +1340,11 @@ const defs = document.createElementNS(ns, 'defs');
           pPoints.shift();
           const lastP = pPoints[pPoints.length - 1];
           pPoints.push({
-              x: lastP.x + (canvasW / (pointCount - 1)),
+              x: lastP.x + (drawW / (pointCount - 1)),
               y: (canvasH / 2) + Math.sin(pFrame * 0.05) * 20 + (Math.random() - 0.5) * 15
           });
-          pPoints.forEach((p, i) => p.x = (canvasW / (pointCount - 1)) * i);
+          // Recalculate X positions with padding
+          pPoints.forEach((p, i) => p.x = pad + (drawW / (pointCount - 1)) * i);
       }
 
       // 1. Confidence Interval (Predicted side)
@@ -1391,7 +1400,6 @@ const defs = document.createElementNS(ns, 'defs');
       requestAnimationFrame(drawPrediction);
   }
 
-  // Debounce the resize event to stop mobile scrollbars from constantly resetting the animation
   let resizeTimer;
   window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
@@ -1400,27 +1408,6 @@ const defs = document.createElementNS(ns, 'defs');
   
   initPredCanvas();
   drawPrediction();
-  
-  document.querySelectorAll('.j-node').forEach(node => {
-  node.addEventListener('mouseenter', (e) => {
-    const tooltipId = node.getAttribute('data-tooltip');
-    const tooltip = document.getElementById(tooltipId);
-    
-    // Get position of the SVG element
-    const rect = node.getBoundingClientRect();
-    const containerRect = document.querySelector('.journey-canvas-wrap').getBoundingClientRect();
-
-    // Position tooltip above the node
-    tooltip.style.left = (rect.left - containerRect.left + rect.width / 2) + 'px';
-    tooltip.style.top = (rect.top - containerRect.top - 40) + 'px';
-    tooltip.classList.add('visible');
-  });
-
-  node.addEventListener('mouseleave', () => {
-    const tooltipId = node.getAttribute('data-tooltip');
-    document.getElementById(tooltipId).classList.remove('visible');
-  });
-});
   
   // Back to Top Button Logic
   const backToTopBtn = document.getElementById("backToTop");
