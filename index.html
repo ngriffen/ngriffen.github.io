@@ -235,6 +235,15 @@
       border-radius: 4px;
       overflow: hidden;
     }
+   
+    @media (max-width: 1024px) {
+      .hero-content { flex-direction: column; align-items: flex-start; gap: 40px; }
+      .predictive-graphic { 
+        width: 100%; 
+        height: 280px; /* Reduced height for tablet/mobile */
+        min-width: unset; 
+      }
+    }
 
     .predictive-graphic canvas {
       width: 100%;
@@ -1200,7 +1209,7 @@
       [6,9], [7,9], [8,9]
     ];
 
-    const defs = document.createElementNS(ns, 'defs');
+const defs = document.createElementNS(ns, 'defs');
     defs.innerHTML = `
       <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
@@ -1276,106 +1285,119 @@
     });
   })();
 
-  // ─── LIVE PREDICTIVE CANVAS ───────────────────────────────────────────
+// ─── LIVE PREDICTIVE CANVAS ───────────────────────────────────────────
   const predCanvas = document.getElementById('predictiveCanvas');
   const pCtx = predCanvas.getContext('2d');
   
   let pPoints = [];
   let pFrame = 0;
+  let pointCount = 60; 
+  let splitIdx = 42;   
+  let canvasW = 0;
+  let canvasH = 0;
 
   function initPredCanvas() {
-      // Setup resolution
       const dpr = window.devicePixelRatio || 1;
       const rect = predCanvas.parentElement.getBoundingClientRect();
-      predCanvas.width = rect.width * dpr;
-      predCanvas.height = rect.height * dpr;
+      
+      canvasW = rect.width;
+      canvasH = rect.height;
+
+      // Set internal pixel buffer for high DPI displays
+      predCanvas.width = canvasW * dpr;
+      predCanvas.height = canvasH * dpr;
+      
+      // Set explicit CSS display size (crucial for mobile scaling)
+      predCanvas.style.width = `${canvasW}px`;
+      predCanvas.style.height = `${canvasH}px`;
+      
       pCtx.scale(dpr, dpr);
       
-      // Initialize with more points so it looks smooth even when stretched wide
-      pPoints = Array.from({length: 60}, (_, i) => ({
-          x: (rect.width / 60) * i,
-          y: (rect.height / 2) + (Math.random() - 0.5) * 40
+      // Adapt point density based on screen width
+      pointCount = canvasW < 500 ? 40 : 70;
+      splitIdx = Math.floor(pointCount * 0.7); 
+      
+      pPoints = Array.from({length: pointCount}, (_, i) => ({
+          x: (canvasW / (pointCount - 1)) * i,
+          y: (canvasH / 2) + (Math.random() - 0.5) * 40
       }));
   }
 
   function drawPrediction() {
-      const rect = predCanvas.parentElement.getBoundingClientRect();
-      pCtx.clearRect(0, 0, rect.width, rect.height);
+      // Use cached canvasW/H instead of getBoundingClientRect() to prevent mobile layout thrashing
+      pCtx.clearRect(0, 0, canvasW, canvasH);
       pFrame++;
 
-      // Shift points left to simulate live data stream
-      if (pFrame % 4 === 0) {
+      if (pFrame % 5 === 0) {
           pPoints.shift();
           const lastP = pPoints[pPoints.length - 1];
           pPoints.push({
-              x: lastP.x + (rect.width / 60),
-              y: (rect.height / 2) + Math.sin(pFrame * 0.05) * 20 + (Math.random() - 0.5) * 15
+              x: lastP.x + (canvasW / (pointCount - 1)),
+              y: (canvasH / 2) + Math.sin(pFrame * 0.05) * 20 + (Math.random() - 0.5) * 15
           });
-          // Recalculate X positions to keep them evenly spaced
-          pPoints.forEach((p, i) => p.x = (rect.width / 60) * i);
+          pPoints.forEach((p, i) => p.x = (canvasW / (pointCount - 1)) * i);
       }
 
-      const splitIdx = 42; // The "now" point. Data after this is "predicted"
-
-      // 1. Draw Confidence Interval (Shaded area for predicted data)
-      pCtx.beginPath();
-      pCtx.fillStyle = 'rgba(0, 229, 204, 0.08)';
-      pCtx.moveTo(pPoints[splitIdx].x, pPoints[splitIdx].y);
-      for(let i = splitIdx; i < pPoints.length; i++) {
-          pCtx.lineTo(pPoints[i].x, pPoints[i].y - (10 + (i-splitIdx)*1.5));
+      // 1. Confidence Interval (Predicted side)
+      if(pPoints[splitIdx]) {
+        pCtx.beginPath();
+        pCtx.fillStyle = 'rgba(0, 229, 204, 0.08)';
+        pCtx.moveTo(pPoints[splitIdx].x, pPoints[splitIdx].y);
+        for(let i = splitIdx; i < pPoints.length; i++) {
+            pCtx.lineTo(pPoints[i].x, pPoints[i].y - (10 + (i-splitIdx)*1.2));
+        }
+        for(let i = pPoints.length - 1; i >= splitIdx; i--) {
+            pCtx.lineTo(pPoints[i].x, pPoints[i].y + (10 + (i-splitIdx)*1.2));
+        }
+        pCtx.fill();
       }
-      for(let i = pPoints.length - 1; i >= splitIdx; i--) {
-          pCtx.lineTo(pPoints[i].x, pPoints[i].y + (10 + (i-splitIdx)*1.5));
-      }
-      pCtx.closePath();
-      pCtx.fill();
 
-      // 2. Draw Historical Data Line (Solid)
+      // 2. Historical Data Line (Solid)
       pCtx.beginPath();
       pCtx.lineWidth = 2;
       pCtx.setLineDash([]);
       pCtx.strokeStyle = '#00e5cc'; 
-      
       for(let i = 0; i <= splitIdx; i++) {
           if (i === 0) pCtx.moveTo(pPoints[i].x, pPoints[i].y);
           else pCtx.lineTo(pPoints[i].x, pPoints[i].y);
       }
       pCtx.stroke();
 
-      // 3. Draw Predicted Data Line (Dashed)
+      // 3. Predicted Data Line (Dashed)
       pCtx.beginPath();
       pCtx.lineWidth = 2;
-      pCtx.strokeStyle = 'rgba(0, 229, 204, 0.5)';
+      pCtx.strokeStyle = 'rgba(0, 229, 204, 0.4)';
       pCtx.setLineDash([4, 4]);
-      
       for(let i = splitIdx; i < pPoints.length; i++) {
           if (i === splitIdx) pCtx.moveTo(pPoints[i].x, pPoints[i].y);
           else pCtx.lineTo(pPoints[i].x, pPoints[i].y);
       }
       pCtx.stroke();
 
-      // 4. Draw Current "Now" Node
+      // 4. "Now" Indicator Node
       const current = pPoints[splitIdx];
-      pCtx.beginPath();
-      // Add a slight pulsing effect to the node radius
-      pCtx.arc(current.x, current.y, 4 + Math.sin(pFrame*0.1)*1.5, 0, Math.PI*2);
-      pCtx.fillStyle = '#00e5cc';
-      pCtx.fill();
-      // Glow ring around the node
-      pCtx.beginPath();
-      pCtx.arc(current.x, current.y, 8 + Math.sin(pFrame*0.1)*2, 0, Math.PI*2);
-      pCtx.strokeStyle = 'rgba(0, 229, 204, 0.4)';
-      pCtx.lineWidth = 1;
-      pCtx.setLineDash([]);
-      pCtx.stroke();
+      if(current) {
+        pCtx.beginPath();
+        pCtx.arc(current.x, current.y, 4 + Math.sin(pFrame*0.1)*1.5, 0, Math.PI*2);
+        pCtx.fillStyle = '#00e5cc';
+        pCtx.fill();
+        pCtx.beginPath();
+        pCtx.arc(current.x, current.y, 8 + Math.sin(pFrame*0.1)*2, 0, Math.PI*2);
+        pCtx.strokeStyle = 'rgba(0, 229, 204, 0.4)';
+        pCtx.setLineDash([]);
+        pCtx.stroke();
+      }
 
       requestAnimationFrame(drawPrediction);
   }
 
-  // Handle resizing so the canvas doesn't stretch weirdly
-  window.addEventListener('resize', initPredCanvas);
+  // Debounce the resize event to stop mobile scrollbars from constantly resetting the animation
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(initPredCanvas, 150);
+  });
   
-  // Kick it off
   initPredCanvas();
   drawPrediction();
   
