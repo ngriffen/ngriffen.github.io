@@ -632,7 +632,12 @@
       position: relative; z-index: 1; 
     }
 
-    footer p { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+ footer p { 
+  font-size: 11px; 
+  color: var(--muted); 
+  letter-spacing: 0.1em; 
+  margin: 0 auto; /* This forces it to the center of the flex container */
+}
 
     footer .teal { color: var(--teal); }
 
