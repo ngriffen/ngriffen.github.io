@@ -1142,7 +1142,7 @@
 })();
 </script>
 
-<footer>  <p>© 2026 <span class="teal">Nicholas Griffen</span></p></footer> 
+<footer>  <p>© 2026 <span class="teal">Nicholas Griffen</span> · Visits: <span id="visit-counter">0</span></p> </footer> 
 
 <script>
   // Cursor
@@ -1433,6 +1433,23 @@ const defs = document.createElementNS(ns, 'defs');
       behavior: "smooth"
     });
   });
+</script>
+
+<script>
+  // Personal visit counter (tracks this user's visits on their device)
+  function initVisitCounter() {
+    let visits = localStorage.getItem('portfolio-visits') || 0;
+    visits = parseInt(visits) + 1;
+    localStorage.setItem('portfolio-visits', visits);
+    
+    const counterEl = document.getElementById('visit-counter');
+    if (counterEl) {
+      counterEl.textContent = visits;
+    }
+  }
+  
+  // Initialize when page loads
+  window.addEventListener('DOMContentLoaded', initVisitCounter);
 </script>
 
 </body>
