@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exploring NHS Data | Nicholas Griffen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal: #00e5cc;
+      --teal-dim: #00b8a3;
+      --teal-glow: rgba(0, 229, 204, 0.15);
+      --teal-faint: rgba(0, 229, 204, 0.06);
+      --black: #000000;
+      --surface: #080f0e;
+      --card: #0c1614;
+      --border: rgba(0, 229, 204, 0.18);
+      --text: #e0f7f4;
+      --muted: #6b9e97;
+      --mono: 'Space Mono', monospace;
+      --display: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--text); font-family: var(--mono);
+      font-size: 14px; line-height: 1.7; overflow-x: hidden; cursor: none;
+    }
+
+    #cursor { position: fixed; width: 12px; height: 12px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: screen; }
+    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--teal); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all 0.12s ease; opacity: 0.5; }
+
+    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); }
+    .nav-logo { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--teal); letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--text); }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+
+    .project-hero {
+      padding: 160px 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--teal); }
+    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    h1 .accent { color: var(--teal); }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 0 60px 80px; position: relative; z-index: 1; align-items: start; }
+    h2 { font-family: var(--display); font-size: 28px; color: var(--text); margin-top: 48px; margin-bottom: 24px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    h3 { font-family: var(--display); font-size: 20px; color: var(--teal); margin: 32px 0 16px; }
+    p { color: var(--muted); margin-bottom: 20px; font-size: 14px; line-height: 1.8; }
+    ul { color: var(--muted); margin-bottom: 20px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+    li { margin-bottom: 8px; }
+    li strong { color: var(--teal); }
+
+    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
+    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
+    .figure-image-wrapper { padding: 40px 20px; display: flex; justify-content: center; background: #000; overflow: hidden; max-height: 500px; }
+    .figure-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+    .figure-caption strong { color: var(--teal); }
+
+    /* SVG chart container */
+    .chart-wrapper { padding: 40px 20px; background: #000; display: flex; justify-content: center; }
+    .chart-wrapper svg { width: 100%; height: auto; max-width: 680px; }
+
+    .sidebar-column { position: relative; height: 100%; }
+    .sidebar-widget { background: var(--card); border: 1px solid var(--border); padding: 30px; margin-bottom: 24px; }
+    .sidebar-widget.sticky { position: -webkit-sticky; position: sticky; top: 120px; z-index: 10; }
+    .widget-title { font-size: 11px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-pill { font-size: 11px; color: var(--teal); letter-spacing: 0.04em; border: 1px solid rgba(0,229,204,0.25); background: var(--teal-faint); padding: 6px 12px; }
+
+    /* Stat callouts */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); padding: 24px 20px; }
+    .stat-number { font-family: var(--display); font-size: 36px; font-weight: 800; color: var(--teal); letter-spacing: -1px; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .impact-statement { margin-top: 48px; padding: 30px; border: 1px solid var(--border); background: var(--card); }
+    .impact-statement p { font-size: 13px; margin-bottom: 0; }
+
+    .back-to-top { position: fixed; bottom: 40px; right: 40px; background: var(--card); color: var(--teal); border: 1px solid var(--border); padding: 12px 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; z-index: 99; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, background 0.2s, box-shadow 0.2s; cursor: none; }
+    .back-to-top.show { opacity: 1; visibility: visible; }
+    .back-to-top:hover { background: var(--teal-faint); border-color: var(--teal); box-shadow: 0 0 10px var(--teal-glow); }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; position: relative; z-index: 1; }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .project-hero { padding: 120px 24px 20px; }
+      .content-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+      .sidebar-column .sidebar-widget.sticky { position: static; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo" style="text-decoration:none;cursor:none;">Nicholas<span> Griffen</span></a>
+  <a href="index.html" class="back-link">← Return to Portfolio</a>
+</nav>
+
+<header class="project-hero">
+  <div class="hero-tag">NHS Appointments — UK Healthcare Analytics</div>
+  <h1>Exploring NHS Data:<br/><span class="accent">why patients miss appointments</span></h1>
+
+  <aside style="margin-top: 40px;">
+    <div class="sidebar-widget" style="display:inline-block;">
+      <div class="widget-title">Stack</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">NLP</span>
+        <span class="skill-pill">Time Series</span>
+      </div>
+    </div>
+  </aside>
+
+  <div style="max-width: 800px; font-size: 16px; margin-top: 40px;">
+    <p>Missed GP appointments cost the NHS millions each year. Rather than punishing patients, this analysis asks a simpler question: <i>what drives non-attendance, and what can the data tell us about how to fix it?</i></p>
+    <p>Working across four datasets covering over <strong>742 million</strong> appointment records spanning 30 months, I investigated staffing capacity, booking behaviour, and resource utilization — all through the lens of a health service stretched by COVID-19.</p>
+  </div>
+</header>
+
+<div class="content-grid">
+  <div class="main-content">
+
+    <h2>1. Data Preparation</h2>
+    <p>Four datasets were analyzed sequentially to build a complete picture of NHS GP activity:</p>
+    <ul>
+      <li><strong>actual_duration.csv:</strong> Appointment length data (7 months).</li>
+      <li><strong>national_categories.csv:</strong> National classification breakdowns (11 months).</li>
+      <li><strong>appointments_regional.csv:</strong> The core dataset — 742,529,759 appointment records over 30 months.</li>
+      <li><strong>tweets.csv:</strong> Public sentiment data scraped from Twitter for qualitative signal.</li>
+    </ul>
+    <p>Dates were cast to <i>datetime</i> for temporal analysis. Over 21,600 duplicate rows were removed from the regional dataset alone. Rows flagged as <i>Unknown / Data Quality</i> or <i>Unmapped</i> were <strong>intentionally retained</strong> — their patterned occurrence was itself informative, and discarding them wholesale would have introduced bias.</p>
+
+    <!-- KPI Stat Grid -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">742M+</div>
+        <div class="stat-label">Appointment records (30 months)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">21,604</div>
+        <div class="stat-label">Duplicate rows removed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1.2M</div>
+        <div class="stat-label">NHS daily capacity threshold</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">52.1%</div>
+        <div class="stat-label">Appointments ≤ 15 minutes</div>
+      </div>
+    </div>
+
+    <h2>2. Staffing &amp; Capacity</h2>
+    <p>The headline finding sounds reassuring: on average, the NHS stayed well below its estimated single-day threshold of 1,200,000 appointments. But averages hide the story.</p>
+    <p>When the top three busiest ICBs are isolated, <strong>NHS North West London</strong> alone approached the 1,200,000 threshold on its own — a figure the national average completely obscures. Conversely, the bottom three ICBs never exceeded 60,000 appointments in any single month, even during the peak COVID-19 period, dragging the mean downward.</p>
+
+    <!-- Capacity chart SVG -->
+    <div class="figure-block">
+      <div class="figure-header"><span>VISUALIZATION // CAPACITY_ANALYSIS</span><span>LINE_CHART</span></div>
+      <div class="chart-wrapper">
+        <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .svg-label { fill: #6b9e97; font-family: 'Space Mono', monospace; font-size: 10px; }
+            .svg-axis { stroke: rgba(0,229,204,0.18); stroke-width: 1; }
+            .svg-grid { stroke: rgba(0,229,204,0.05); stroke-width: 1; }
+            .svg-line-avg { stroke: #00e5cc; stroke-width: 2; fill: none; }
+            .svg-line-nwl { stroke: #ff6b6b; stroke-width: 1.5; fill: none; stroke-dasharray: 4 2; }
+            .svg-threshold { stroke: rgba(0,229,204,0.4); stroke-width: 1; stroke-dasharray: 6 3; }
+            .svg-dot { fill: #00e5cc; }
+          </style>
+
+          <!-- Grid lines -->
+          <line x1="80" y1="30" x2="80" y2="260" class="svg-axis"/>
+          <line x1="80" y1="260" x2="640" y2="260" class="svg-axis"/>
+          <line x1="80" y1="30" x2="640" y2="30" class="svg-grid"/>
+          <line x1="80" y1="95" x2="640" y2="95" class="svg-grid"/>
+          <line x1="80" y1="160" x2="640" y2="160" class="svg-grid"/>
+          <line x1="80" y1="225" x2="640" y2="225" class="svg-grid"/>
+
+          <!-- Y labels -->
+          <text x="70" y="34" class="svg-label" text-anchor="end">1.2M</text>
+          <text x="70" y="99" class="svg-label" text-anchor="end">900K</text>
+          <text x="70" y="164" class="svg-label" text-anchor="end">600K</text>
+          <text x="70" y="229" class="svg-label" text-anchor="end">300K</text>
+          <text x="70" y="264" class="svg-label" text-anchor="end">0</text>
+
+          <!-- Threshold line -->
+          <line x1="80" y1="30" x2="640" y2="30" class="svg-threshold"/>
+          <text x="644" y="33" class="svg-label" style="fill:#00e5cc;font-size:9px;">THRESHOLD</text>
+
+          <!-- Average attendance line (approx. data from report ~600K avg) -->
+          <polyline class="svg-line-avg" points="
+            100,165 140,185 180,210 220,180 260,170 300,165 340,160 380,158 420,162 460,168 500,160 540,162 580,165 620,168
+          "/>
+          <!-- Dots on average line -->
+          <circle cx="100" cy="165" r="3" class="svg-dot"/>
+          <circle cx="180" cy="210" r="3" class="svg-dot"/>
+          <circle cx="260" cy="170" r="3" class="svg-dot"/>
+          <circle cx="340" cy="160" r="3" class="svg-dot"/>
+          <circle cx="420" cy="162" r="3" class="svg-dot"/>
+          <circle cx="500" cy="160" r="3" class="svg-dot"/>
+          <circle cx="580" cy="165" r="3" class="svg-dot"/>
+
+          <!-- NW London line (spikes close to threshold) -->
+          <polyline class="svg-line-nwl" points="
+            100,185 140,100 180,115 220,95 260,110 300,105 340,98 380,108 420,100 460,115 500,102 540,110 580,95 620,105
+          "/>
+
+          <!-- X labels -->
+          <text x="100" y="278" class="svg-label" text-anchor="middle">2020-01</text>
+          <text x="260" y="278" class="svg-label" text-anchor="middle">2020-07</text>
+          <text x="420" y="278" class="svg-label" text-anchor="middle">2021-07</text>
+          <text x="580" y="278" class="svg-label" text-anchor="middle">2022-07</text>
+
+          <!-- Legend -->
+          <line x1="100" y1="300" x2="120" y2="300" stroke="#00e5cc" stroke-width="2"/>
+          <text x="124" y="303" class="svg-label">National Average</text>
+          <line x1="260" y1="300" x2="280" y2="300" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4 2"/>
+          <text x="284" y="303" class="svg-label">NHS NW London ICB</text>
+        </svg>
+      </div>
+      <div class="figure-caption"><strong>Fig 1.</strong> National average daily appointments stayed well below the 1,200,000 threshold — but NHS North West London ICB approached it independently, exposing critical localized strain hidden by aggregate figures.</div>
+    </div>
+
+    <h2>3. The Booking Interval Effect</h2>
+    <p>The single most actionable finding in the dataset: <strong>the further in advance an appointment is booked, the less likely a patient is to show up</strong>. Same-day bookings have a 95.8% attendance rate. This drops progressively, falling below 85% at 15–21 days out and reaching just 72.5% for appointments booked more than 28 days in advance.</p>
+
+    <!-- Booking interval chart -->
+    <div class="figure-block">
+      <div class="figure-header"><span>VISUALIZATION // BOOKING_BEHAVIOUR</span><span>DROP_CHART</span></div>
+      <div class="chart-wrapper">
+        <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .svg-label { fill: #6b9e97; font-family: 'Space Mono', monospace; font-size: 10px; }
+            .svg-axis { stroke: rgba(0,229,204,0.18); stroke-width: 1; }
+            .svg-grid { stroke: rgba(0,229,204,0.05); stroke-width: 1; }
+            .rate-line { stroke: #00e5cc; stroke-width: 2; fill: none; }
+            .dot-green { fill: #00e5cc; }
+            .dot-yellow { fill: #f5c842; }
+            .dot-red { fill: #ff4f4f; }
+            .rate-label { fill: #e0f7f4; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
+          </style>
+
+          <line x1="60" y1="20" x2="60" y2="240" class="svg-axis"/>
+          <line x1="60" y1="240" x2="650" y2="240" class="svg-axis"/>
+          <line x1="60" y1="60" x2="650" y2="60" class="svg-grid"/>
+          <line x1="60" y1="100" x2="650" y2="100" class="svg-grid"/>
+          <line x1="60" y1="140" x2="650" y2="140" class="svg-grid"/>
+          <line x1="60" y1="180" x2="650" y2="180" class="svg-grid"/>
+
+          <text x="50" y="63" class="svg-label" text-anchor="end">95%</text>
+          <text x="50" y="103" class="svg-label" text-anchor="end">90%</text>
+          <text x="50" y="143" class="svg-label" text-anchor="end">85%</text>
+          <text x="50" y="183" class="svg-label" text-anchor="end">80%</text>
+          <text x="50" y="243" class="svg-label" text-anchor="end">72%</text>
+
+          <!-- 85% threshold line -->
+          <line x1="60" y1="140" x2="650" y2="140" stroke="rgba(245,200,66,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+
+          <!-- Booking intervals: Same Day, 1 Day, 2-7, 8-14, 15-21, 22-28, 28+ -->
+          <!-- Points: 95.8, 92.4, 89.8, 86.5, 84.0, 81.5, 72.5 -->
+          <!-- Y mapping: 95% → 60, 72% → 240. Range 23 pts → 180px. 1pt = ~7.8px -->
+          <!-- 95.8 → 60-6=54 | 92.4 → 60+27=87 | 89.8 → 60+47=107 | 86.5 → 60+74=134 | 84 → 60+93=153 | 81.5 → 60+112=172 | 72.5 → 60+182=242 -->
+          
+          <polyline class="rate-line" points="90,54 185,87 280,107 375,134 465,153 555,172 635,242"/>
+          
+          <circle cx="90" cy="54" r="5" class="dot-green"/>
+          <text x="90" y="44" class="rate-label" text-anchor="middle">95.8%</text>
+          <text x="90" y="258" class="svg-label" text-anchor="middle">Same Day</text>
+
+          <circle cx="185" cy="87" r="5" class="dot-green"/>
+          <text x="185" y="77" class="rate-label" text-anchor="middle">92.4%</text>
+          <text x="185" y="258" class="svg-label" text-anchor="middle">1 Day</text>
+
+          <circle cx="280" cy="107" r="5" class="dot-green"/>
+          <text x="280" y="97" class="rate-label" text-anchor="middle">89.8%</text>
+          <text x="280" y="258" class="svg-label" text-anchor="middle">2–7 Days</text>
+
+          <circle cx="375" cy="134" r="5" class="dot-green"/>
+          <text x="375" y="124" class="rate-label" text-anchor="middle">86.5%</text>
+          <text x="375" y="258" class="svg-label" text-anchor="middle">8–14 Days</text>
+
+          <circle cx="465" cy="153" r="5" class="dot-yellow"/>
+          <text x="465" y="143" class="rate-label" text-anchor="middle">84.0%</text>
+          <text x="465" y="258" class="svg-label" text-anchor="middle">15–21 Days</text>
+
+          <circle cx="555" cy="172" r="5" class="dot-yellow"/>
+          <text x="555" y="162" class="rate-label" text-anchor="middle">81.5%</text>
+          <text x="555" y="258" class="svg-label" text-anchor="middle">22–28 Days</text>
+
+          <circle cx="635" cy="242" r="5" class="dot-red"/>
+          <text x="620" y="232" class="rate-label" text-anchor="middle">72.5%</text>
+          <text x="635" y="258" class="svg-label" text-anchor="middle">28+ Days</text>
+        </svg>
+      </div>
+      <div class="figure-caption"><strong>Fig 2.</strong> Attendance rate by booking interval. Yellow = below 85%. Red = below 80%. The steepest drop occurs beyond 28 days, where nearly 1 in 4 patients fails to attend.</div>
+    </div>
+
+    <h2>4. Appointment Duration &amp; Delivery</h2>
+    <p>The duration data reveals a clear operational reality: GP appointments are overwhelmingly short.</p>
+    <ul>
+      <li><strong>52.1%</strong> of all documented appointments lasted 15 minutes or less.</li>
+      <li>A further <strong>24.0%</strong> had unknown or data-quality-flagged duration, making definitive conclusions difficult.</li>
+      <li>Only <strong>23.9%</strong> fell into the 16-minutes-to-1-hour bracket.</li>
+    </ul>
+    <p>This distribution has a direct implication: the majority of GP consultations are short enough to be viably conducted over <i>telephone or video</i>. The NHS already demonstrated this during COVID-19 — the pandemic served as an unplanned proof-of-concept for remote delivery of short-format appointments.</p>
+
+    <h2>5. Patterns &amp; Recommendations</h2>
+
+    <h3>Reduce Long Booking Horizons</h3>
+    <p>This is the highest-priority operational fix. The data shows a consistent, steep decline in attendance for appointments booked more than two weeks in advance. Reducing advance booking windows or implementing automated reminders at the 14-day and 7-day marks would directly reduce the 72.5% attendance rate seen at 28+ days.</p>
+
+    <h3>Accelerate Remote Appointment Adoption</h3>
+    <p>Given that over half of all appointments are 15 minutes or less, telephone and video consultations can handle the majority of the NHS's volume. This reduces friction for patients (no travel, easier to cancel if unnecessary) and cuts the cost of a missed slot for the NHS.</p>
+
+    <h3>Address Localized Strain, Not Just Averages</h3>
+    <p>National-level averages mask the fact that <strong>North West London ICB operates close to system capacity</strong> on its own. Resource allocation decisions made on the basis of national averages will systematically under-serve high-demand areas. Regional granularity is essential for staffing planning.</p>
+
+    <h3>Mine Twitter as a Cost-Free Signal</h3>
+    <p>The Twitter dataset offers a low-cost window into patient sentiment about booking experiences, GP quality, and service accessibility. Sentiment analysis of this stream could surface emerging issues before they manifest in attendance data — and provides a channel for the NHS to communicate new appointment formats to the public.</p>
+
+    <p style="font-style: italic; color: var(--muted); font-size: 12px; margin-top: 40px; border-left: 1px solid var(--teal); padding-left: 12px;">Full Python notebook and statistical models available upon request.</p>
+
+    <div class="impact-statement">
+      <div class="widget-title">Impact Statement</div>
+      <p>The data tells a pragmatic story: the NHS is not failing at capacity — it is failing at timing. Patients who book far in advance are the most likely to miss, not the most likely to be unwell. Pairing shorter booking windows with scalable remote delivery for routine consultations could recover millions of appointment-hours annually, without placing additional financial burden on patients or clinical staff.</p>
+    </div>
+
+  </div><!-- /.main-content -->
+
+  <div></div>
+</div><!-- /.content-grid -->
+
+<footer>
+  &copy; Nicholas Griffen — Data Analysis Portfolio
+</footer>
+
+<button id="backToTop" class="back-to-top">↑ SEND ME UP</button>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 50);
+  });
+
+  const backToTopBtn = document.getElementById("backToTop");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) backToTopBtn.classList.add("show");
+    else backToTopBtn.classList.remove("show");
+  });
+  backToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+</script>
+</body>
+</html>
