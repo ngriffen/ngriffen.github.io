@@ -25,7 +25,17 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--black); color: var(--text); font-family: var(--mono);
-      font-size: 14px; line-height: 1.7; overflow-x: hidden; cursor: none;
+      font-size: 14px; line-height: 1.7; overflow-x: hidden;
+    }
+
+    /* Hide custom cursor on touch devices */
+    @media (pointer: fine) {
+      body { cursor: none; }
+      #cursor, #cursor-ring { display: block; }
+      .back-to-top { cursor: none; }
+    }
+    @media (pointer: coarse) {
+      #cursor, #cursor-ring { display: none; }
     }
 
     #cursor { position: fixed; width: 12px; height: 12px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: screen; }
@@ -33,11 +43,19 @@
 
     body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
 
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); }
-    .nav-logo { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--teal); letter-spacing: -0.5px; }
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    }
+    .nav-logo { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--teal); letter-spacing: -0.5px; text-decoration: none; }
     .nav-logo span { color: var(--text); }
-    .back-link { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
 
+    /* ── HERO ── */
     .project-hero {
       padding: 160px 60px 20px;
       max-width: 1200px;
@@ -46,65 +64,126 @@
       z-index: 1;
     }
     .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
-    .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--teal); }
-    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--teal); flex-shrink: 0; }
+    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 5vw, 64px); line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
     h1 .accent { color: var(--teal); }
 
-    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 0 60px 80px; position: relative; z-index: 1; align-items: start; }
-    h2 { font-family: var(--display); font-size: 28px; color: var(--text); margin-top: 48px; margin-bottom: 24px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    h3 { font-family: var(--display); font-size: 20px; color: var(--teal); margin: 32px 0 16px; }
+    /* ── CONTENT GRID ── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px 80px;
+      position: relative;
+      z-index: 1;
+      align-items: start;
+    }
+
+    h2 { font-family: var(--display); font-size: clamp(20px, 3vw, 28px); color: var(--text); margin-top: 48px; margin-bottom: 24px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    h3 { font-family: var(--display); font-size: 18px; color: var(--teal); margin: 32px 0 16px; }
     p { color: var(--muted); margin-bottom: 20px; font-size: 14px; line-height: 1.8; }
     ul { color: var(--muted); margin-bottom: 20px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
     li { margin-bottom: 8px; }
     li strong { color: var(--teal); }
 
-    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
-    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
-    .figure-image-wrapper { padding: 40px 20px; display: flex; justify-content: center; background: #000; overflow: hidden; max-height: 500px; }
-    .figure-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    /* ── FIGURES ── */
+    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; overflow: hidden; }
+    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
+    .chart-wrapper { padding: 20px 8px; background: #000; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .chart-wrapper svg { display: block; min-width: 480px; width: 100%; max-width: 680px; margin: 0 auto; }
     .figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
     .figure-caption strong { color: var(--teal); }
 
-/* SIDEBAR (Preserved from user request) */
+    /* ── SIDEBAR ── */
     .sidebar-column { position: relative; height: 100%; }
-    .sidebar-widget.sticky { 
-      background: var(--card); border: 1px solid var(--border); padding: 30px; 
-      position: -webkit-sticky; 
-      position: sticky; 
-      top: 120px; 
+    .sidebar-widget.sticky {
+      background: var(--card); border: 1px solid var(--border); padding: 30px;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 120px;
       z-index: 10;
     }
     .widget-title { font-size: 11px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
     .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .skill-pill { font-size: 11px; color: var(--teal); letter-spacing: 0.04em; border: 1px solid rgba(0,229,204,0.25); background: var(--teal-faint); padding: 6px 12px; }
 
-    footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; position: relative; z-index: 1;}
-
-
-    /* Stat callouts */
+    /* ── STATS ── */
     .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0; }
     .stat-card { background: var(--card); border: 1px solid var(--border); padding: 24px 20px; }
-    .stat-number { font-family: var(--display); font-size: 36px; font-weight: 800; color: var(--teal); letter-spacing: -1px; line-height: 1; margin-bottom: 6px; }
+    .stat-number { font-family: var(--display); font-size: clamp(24px, 5vw, 36px); font-weight: 800; color: var(--teal); letter-spacing: -1px; line-height: 1; margin-bottom: 6px; }
     .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
 
+    /* ── IMPACT ── */
     .impact-statement { margin-top: 48px; padding: 30px; border: 1px solid var(--border); background: var(--card); }
     .impact-statement p { font-size: 13px; margin-bottom: 0; }
 
-    .back-to-top { position: fixed; bottom: 40px; right: 40px; background: var(--card); color: var(--teal); border: 1px solid var(--border); padding: 12px 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; z-index: 99; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, background 0.2s, box-shadow 0.2s; cursor: none; }
+
+    /* ── BACK TO TOP ── */
+    .back-to-top {
+      position: fixed; bottom: 40px; right: 40px;
+      background: var(--card); color: var(--teal);
+      border: 1px solid var(--border);
+      padding: 12px 20px; font-family: var(--mono); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      z-index: 99; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, background 0.2s, box-shadow 0.2s;
+    }
     .back-to-top.show { opacity: 1; visibility: visible; }
     .back-to-top:hover { background: var(--teal-faint); border-color: var(--teal); box-shadow: 0 0 10px var(--teal-glow); }
 
     footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; position: relative; z-index: 1; }
 
-    @media (max-width: 900px) {
-      nav { padding: 16px 24px; }
-      .project-hero { padding: 120px 24px 20px; }
-      .content-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+    /* ── SVG LABEL CLASSES (inline in SVG, keep here for reference) ── */
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ═══════════════════════════════════════════ */
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      nav { padding: 16px 32px; }
+      .project-hero { padding: 120px 32px 20px; }
+      .content-grid { grid-template-columns: 1fr; padding: 0 32px 60px; gap: 40px; }
       .sidebar-column .sidebar-widget.sticky { position: static; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-      footer { padding: 24px; }
     }
-    
+
+    /* Mobile */
+    @media (max-width: 680px) {
+      nav { padding: 14px 20px; }
+      .nav-logo { font-size: 15px; }
+      .back-link { font-size: 10px; }
+
+      .project-hero { padding: 100px 20px 16px; }
+      .hero-tag { font-size: 10px; }
+
+      .content-grid { padding: 0 20px 48px; gap: 0; }
+
+      h2 { margin-top: 36px; }
+      h3 { font-size: 16px; }
+
+      /* Stack stats 1-col on very small screens */
+      .stat-grid { grid-template-columns: 1fr; }
+
+      .chart-wrapper { padding: 12px 4px; }
+      /* Hint that chart scrolls horizontally */
+      .impact-statement { padding: 20px; }
+
+      .back-to-top { bottom: 20px; right: 20px; padding: 10px 14px; font-size: 10px; }
+
+      footer { padding: 24px 20px; }
+
+      /* Hero inline widget becomes block */
+      .hero-stack-widget { display: block; }
+      .hero-stack-widget .sidebar-widget { display: block; }
+    }
+
+    /* Very small */
+    @media (max-width: 380px) {
+      .stat-grid { grid-template-columns: 1fr; }
+      .figure-header { font-size: 9px; }
+    }
   </style>
 </head>
 <body>
@@ -113,8 +192,8 @@
 <div id="cursor-ring"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo" style="text-decoration:none;cursor:none;">Nicholas<span> Griffen</span></a>
-  <a href="index.html" class="back-link">← Return to Portfolio</a>
+  <a href="index.html" class="nav-logo">Nicholas<span> Griffen</span></a>
+  <a href="index.html" class="back-link">← Portfolio</a>
 </nav>
 
 <header class="project-hero">
@@ -131,8 +210,9 @@
         <span class="skill-pill">Linear Regression</span>
       </div>
     </div>
+  </aside>
 
-  <div style="max-width: 800px; font-size: 16px; margin-top: 40px;">
+  <div style="max-width: 800px; font-size: 16px; margin-top: 32px;">
     <p>Missed GP appointments cost the NHS millions each year. Rather than punishing patients, this analysis asks a simpler question: <i>what drives non-attendance, and what can the data tell us about how to fix it?</i></p>
     <p>Working across four datasets covering over <strong>742 million</strong> appointment records spanning 30 months, I investigated staffing capacity, booking behaviour, and resource utilization — all through the lens of a health service stretched by COVID-19.</p>
   </div>
@@ -151,7 +231,6 @@
     </ul>
     <p>Dates were cast to <i>datetime</i> for temporal analysis. Over 21,600 duplicate rows were removed from the regional dataset alone. Rows flagged as <i>Unknown / Data Quality</i> or <i>Unmapped</i> were <strong>intentionally retained</strong> — their patterned occurrence was itself informative, and discarding them wholesale would have introduced bias.</p>
 
-    <!-- KPI Stat Grid -->
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-number">742M+</div>
@@ -175,7 +254,6 @@
     <p>The headline finding sounds reassuring: on average, the NHS stayed well below its estimated single-day threshold of 1,200,000 appointments. But averages hide the story.</p>
     <p>When the top three busiest ICBs are isolated, <strong>NHS North West London</strong> alone approached the 1,200,000 threshold on its own — a figure the national average completely obscures. Conversely, the bottom three ICBs never exceeded 60,000 appointments in any single month, even during the peak COVID-19 period, dragging the mean downward.</p>
 
-    <!-- Capacity chart SVG -->
     <div class="figure-block">
       <div class="figure-header"><span>VISUALIZATION // CAPACITY_ANALYSIS</span><span>LINE_CHART</span></div>
       <div class="chart-wrapper">
@@ -189,31 +267,20 @@
             .svg-threshold { stroke: rgba(0,229,204,0.4); stroke-width: 1; stroke-dasharray: 6 3; }
             .svg-dot { fill: #00e5cc; }
           </style>
-
-          <!-- Grid lines -->
           <line x1="80" y1="30" x2="80" y2="260" class="svg-axis"/>
           <line x1="80" y1="260" x2="640" y2="260" class="svg-axis"/>
           <line x1="80" y1="30" x2="640" y2="30" class="svg-grid"/>
           <line x1="80" y1="95" x2="640" y2="95" class="svg-grid"/>
           <line x1="80" y1="160" x2="640" y2="160" class="svg-grid"/>
           <line x1="80" y1="225" x2="640" y2="225" class="svg-grid"/>
-
-          <!-- Y labels -->
           <text x="70" y="34" class="svg-label" text-anchor="end">1.2M</text>
           <text x="70" y="99" class="svg-label" text-anchor="end">900K</text>
           <text x="70" y="164" class="svg-label" text-anchor="end">600K</text>
           <text x="70" y="229" class="svg-label" text-anchor="end">300K</text>
           <text x="70" y="264" class="svg-label" text-anchor="end">0</text>
-
-          <!-- Threshold line -->
           <line x1="80" y1="30" x2="640" y2="30" class="svg-threshold"/>
-          <text x="644" y="33" class="svg-label" style="fill:#00e5cc;font-size:9px;">THRESHOLD</text>
-
-          <!-- Average attendance line (approx. data from report ~600K avg) -->
-          <polyline class="svg-line-avg" points="
-            100,165 140,185 180,210 220,180 260,170 300,165 340,160 380,158 420,162 460,168 500,160 540,162 580,165 620,168
-          "/>
-          <!-- Dots on average line -->
+          <text x="620" y="22" class="svg-label" style="fill:#00e5cc;font-size:9px;" text-anchor="end">— 1.2M THRESHOLD</text>
+          <polyline class="svg-line-avg" points="100,165 140,185 180,210 220,180 260,170 300,165 340,160 380,158 420,162 460,168 500,160 540,162 580,165 620,168"/>
           <circle cx="100" cy="165" r="3" class="svg-dot"/>
           <circle cx="180" cy="210" r="3" class="svg-dot"/>
           <circle cx="260" cy="170" r="3" class="svg-dot"/>
@@ -221,19 +288,11 @@
           <circle cx="420" cy="162" r="3" class="svg-dot"/>
           <circle cx="500" cy="160" r="3" class="svg-dot"/>
           <circle cx="580" cy="165" r="3" class="svg-dot"/>
-
-          <!-- NW London line (spikes close to threshold) -->
-          <polyline class="svg-line-nwl" points="
-            100,185 140,100 180,115 220,95 260,110 300,105 340,98 380,108 420,100 460,115 500,102 540,110 580,95 620,105
-          "/>
-
-          <!-- X labels -->
+          <polyline class="svg-line-nwl" points="100,185 140,100 180,115 220,95 260,110 300,105 340,98 380,108 420,100 460,115 500,102 540,110 580,95 620,105"/>
           <text x="100" y="278" class="svg-label" text-anchor="middle">2020-01</text>
           <text x="260" y="278" class="svg-label" text-anchor="middle">2020-07</text>
           <text x="420" y="278" class="svg-label" text-anchor="middle">2021-07</text>
           <text x="580" y="278" class="svg-label" text-anchor="middle">2022-07</text>
-
-          <!-- Legend -->
           <line x1="100" y1="300" x2="120" y2="300" stroke="#00e5cc" stroke-width="2"/>
           <text x="124" y="303" class="svg-label">National Average</text>
           <line x1="260" y1="300" x2="280" y2="300" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4 2"/>
@@ -246,7 +305,6 @@
     <h2>3. The Booking Interval Effect</h2>
     <p>The single most actionable finding in the dataset: <strong>the further in advance an appointment is booked, the less likely a patient is to show up</strong>. Same-day bookings have a 95.8% attendance rate. This drops progressively, falling below 85% at 15–21 days out and reaching just 72.5% for appointments booked more than 28 days in advance.</p>
 
-    <!-- Booking interval chart -->
     <div class="figure-block">
       <div class="figure-header"><span>VISUALIZATION // BOOKING_BEHAVIOUR</span><span>DROP_CHART</span></div>
       <div class="chart-wrapper">
@@ -261,54 +319,37 @@
             .dot-red { fill: #ff4f4f; }
             .rate-label { fill: #e0f7f4; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; }
           </style>
-
           <line x1="60" y1="20" x2="60" y2="240" class="svg-axis"/>
           <line x1="60" y1="240" x2="650" y2="240" class="svg-axis"/>
           <line x1="60" y1="60" x2="650" y2="60" class="svg-grid"/>
           <line x1="60" y1="100" x2="650" y2="100" class="svg-grid"/>
           <line x1="60" y1="140" x2="650" y2="140" class="svg-grid"/>
           <line x1="60" y1="180" x2="650" y2="180" class="svg-grid"/>
-
           <text x="50" y="63" class="svg-label" text-anchor="end">95%</text>
           <text x="50" y="103" class="svg-label" text-anchor="end">90%</text>
           <text x="50" y="143" class="svg-label" text-anchor="end">85%</text>
           <text x="50" y="183" class="svg-label" text-anchor="end">80%</text>
           <text x="50" y="243" class="svg-label" text-anchor="end">72%</text>
-
-          <!-- 85% threshold line -->
           <line x1="60" y1="140" x2="650" y2="140" stroke="rgba(245,200,66,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
-
-          <!-- Booking intervals: Same Day, 1 Day, 2-7, 8-14, 15-21, 22-28, 28+ -->
-          <!-- Points: 95.8, 92.4, 89.8, 86.5, 84.0, 81.5, 72.5 -->
-          <!-- Y mapping: 95% → 60, 72% → 240. Range 23 pts → 180px. 1pt = ~7.8px -->
-          <!-- 95.8 → 60-6=54 | 92.4 → 60+27=87 | 89.8 → 60+47=107 | 86.5 → 60+74=134 | 84 → 60+93=153 | 81.5 → 60+112=172 | 72.5 → 60+182=242 -->
-          
           <polyline class="rate-line" points="90,54 185,87 280,107 375,134 465,153 555,172 635,242"/>
-          
           <circle cx="90" cy="54" r="5" class="dot-green"/>
           <text x="90" y="44" class="rate-label" text-anchor="middle">95.8%</text>
           <text x="90" y="258" class="svg-label" text-anchor="middle">Same Day</text>
-
           <circle cx="185" cy="87" r="5" class="dot-green"/>
           <text x="185" y="77" class="rate-label" text-anchor="middle">92.4%</text>
           <text x="185" y="258" class="svg-label" text-anchor="middle">1 Day</text>
-
           <circle cx="280" cy="107" r="5" class="dot-green"/>
           <text x="280" y="97" class="rate-label" text-anchor="middle">89.8%</text>
           <text x="280" y="258" class="svg-label" text-anchor="middle">2–7 Days</text>
-
           <circle cx="375" cy="134" r="5" class="dot-green"/>
           <text x="375" y="124" class="rate-label" text-anchor="middle">86.5%</text>
           <text x="375" y="258" class="svg-label" text-anchor="middle">8–14 Days</text>
-
           <circle cx="465" cy="153" r="5" class="dot-yellow"/>
           <text x="465" y="143" class="rate-label" text-anchor="middle">84.0%</text>
           <text x="465" y="258" class="svg-label" text-anchor="middle">15–21 Days</text>
-
           <circle cx="555" cy="172" r="5" class="dot-yellow"/>
           <text x="555" y="162" class="rate-label" text-anchor="middle">81.5%</text>
           <text x="555" y="258" class="svg-label" text-anchor="middle">22–28 Days</text>
-
           <circle cx="635" cy="242" r="5" class="dot-red"/>
           <text x="620" y="232" class="rate-label" text-anchor="middle">72.5%</text>
           <text x="635" y="258" class="svg-label" text-anchor="middle">28+ Days</text>
@@ -352,19 +393,26 @@
   <div></div>
 </div><!-- /.content-grid -->
 
-<button id="backToTop" class="back-to-top">↑ SEND ME UP</button>
+<button id="backToTop" class="back-to-top">↑ TOP</button>
+
+<footer>
+  <span>© Nicholas Griffen · ngriffen.github.io</span>
+</footer>
 
 <script>
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursor-ring');
-  document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-    setTimeout(() => {
-      cursorRing.style.left = e.clientX + 'px';
-      cursorRing.style.top = e.clientY + 'px';
-    }, 50);
-  });
+  // Custom cursor — only on pointer:fine devices
+  if (window.matchMedia('(pointer: fine)').matches) {
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      setTimeout(() => {
+        cursorRing.style.left = e.clientX + 'px';
+        cursorRing.style.top = e.clientY + 'px';
+      }, 50);
+    });
+  }
 
   const backToTopBtn = document.getElementById("backToTop");
   window.addEventListener("scroll", () => {
