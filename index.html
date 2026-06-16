@@ -474,45 +474,50 @@
     .skill-pill:hover { border-color: var(--teal); background: rgba(0,229,204,0.12); color: #fff; }
 
  /* PROJECTS GRID FIXES */
-    .projects-grid { 
-      display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
-      gap: 1px; 
-      background: var(--border); 
-      border: 1px solid var(--border);
-      align-items: stretch; /* Forces all items to fill the height */
-    }
+.projects-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 1px; 
+  background: var(--border); 
+  border: 1px solid var(--border);
+  align-items: stretch; 
+}
 
-    .project-card {
-      background: var(--surface); 
-      padding: 36px 32px; 
-      transition: all 0.3s;
-      position: relative; 
-      overflow: hidden; 
-      cursor: none;
-      /* NEW: Flex layout for vertical alignment */
-      display: flex;
-      flex-direction: column;
-      height: 100%; 
-    }
+.project-card {
+  background: var(--surface); 
+  padding: 36px 32px; 
+  transition: all 0.3s;
+  position: relative; 
+  overflow: hidden; 
+  cursor: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+}
 
-    .project-card:hover { background: var(--card); }
+.project-card:hover { background: var(--card); }
 
-    .project-num { font-size: 11px; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 20px; }
-    .project-title { font-family: var(--display); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.2; }
-    .project-desc { font-size: 12px; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-    .tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); border: 1px solid rgba(0,229,204,0.3); padding: 4px 10px; }
+.project-num { font-size: 11px; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 20px; }
+.project-title { font-family: var(--display); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.2; }
+.project-desc { font-size: 12px; color: var(--muted); line-height: 1.8; margin-bottom: 24px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); border: 1px solid rgba(0,229,204,0.3); padding: 4px 10px; }
 
-    .project-link { 
-      font-size: 11px; color: var(--teal); text-decoration: none; 
-      letter-spacing: 0.1em; text-transform: uppercase; display: inline-flex; 
-      align-items: center; gap: 8px; transition: gap 0.2s; 
-      /* NEW: Aligns link to bottom */
-      margin-top: auto; 
-    }
+/* NEW: Wrapper that forces both links to the bottom and handles spacing */
+.project-links-group {
+  margin-top: auto;
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+}
 
-    .project-link:hover { gap: 14px; }
+.project-link { 
+  font-size: 11px; color: var(--teal); text-decoration: none; 
+  letter-spacing: 0.1em; text-transform: uppercase; display: inline-flex; 
+  align-items: center; gap: 8px; transition: gap 0.2s; 
+}
+
+.project-link:hover { gap: 14px; }
 
     .fade-up { 
       opacity: 0; transform: translateY(30px); 
@@ -764,7 +769,7 @@
     <div class="about-text fade-up">
       <p>As a Data Analyst, I have a passion for demystifying the future by facing uncertainty head on. I maximize the availability of insights by letting data speak for itself.</p>
 
-      <p>Each dataset is unique and has the potential to produce groundbreaking insights, this is why I've developed a passion for turning columns and rows into value.</p>
+      <p>Each dataset is unique and has the potential to produce groundbreaking insights, this is why I've developed a passion for turning columns and rows into actionable insights.</p>
       
       <p>I enjoy using advanced statistical methods to dig up patterns, trends, and relationships hidden within plain sight.</p>
     </div>
@@ -808,18 +813,22 @@
     <h2>Projects That<br/><span class="accent">moved the needle</span></h2>
   </div>
   <div class="projects-grid fade-up">
+   
     <div class="project-card">
-      <div class="project-num">01</div>
-      <div class="project-title">Predicting The Outcome of Shark Attacks</div>
-      <div class="project-desc">Investigated historical data on shark attacks off the California coastline. Presented the descriptive statistics of shark attacks, then utilized Feature Analysis and Machine Learning to determine the predictive elements of shark attack severity.</div>
-      <div class="project-tags">
-        <span class="tag">Python</span>
-         <span class="tag">Machine Learning</span>
-        <span class="tag">Feature Analysis</span>
-      </div>
-      <a href="Sharks.html" class="project-link">Project Summary →</a>
-      <a href="https://github.com/ngriffen/Sharks_CA_Coastline_Exploration/blob/main/SharksML.pdf" class="project-link">Code →</a>
-    </div>
+  <div class="project-num">01</div>
+  <div class="project-title">Predicting The Outcome of Shark Attacks</div>
+  <div class="project-desc">Investigated historical data on shark attacks off the California coastline. Presented the descriptive statistics of shark attacks, then utilized Feature Analysis and Machine Learning to determine the predictive elements of shark attack severity.</div>
+  <div class="project-tags">
+    <span class="tag">Python</span>
+    <span class="tag">Machine Learning</span>
+    <span class="tag">Feature Analysis</span>
+  </div>
+  
+  <div class="project-links-group">
+    <a href="Sharks.html" class="project-link">Project Summary →</a>
+    <a href="https://github.com/ngriffen/Sharks_CA_Coastline_Exploration/blob/main/SharksML.pdf" class="project-link">Code →</a>
+  </div>
+</div>
 
    <!-- <div class="project-card">
       <div class="project-num">02</div>
@@ -835,31 +844,38 @@
     </div> --->
     
     
-       <div class="project-card">
-      <div class="project-num">02</div>
-      <div class="project-title">Exploring NHS Data: Why Patients Miss Appointments</div>
-      <div class="project-desc">Investigated over 742 million GP appointment records across the NHS to uncover why patients missed their appointments. Analyzed staffing capacity, booking behaviour, and appointment duration to deliver data-informed recommendations.</div>
-      <div class="project-tags">
-        <span class="tag">Python</span>
-        <span class="tag">NLP</span>
-        <span class="tag">Time Series</span>
-        <span class="tag">Linear Regression</span>
-      </div>
+ <div class="project-card">
+    <div class="project-num">02</div>
+    <div class="project-title">Exploring NHS Data: Why Patients Miss Appointments</div>
+    <div class="project-desc">Investigated over 742 million GP appointment records across the NHS to uncover why patients missed their appointments. Analyzed staffing capacity, booking behaviour, and appointment duration to deliver recommendations.</div>
+    <div class="project-tags">
+      <span class="tag">Python</span>
+      <span class="tag">NLP</span>
+      <span class="tag">Time Series</span>
+      <span class="tag">Linear Regression</span>
+    </div>
+    <div class="project-links-group">
       <a href="NHS.html" class="project-link">Project Summary →</a>
       <a href="https://github.com/ngriffen/NHS_Exploration/blob/main/NHS_Exploration_Notebook.pdf" class="project-link">Code →</a>
     </div>
+  </div>
 
-    <div class="project-card">
-      <div class="project-num">03</div>
-      <div class="project-title">Interpreting Real-Time Language Perception</div>
-      <div class="project-desc">Investigated real-time language perception with electrophysiological data. Applied Bayesian modeling to interpret the results providing insights about the predictive mechanisms of the brain and figurative language processing.</div>
-      <div class="project-tags">
-        <span class="tag">Python</span>
-        <span class="tag">R</span>
-        <span class="tag">Bayesian Statistics</span>
-      </div>
+  <div class="project-card">
+    <div class="project-num">03</div>
+    <div class="project-title">Interpreting Real-Time Language Perception</div>
+    <div class="project-desc">Investigated real-time language perception with electrophysiological data. Applied Bayesian modeling to interpret the results providing insights about the predictive mechanisms of the brain and uncovered how figurative language processing occurs.</div>
+    <div class="project-tags">
+      <span class="tag">Python</span>
+      <span class="tag">R</span>
+      <span class="tag">Bayesian Statistics</span>
+    </div>
+    <div class="project-links-group">
       <a href="EEG.html" class="project-link">Project Summary →</a>
       <a href="https://osf.io/cg8ja/overview" class="project-link">Code →</a>
+    </div>
+  </div>
+
+</div>
       
 
 </section>
