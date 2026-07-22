@@ -148,6 +148,89 @@
         padding: 10px 16px;
       }
     }
+    /* MODEL COMPARISON TABLE */
+.table-wrapper {
+  padding: 30px;
+  overflow-x: auto;
+}
+
+.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.model-table th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 700;
+  text-align: left;
+  padding: 14px 18px;
+  background: var(--teal-faint);
+  border-bottom: 1px solid var(--border);
+}
+
+.model-table th:nth-child(2),
+.model-table td:nth-child(2) {
+  text-align: center;
+}
+
+.model-table td {
+  padding: 16px 18px;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(0,229,204,0.08);
+}
+
+.model-table tr:last-child td {
+  border-bottom: none;
+}
+
+.model-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.model-table tbody tr:hover {
+  background: var(--teal-faint);
+}
+
+.model-table td:first-child {
+  color: var(--text);
+  font-family: var(--display);
+  font-weight: 600;
+}
+
+.model-table .accuracy {
+  color: var(--teal);
+  font-weight: 700;
+  font-family: var(--mono);
+}
+
+.model-table .weak {
+  color: var(--muted);
+  font-style: italic;
+}
+
+
+/* Mobile */
+@media (max-width: 900px) {
+  .table-wrapper {
+    padding: 20px;
+  }
+
+  .model-table {
+    font-size: 12px;
+  }
+
+  .model-table th,
+  .model-table td {
+    padding: 12px;
+  }
+}
   </style>
 </head>
 <body>
@@ -194,10 +277,321 @@
     </ul>
     
     
-    <h2>2. Predictive Modeling (Random Forest)</h2>
-    <p>I deployed a Random Forest classifier to determine what drives the severity of shark attacks. The model achieved a <strong>64%</strong> accuracy rate, a strong performance given the inherent noise and class imbalance in fatal incidents.</p>
+<h2>2. Machine Learning Pipeline</h2>
+
+<p>
+Building an accurate model required more than selecting an algorithm.
+This project followed a structured machine learning workflow, beginning
+with feature engineering and progressing through model comparison,
+validation, and interpretation. Rather than optimizing solely for
+training performance, each stage emphasized generalization to unseen
+data.
+</p>
 
 <div class="figure-block">
+
+    <div class="figure-header">
+        <span>WORKFLOW // MACHINE_LEARNING_PIPELINE</span>
+        <span>TYPE: VECTOR_SVG</span>
+    </div>
+
+    <div class="figure-image-wrapper" style="padding:50px 30px; background:#000;">
+
+        <svg viewBox="0 0 980 180"
+             xmlns="http://www.w3.org/2000/svg"
+             style="width:100%;max-width:950px;height:auto;">
+
+            <defs>
+                <filter id="glow">
+                    <feDropShadow dx="0"
+                                  dy="0"
+                                  stdDeviation="2"
+                                  flood-color="#00e5cc"
+                                  flood-opacity="0.35"/>
+                </filter>
+            </defs>
+
+            <!-- Connecting Lines -->
+
+            <line x1="150" y1="90" x2="220" y2="90"
+                  stroke="#00e5cc"
+                  stroke-opacity=".25"/>
+
+            <line x1="340" y1="90" x2="410" y2="90"
+                  stroke="#00e5cc"
+                  stroke-opacity=".25"/>
+
+            <line x1="530" y1="90" x2="600" y2="90"
+                  stroke="#00e5cc"
+                  stroke-opacity=".25"/>
+
+            <line x1="720" y1="90" x2="790" y2="90"
+                  stroke="#00e5cc"
+                  stroke-opacity=".25"/>
+
+            <!-- Boxes -->
+
+            <g>
+
+                <rect x="20" y="50"
+                      width="130"
+                      height="80"
+                      rx="4"
+                      fill="#0c1614"
+                      stroke="#00e5cc"
+                      stroke-opacity=".2"/>
+
+                <text x="85" y="76"
+                      fill="#00e5cc"
+                      font-size="10"
+                      text-anchor="middle"
+                      font-family="Space Mono">
+DATA
+                </text>
+
+                <text x="85" y="98"
+                      fill="#e0f7f4"
+                      font-size="13"
+                      font-family="Syne"
+                      font-weight="700"
+                      text-anchor="middle">
+Cleaning
+                </text>
+
+            </g>
+
+            <g>
+
+                <rect x="210" y="50"
+                      width="130"
+                      height="80"
+                      rx="4"
+                      fill="#0c1614"
+                      stroke="#00e5cc"
+                      stroke-opacity=".2"/>
+
+                <text x="275" y="76"
+                      fill="#00e5cc"
+                      font-size="10"
+                      text-anchor="middle"
+                      font-family="Space Mono">
+FEATURES
+                </text>
+
+                <text x="275" y="98"
+                      fill="#e0f7f4"
+                      font-size="13"
+                      font-family="Syne"
+                      font-weight="700"
+                      text-anchor="middle">
+Engineering
+                </text>
+
+            </g>
+
+            <g>
+
+                <rect x="400" y="50"
+                      width="130"
+                      height="80"
+                      rx="4"
+                      fill="#0c1614"
+                      stroke="#00e5cc"
+                      stroke-opacity=".2"/>
+
+                <text x="465" y="76"
+                      fill="#00e5cc"
+                      font-size="10"
+                      text-anchor="middle"
+                      font-family="Space Mono">
+VALIDATION
+                </text>
+
+                <text x="465" y="98"
+                      fill="#e0f7f4"
+                      font-size="13"
+                      font-family="Syne"
+                      font-weight="700"
+                      text-anchor="middle">
+Train/Test
+                </text>
+
+            </g>
+
+            <g>
+
+                <rect x="590" y="50"
+                      width="130"
+                      height="80"
+                      rx="4"
+                      fill="#0c1614"
+                      stroke="#00e5cc"
+                      stroke-opacity=".2"/>
+
+                <text x="655" y="76"
+                      fill="#00e5cc"
+                      font-size="10"
+                      text-anchor="middle"
+                      font-family="Space Mono">
+MODELS
+                </text>
+
+                <text x="655" y="98"
+                      fill="#e0f7f4"
+                      font-size="13"
+                      font-family="Syne"
+                      font-weight="700"
+                      text-anchor="middle">
+Comparison
+                </text>
+
+            </g>
+
+            <g filter="url(#glow)">
+
+                <rect x="780" y="50"
+                      width="170"
+                      height="80"
+                      rx="4"
+                      fill="#00e5cc"
+                      fill-opacity=".08"
+                      stroke="#00e5cc"/>
+
+                <text x="865" y="76"
+                      fill="#00e5cc"
+                      font-size="10"
+                      text-anchor="middle"
+                      font-family="Space Mono">
+FINAL MODEL
+                </text>
+
+                <text x="865" y="98"
+                      fill="#e0f7f4"
+                      font-size="14"
+                      font-family="Syne"
+                      font-weight="700"
+                      text-anchor="middle">
+Random Forest
+                </text>
+
+            </g>
+
+        </svg>
+
+    </div>
+
+    <div class="figure-caption">
+        <strong>Fig 2.</strong> End-to-end machine learning workflow used to evaluate multiple supervised learning models before selecting the final Random Forest classifier.
+    </div>
+
+</div>     
+    
+<h2>3. Model Selection</h2>
+
+<p>
+
+Several supervised learning approaches were evaluated, including
+Random Forest, XGBoost, feature reduction techniques, and oversampling
+methods to address class imbalance.
+
+Although the more sophisticated approaches improved training
+performance, they consistently reduced accuracy on unseen test data,
+indicating overfitting. Random Forest produced the strongest
+generalization and ultimately had the best fit.
+
+</p>
+    
+<div class="figure-block">
+
+    <div class="figure-header">
+        <span>MODEL_COMPARISON // VALIDATION_RESULTS</span>
+        <span>TYPE: PERFORMANCE_TABLE</span>
+    </div>
+
+    <div class="table-wrapper">
+
+        <table class="model-table">
+
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                    <th>Observation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Random Forest</td>
+                    <td class="accuracy">64%</td>
+                    <td>Best predictive ability</td>
+                </tr>
+
+                <tr>
+                    <td>XGBoost</td>
+                    <td class="accuracy">60%</td>
+                    <td>Overfit with small dataset</td>
+                </tr>
+
+                <tr>
+                    <td>Oversampling</td>
+                    <td class="weak">Below baseline</td>
+                    <td>Higher variance</td>
+                </tr>
+
+                <tr>
+                    <td>Feature Reduction</td>
+                    <td class="weak">Below baseline</td>
+                    <td>Removed useful information</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="figure-caption">
+        <strong>Validation summary:</strong> Random Forest achieved the strongest predictive performance, while dimensionality reduction and resampling strategies introduced additional variance.
+    </div>
+
+</div>
+      
+    
+    <p>
+
+The final Random Forest classifier achieved
+<strong>64% accuracy</strong> on the held-out testing data.
+
+Although this may appear modest compared to many benchmark datasets,
+it represents the strongest-performing model after systematically
+evaluating multiple algorithms. More complex methods, including
+XGBoost and oversampling techniques, consistently produced poorer
+generalization despite higher training performance.
+
+</p>
+      
+<h2>3. Why Random Forest Fits Best</h2>
+
+<p>
+
+Random Forest proved particularly well suited for this project because
+the dataset contains relatively few observations, several categorical
+variables, and inherently noisy historical records.
+
+Unlike boosting algorithms, which sequentially learn from previous
+errors and often overfit small datasets, Random Forest combines the
+predictions of hundreds of independently trained trees. This ensemble
+approach produced more stable predictions and ultimately delivered the
+highest performance on unseen incidents.
+
+</p>
+    
+    <h2>4. Feature Analysis</h2>
+    <p>By looking into the most prominent features present in this analysis it comes to light that shark attacks are not purely random and even follow certain trends.</p>
+    
+    <div class="figure-block">
       <div class="figure-header"><span>MODELING // FEATURE_IMPORTANCE</span><span>TYPE: VECTOR_SVG</span></div>
       <div class="figure-image-wrapper" style="padding: 60px 40px;">
         <svg class="ml-feature-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; max-width: 700px;">
@@ -255,24 +649,44 @@
       </div>
       <div class="figure-caption"><strong>Fig 2.</strong> Feature Importance ranking. <strong>Year</strong> and <strong>County</strong> emerged as the primary indicators of incident severity.</div>
     </div>
-
- <h2>3. Feature Analysis</h2>
-    <p>This analysis reveals that there are, in fact, things you can do to prevent yourself from being the next victim of a shark attack:</p>
     
     <ul>
       <li><strong>Year:</strong> The strongest single predictor is "Year," but this is likely a side-effect of there being an overall decrease in deaths from shark attacks. Medical advancements and more granular reporting of minor incidents are likely to have made "Year" as strong of a factor as it is.</li>
       <li><strong>Activity:</strong> There is a clear "severity gap" between Surfing and Freediving/Scuba. So, while surfers represent the highest volume of incidents, they more frequently sustain <i>Minor</i> injuries. In contrast, Freediving/Scuba incidents skew heavily toward <i>Major or Fatal</i> outcomes, likely due to the lack of a board as a physical buffer and the obvious constraint of being confined to the depths of the ocean (i.e., without immediate oxygen, the ability to speak, or seek aid).</li>
       <li><strong>Species:</strong> The data exhibits a near-total dominance of the <i>Great White</i> in high-severity incidents. Meaning that if you had a choice to meet one shark, and would prefer to live on to tell the tale, it ought not to be the <i>Great White</i>.</li>
-      <li><strong>Additional Factors:</strong> A striking finding is that near the major breeding grounds of seals and sea lions (Farallon Islands, Año Nuevo, Point Conception, Morro Bay area, San Miguel Island), <strong>71.6%</strong> of attacks resulted in "Major" or "Fatal" injuries. Outside of these areas, severe attacks drop to <strong>42.9%</strong>. This indicates that when Great Whites are in these distinct areas, they are in a heighted predatory state and thus <strong>hunting to kill</strong>.</li>
+      <li><strong>Geography & Biology:</strong> A striking finding is that near the major breeding grounds of seals and sea lions (Farallon Islands, Año Nuevo, Point Conception, Morro Bay area, San Miguel Island), <strong>71.6%</strong> of attacks resulted in "Major" or "Fatal" injuries. Outside of these areas, severe attacks drop to <strong>42.9%</strong>. This indicates that when Great Whites are in these distinct areas, they are in a heighted predatory state and thus <strong>hunting to kill</strong>.</li>
     </ul>
 
+  <h2>5. Dataset Limitations</h2>   
+
+    <ul>
+  <li><strong>Subjective Labels:</strong> Severity classifications such as <i>Minor</i>, <i>Major</i>, and <i>Fatal</i> are not based on standardized measurements. Historical records often rely on medical judgement, which introduces inconsistency when comparing incidents across decades.</li>
+
+  <li><strong>Historical Reporting:</strong> The dataset spans more than seventy years of recorded incidents. Reporting practices, available technology, and the level of detail collected have changed significantly over time, creating potential bias in older observations.</li>
+
+  <li><strong>Unobserved Variables:</strong> Important contextual factors such as water conditions, shark behavior, victim response, environmental conditions, and emergency response time are not consistently documented, limiting the model's ability to capture the full complexity of each event.</li>
+</ul>
+
+ 
+
  <p style="font-style: italic; color: var(--muted); font-size: 12px; margin-top: 40px; border-left: 1px solid var(--teal); padding-left: 12px;">
-    Full Python Notebook available <a href="https://github.com/ngriffen/Sharks_CA_Coastline_Exploration/blob/main/SharksML.pdf" target="_blank" rel="noopener noreferrer" style="color: var(--teal);">here</a>.
+    Full Python Notebook available <a href="https://github.com/ngriffen/Sharks_CA_Coastline_Exploration/blob/main/SharksML.ipynb" target="_blank" rel="noopener noreferrer" style="color: var(--teal);">here</a>.
 </p>
 
     <div class="impact-statement">
       <div class="widget-title">Impact Statement</div>
-      <p>The verdict is in: Shark attacks remain extremely rare, but to exercise appropriate caution it is best to avoid lingering in their hunting grounds, where they regularly feed. After all, when a shark is hunting for food it tends to bite hard and ask questions later. Fortunately, many incidents along the coast are merely exploratory bites where a shark is "investigating" before deciding to engage further with their potential prey. If a shark doesn't like what it finds it tends to swim away. This "bite-and-release" pattern generally results in minor injuries, which means that outside of their hunting grounds you're much more likely to swim away with your life.</p>
+      <p>One of the most important findings of this project was not simply the
+prediction accuracy, but the realization that model complexity cannot
+overcome limitations in the underlying data.
+
+After comparing multiple machine learning approaches, Random Forest
+proved to be the most reliable model because it generalized better to
+new observations than more sophisticated alternatives.
+
+This project demonstrates an essential principle of applied machine
+learning: selecting the model that best generalizes is often more
+valuable than pursuing increasingly complex algorithms that merely
+memorize the training data.</p>
 
 
 <button id="backToTop" class="back-to-top">↑ SEND ME UP</button>
