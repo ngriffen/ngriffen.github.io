@@ -926,7 +926,7 @@
       </div>
     </div>
   </div>
-</section>-->
+</section>
 
 <section id="journey">
   <div class="section-header fade-up">
@@ -940,7 +940,7 @@
       <div class="legend-item"><div class="legend-dot" style="background:#7b61ff"></div>Academic Foundation</div>
       <div class="legend-item"><div class="legend-dot" style="background:#00e5cc"></div>Data Specialization</div>
     </div>
-  </div>
+  </div>-->
 
 
 <section id="contact" style="background: #050f0d; overflow: hidden; position: relative;">
@@ -1098,8 +1098,6 @@
 })();
 </script>
 
-<footer>  <p>© 2026 <span class="teal">Nicholas Griffen</span> · Visits: <span id="visit-counter">0</span></p> </footer> 
-
 <script>
   // Cursor
   const cursor = document.getElementById('cursor');
@@ -1136,118 +1134,7 @@
     }); 
   }, 300);
 
-  // ─── JOURNEY SVG GRAPHIC ───────────────────────────────────────────
-  (function buildJourney() {
-    const svg = document.getElementById('journey-svg');
-    const ns = 'http://www.w3.org/2000/svg';
-    const W = 1000, H = 320;
-
-    const nodes = [
-      // Cluster 1: Academic Foundation (Left)
-      { x: 80,  y: 160, label: 'Linguistic\nResearch', icon: '🧠', color: '#7b61ff', r: 42 },
-      { x: 230, y: 60,  label: 'Experiments', icon: '🧪', color: '#9b7ffc', r: 36 },
-      { x: 230, y: 160, label: 'Inferential\nStats', icon: '🔬', color: '#9b7ffc', r: 36 },
-      { x: 230, y: 260, label: 'Python &\nR', icon: '💻', color: '#9b7ffc', r: 36 },
-      { x: 380, y: 160, label: 'PhD\nAwarded', icon: '🎓', color: '#7b61ff', r: 40 },
-
-      // Cluster 2: Data Specialization (Right)
-      { x: 550, y: 160, label: 'LSE Analytics \nTraining', icon: '🏛️', color: '#4ecdc4', r: 42 },
-      { x: 730, y: 60,  label: 'Visuals &\nBI', icon: '📊', color: '#00e5cc', r: 36 },
-      { x: 730, y: 160, label: 'Predictive\nAnalysis', icon: '🔮', color: '#00e5cc', r: 35 },
-      { x: 730, y: 260, label: 'Python &\nSQL', icon: '💻', color: '#00e5cc', r: 36 },
-      { x: 910, y: 160, label: 'Data\nCareer', icon: '📈', color: '#00ffcc', r: 44 }
-    ];
-
-    const edges = [ 
-      // Left Cluster
-      [0,1], [0,2], [0,3],
-      [1,4], [2,4], [3,4],
-      
-      // Bridge
-      [4,5],
-
-      // Right Cluster
-      [5,6], [5,7], [5,8],
-      [6,9], [7,9], [8,9]
-    ];
-
-const defs = document.createElementNS(ns, 'defs');
-    defs.innerHTML = `
-      <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="rgba(0,229,204,0.3)"/>
-      </marker>
-    `;
-    svg.appendChild(defs);
-
-    edges.forEach(([a, b]) => {
-      const na = nodes[a], nb = nodes[b];
-      const dx = nb.x - na.x, dy = nb.y - na.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const ux = dx/dist, uy = dy/dist;
-      const x1 = na.x + ux * na.r, y1 = na.y + uy * na.r;
-      const x2 = nb.x - ux * (nb.r + 8), y2 = nb.y - uy * (nb.r + 8);
-      
-      const line = document.createElementNS(ns, 'line');
-      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-      line.setAttribute('stroke', 'rgba(0,229,204,0.2)');
-      line.setAttribute('stroke-width', '1.5');
-      line.setAttribute('marker-end', 'url(#arrow)');
-      line.setAttribute('stroke-dasharray', '4 4');
-      svg.appendChild(line);
-    });
-
-    let offset = 0;
-    function animateJourney() {
-      offset = (offset + 0.2) % 8;
-      svg.querySelectorAll('line').forEach(l => l.setAttribute('stroke-dashoffset', -offset));
-      requestAnimationFrame(animateJourney);
-    }
-    animateJourney();
-
-    nodes.forEach((n, i) => {
-      const g = document.createElementNS(ns, 'g');
-      g.setAttribute('class', 'j-node');
-      g.style.opacity = '0';
-      g.style.transition = `opacity 0.6s ease ${i * 0.1}s`;
-
-      const circle = document.createElementNS(ns, 'circle');
-      circle.setAttribute('cx', n.x); circle.setAttribute('cy', n.y); circle.setAttribute('r', n.r);
-      circle.setAttribute('fill', '#0c1614');
-      circle.setAttribute('stroke', n.color);
-      circle.setAttribute('stroke-width', '1.5');
-      circle.setAttribute('filter', 'url(#glow)');
-      g.appendChild(circle);
-
-      const icon = document.createElementNS(ns, 'text');
-      icon.setAttribute('x', n.x); icon.setAttribute('y', n.y - 5);
-      icon.setAttribute('text-anchor', 'middle'); icon.setAttribute('font-size', '16');
-      icon.textContent = n.icon;
-      g.appendChild(icon);
-
-      const labelLines = n.label.split('\n');
-      labelLines.forEach((line, li) => {
-        const t = document.createElementNS(ns, 'text');
-        t.setAttribute('x', n.x); t.setAttribute('y', n.y + 12 + li * 12);
-        t.setAttribute('text-anchor', 'middle');
-        t.setAttribute('font-family', 'Space Mono');
-        t.setAttribute('font-size', '9');
-        t.setAttribute('fill', n.color);
-        t.textContent = line;
-        g.appendChild(t);
-      });
-
-      svg.appendChild(g);
-      
-      const obs = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) { g.style.opacity = '1'; }
-      }, { threshold: 0.1 });
-      obs.observe(svg);
-    });
-  })();
-
-// ─── LIVE PREDICTIVE CANVAS ───────────────────────────────────────────
+  // ─── LIVE PREDICTIVE CANVAS ───────────────────────────────────────────
   const predCanvas = document.getElementById('predictiveCanvas');
   const pCtx = predCanvas.getContext('2d');
   
@@ -1389,23 +1276,6 @@ const defs = document.createElementNS(ns, 'defs');
       behavior: "smooth"
     });
   });
-</script>
-
-<script>
-  // Personal visit counter (tracks this user's visits on their device)
-  function initVisitCounter() {
-    let visits = localStorage.getItem('portfolio-visits') || 0;
-    visits = parseInt(visits) + 1;
-    localStorage.setItem('portfolio-visits', visits);
-    
-    const counterEl = document.getElementById('visit-counter');
-    if (counterEl) {
-      counterEl.textContent = visits;
-    }
-  }
-  
-  // Initialize when page loads
-  window.addEventListener('DOMContentLoaded', initVisitCounter);
 </script>
 
 </body>
