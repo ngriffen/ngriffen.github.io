@@ -191,16 +191,13 @@
       overflow: hidden;
     }
 
-    .hero-content { 
-      max-width: 1200px; /* Increased width to fit two columns */
-      margin: 0 auto;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 60px;
-      position: relative; 
-    }
+ /* Ensure the parent allows items to shrink side-by-side */
+.hero-content {
+  display: flex;
+  flex-direction: row; 
+  align-items: center; /* Or flex-start depending on your design */
+  gap: 40px;
+}
 
     .hero-text-side {
       flex: 1.2;
@@ -1168,7 +1165,7 @@
       
       pCtx.scale(dpr, dpr);
       
-      pointCount = canvasW < 500 ? 40 : 70;
+      pointCount = canvasW < 200 ? 15 : (canvasW < 300 ? 20 : 35);
       splitIdx = Math.floor(pointCount * 0.7); 
       drawW = canvasW - (pad * 2);
 
