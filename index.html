@@ -180,103 +180,82 @@
       fill: currentColor; 
     }
 
-    /* HERO - MODIFIED FOR SIDE-BY-SIDE */
-    #hero {
-      position: relative; 
-      display: flex; 
-      align-items: center;
-      min-height: 90vh;
-      padding: 140px 60px 60px; 
-      z-index: 1; 
-      overflow: hidden;
-    }
-
- /* Ensure the parent allows items to shrink side-by-side */
-.hero-content {
-  display: flex;
-  flex-direction: row; 
-  align-items: center; /* Or flex-start depending on your design */
-  gap: 40px;
+/* Container safely bound to screen width */
+.hero-section {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevents edge bleeding */
+  padding: 40px 20px; /* Adjust spacing as needed */
 }
 
-    .hero-text-side {
-      flex: 1.2;
-    }
+/* The true Flex container */
+.hero-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Centers items vertically. Use flex-start to align top */
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px; /* Optional: stops it from getting too wide on massive screens */
+  margin: 0 auto; /* Centers the content block */
+  box-sizing: border-box;
+}
 
-    .hero-bg-orb {
-      position: absolute; 
-      width: 600px; 
-      height: 600px;
-      background: radial-gradient(circle, rgba(0,229,204,0.08) 0%, transparent 70%);
-      border-radius: 50%; 
-      top: 40%; 
-      left: 65%;
-      transform: translate(-50%, -50%); 
-      pointer-events: none;
-      animation: orbFloat 8s ease-in-out infinite;
-    }
+/* The Text Side */
+.hero-text {
+  flex: 1 1 50%; /* Takes up roughly 50% of the space */
+  min-width: 0; /* CRITICAL: Allows text box to shrink gracefully */
+}
 
-    @keyframes orbFloat {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -55%) scale(1.05); }
-    }
+/* The Canvas Side */
+.predictive-graphic {
+  position: relative;
+  flex: 1 1 50%; /* Takes up the other 50% */
+  min-width: 0; /* CRITICAL: Prevents canvas from refusing to shrink */
+  max-width: 100%; 
+  height: 300px;
+  box-sizing: border-box;
+}
 
-    .predictive-graphic {
-      position: relative;
-      flex: 0.8;
-      width: 100%; 
-      min-width: 380px;
-      height: 350px;
-      background: rgba(0, 229, 204, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-   
-    @media (max-width: 1024px) {
-      .hero-content { flex-direction: column; align-items: flex-start; gap: 40px; }
-      .predictive-graphic { 
-        width: 100%; 
-        height: 280px; /* Reduced height for tablet/mobile */
-        min-width: unset; 
-      }
-    }
+.predictive-graphic canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 
-    .predictive-graphic canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
+.prediction-label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 9px;
+  color: var(--teal, #00e5cc);
+  letter-spacing: 0.15em;
+  opacity: 0.8;
+  font-family: var(--mono, monospace);
+  z-index: 2; /* Keeps text above the lines */
+}
 
-    .prediction-label {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      font-size: 9px;
-      color: var(--teal);
-      letter-spacing: 0.15em;
-      opacity: 0.8;
-      font-family: var(--mono);
-    }
+/* ─── MOBILE STACKING LOGIC ───────────────────────────────────────── */
+/* Adjusts down to 768px (tablets) before stacking */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column; /* Stacks text on top of canvas */
+    align-items: flex-start;
+    gap: 30px;
+  }
+  
+  .hero-text {
+    width: 100%;
+    flex: none; /* Disables flex proportion on mobile */
+  }
 
-    .hero-tag {
-      font-size: 11px; 
-      letter-spacing: 0.2em; 
-      text-transform: uppercase;
-      color: var(--teal); 
-      margin-bottom: 24px; 
-      display: flex; 
-      align-items: center; 
-      gap: 12px;
-    }
-
-    .hero-tag::before { 
-      content: ''; 
-      display: block; 
-      width: 32px; 
-      height: 1px; 
-      background: var(--teal); 
-    }
+  .predictive-graphic {
+    width: 100%;
+    flex: none;
+    height: 280px; /* The JS resize function will perfectly adapt to this new height! */
+  }
+}
 
     h1 {
       font-family: var(--display); 
