@@ -723,7 +723,7 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="#journey">My Journey</a></li>
+    <!---<li><a href="#journey">My Journey</a></li>
     <!---<li><a href="https://orcid.org/0009-0007-7212-3228/">ORCID</a></li>!---->
     <li><a href="mailto:njogriffen@gmail.com">Contact</a></li>
   </ul>
@@ -1133,7 +1133,7 @@
     }); 
   }, 300);
 
-  // ─── LIVE PREDICTIVE CANVAS ───────────────────────────────────────────
+ // ─── LIVE PREDICTIVE CANVAS ───────────────────────────────────────────
   const predCanvas = document.getElementById('predictiveCanvas');
   const pCtx = predCanvas.getContext('2d');
   
@@ -1147,37 +1147,60 @@
   // Internal padding so lines don't bleed off the physical canvas edges
   const pad = 15; 
   let drawW = 0;
+  let isInitialized = false;
 
-  function initPredCanvas() {
+  function resizeCanvas() {
+      const parent = predCanvas.parentElement;
+      if (!parent) return;
+
       const dpr = window.devicePixelRatio || 1;
-      
-      // 1. Temporarily remove canvas from layout to get the parent's TRUE collapsed width
-      predCanvas.style.display = 'none';
-      const rect = predCanvas.parentElement.getBoundingClientRect();
-      predCanvas.style.display = 'block';
+      const rect = parent.getBoundingClientRect();
 
-      // 2. Strictly cap the width to the viewport (minus a small safety margin)
-      canvasW = Math.min(rect.width, document.documentElement.clientWidth - 20);
+      // Track old height to adjust Y coordinates if the CSS breakpoint triggers
+      const prevCanvasH = canvasH; 
+
+      canvasW = rect.width;
       canvasH = rect.height || 300; 
 
+      // Update internal drawing buffer resolution
       predCanvas.width = canvasW * dpr;
       predCanvas.height = canvasH * dpr;
-      
-      predCanvas.style.width = `${canvasW}px`;
-      predCanvas.style.height = `${canvasH}px`;
-      predCanvas.style.maxWidth = '100%'; // Force CSS containment
       
       pCtx.scale(dpr, dpr);
       
       pointCount = canvasW < 500 ? 40 : 70;
       splitIdx = Math.floor(pointCount * 0.7); 
-      
       drawW = canvasW - (pad * 2);
 
-      pPoints = Array.from({length: pointCount}, (_, i) => ({
-          x: pad + (drawW / (pointCount - 1)) * i,
-          y: (canvasH / 2) + (Math.random() - 0.5) * 40
-      }));
+      if (!isInitialized) {
+          pPoints = Array.from({length: pointCount}, (_, i) => ({
+              x: pad + (drawW / (pointCount - 1)) * i,
+              y: (canvasH / 2) + (Math.random() - 0.5) * 40
+          }));
+          isInitialized = true;
+      } else {
+          if (pPoints.length > pointCount) {
+              pPoints = pPoints.slice(pPoints.length - pointCount);
+          } else if (pPoints.length < pointCount) {
+              const diff = pointCount - pPoints.length;
+              const newPoints = Array.from({length: diff}, () => ({
+                  x: 0,
+                  y: (canvasH / 2) + (Math.random() - 0.5) * 40
+              }));
+              pPoints = [...newPoints, ...pPoints];
+          }
+          
+          // Calculate how much the center shifted due to the CSS media query
+          const yOffset = prevCanvasH ? (canvasH - prevCanvasH) / 2 : 0;
+
+          // Smoothly update X and Y coordinates
+          pPoints.forEach((p, i) => {
+              p.x = pad + (drawW / (pointCount - 1)) * i;
+              if (yOffset !== 0) {
+                  p.y += yOffset;
+              }
+          });
+      }
   }
 
   function drawPrediction() {
@@ -1248,16 +1271,22 @@
       requestAnimationFrame(drawPrediction);
   }
 
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(initPredCanvas, 150);
+  // Use ResizeObserver for highly accurate, lag-free canvas resizing
+  const observer = new ResizeObserver(() => {
+      requestAnimationFrame(resizeCanvas);
   });
   
-  initPredCanvas();
+  if (predCanvas.parentElement) {
+      observer.observe(predCanvas.parentElement);
+  } else {
+      window.addEventListener('resize', resizeCanvas);
+  }
+  
+  // Initialize and start animation immediately
+  resizeCanvas();
   drawPrediction();
   
-  // Back to Top Button Logic
+  // ─── BACK TO TOP BUTTON LOGIC ─────────────────────────────────────────
   const backToTopBtn = document.getElementById("backToTop");
   
   window.addEventListener("scroll", () => {
