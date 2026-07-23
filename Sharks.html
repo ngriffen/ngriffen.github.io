@@ -481,7 +481,7 @@ Random Forest
     </div>
 
     <div class="figure-caption">
-        <strong>Fig 2.</strong> End-to-end machine learning workflow used to evaluate multiple supervised learning models before selecting the final Random Forest classifier.
+        <strong>Fig 1.</strong> End-to-end machine learning workflow used to evaluate multiple supervised learning models before selecting the final Random Forest classifier.
     </div>
 
 </div>     
@@ -508,10 +508,17 @@ generalization and ultimately had the best fit.
         <span>TYPE: PERFORMANCE_TABLE</span>
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-wrapper" style="padding: 40px;">
+        <style>
+            .model-table { width: 100%; border-collapse: collapse; max-width: 700px; margin: 0 auto; text-align: left; }
+            .model-table th { color: var(--text); font-family: var(--display); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 16px 12px; border-bottom: 1px solid var(--border); }
+            .model-table td { color: var(--muted); font-family: var(--mono); font-size: 12px; padding: 16px 12px; border-bottom: 1px solid rgba(0, 229, 204, 0.05); transition: color 0.2s, background-color 0.2s; }
+            .model-table tr:hover td { color: var(--text); background-color: rgba(0, 229, 204, 0.02); }
+            .model-table .accuracy { color: var(--teal); font-weight: 700; text-shadow: 0 0 2px rgba(0, 229, 204, 0.3); }
+            .model-table .weak { opacity: 0.5; font-style: italic; }
+        </style>
 
         <table class="model-table">
-
             <thead>
                 <tr>
                     <th>Model</th>
@@ -519,46 +526,35 @@ generalization and ultimately had the best fit.
                     <th>Observation</th>
                 </tr>
             </thead>
-
             <tbody>
-
                 <tr>
                     <td>Random Forest</td>
                     <td class="accuracy">64%</td>
                     <td>Best predictive ability</td>
                 </tr>
-
                 <tr>
-                    <td>XGBoost</td>
+                    <td>XGBoost (XGB)</td>
                     <td class="accuracy">60%</td>
                     <td>Overfit with small dataset</td>
                 </tr>
-
                 <tr>
-                    <td>Oversampling</td>
+                    <td>XGB Oversampling</td>
                     <td class="weak">Below baseline</td>
                     <td>Higher variance</td>
                 </tr>
-
                 <tr>
-                    <td>Feature Reduction</td>
+                    <td>XGB Feature Reduction</td>
                     <td class="weak">Below baseline</td>
                     <td>Removed useful information</td>
                 </tr>
-
             </tbody>
-
         </table>
 
     </div>
-
-    <div class="figure-caption">
-        <strong>Validation summary:</strong> Random Forest achieved the strongest predictive performance, while dimensionality reduction and resampling strategies introduced additional variance.
-    </div>
-
+  
+  <div class="figure-caption"><strong>Fig 2.</strong> Random Forest achieved the strongest predictive performance, while dimensionality reduction and resampling strategies introduced additional variance.</div>
 </div>
       
-    
     <p>
 
 The final Random Forest classifier achieved
@@ -647,7 +643,7 @@ highest performance on unseen incidents.
           </g>
         </svg>
       </div>
-      <div class="figure-caption"><strong>Fig 2.</strong> Feature Importance ranking. <strong>Year</strong> and <strong>County</strong> emerged as the primary indicators of incident severity.</div>
+      <div class="figure-caption"><strong>Fig 3.</strong> Feature Importance ranking. <strong>Year</strong> and <strong>County</strong> emerged as the primary indicators of incident severity.</div>
     </div>
     
     <ul>
