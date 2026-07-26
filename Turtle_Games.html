@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turtle Games: Customer & Product Data Analysis | Nicholas Griffen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal: #00e5cc;
+      --teal-dim: #00b8a3;
+      --teal-glow: rgba(0, 229, 204, 0.15);
+      --teal-faint: rgba(0, 229, 204, 0.06);
+      --black: #000000;
+      --surface: #080f0e;
+      --card: #0c1614;
+      --border: rgba(0, 229, 204, 0.18);
+      --text: #e0f7f4;
+      --muted: #6b9e97;
+      --mono: 'Space Mono', monospace;
+      --display: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--text); font-family: var(--mono); 
+      font-size: 14px; line-height: 1.7; overflow-x: hidden; cursor: none;
+    }
+
+    /* Custom Cursor */
+    #cursor { position: fixed; width: 12px; height: 12px; background: var(--teal); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: screen; }
+    #cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--teal); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: all 0.12s ease; opacity: 0.5; }
+    
+    /* Grid Background */
+    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); }
+    .nav-logo { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--teal); letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--text); }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+
+    /* HERO */
+    .project-hero { 
+      padding: 160px 60px 20px; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      position: relative; 
+      z-index: 1;
+    }
+    .hero-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--teal); }
+    h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+    h1 .accent { color: var(--teal); }
+    
+    /* LAYOUT */
+    .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 0 60px 80px; position: relative; z-index: 1; align-items: start; }
+    h2 { font-family: var(--display); font-size: 28px; color: var(--text); margin-top: 48px; margin-bottom: 24px; letter-spacing: -0.5px; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
+    h3 { font-family: var(--display); font-size: 20px; color: var(--teal); margin: 32px 0 16px; }
+    p { color: var(--muted); margin-bottom: 20px; font-size: 14px; line-height: 1.8; }
+    ul { color: var(--muted); margin-bottom: 20px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+    li { margin-bottom: 8px; }
+    li strong { color: var(--teal); }
+
+    /* RESPONSIVE FIGURES */
+    .figure-block { background: var(--surface); border: 1px solid var(--border); margin: 40px 0; position: relative; width: 100%; }
+    .figure-header { background: var(--teal-faint); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 10px; color: var(--teal); letter-spacing: 0.15em; text-transform: uppercase; display: flex; justify-content: space-between; }
+    .figure-image-wrapper { padding: 40px 20px; display: flex; justify-content: center; background: #000; overflow: hidden; max-height: 500px; }
+    .figure-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .figure-caption { padding: 16px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--card); }
+    .figure-caption strong { color: var(--teal); }
+
+    /* SIDEBAR */
+    .sidebar-column { position: relative; height: 100%; }
+    .sidebar-widget.sticky { 
+      background: var(--card); border: 1px solid var(--border); padding: 30px; 
+      position: -webkit-sticky; 
+      position: sticky; 
+      top: 120px; 
+      z-index: 10;
+    }
+    .widget-title { font-size: 11px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 20px; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-pill { font-size: 11px; color: var(--teal); letter-spacing: 0.04em; border: 1px solid rgba(0,229,204,0.25); background: var(--teal-faint); padding: 6px 12px; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 60px; text-align: center; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; position: relative; z-index: 1;}
+
+    /* IMPACT STATEMENT */
+    .impact-statement {
+      margin-top: 80px; 
+      padding: 30px; 
+      border: 1px solid var(--border); 
+      background: var(--card);
+    }
+    .impact-statement p {
+      font-size: 13px; 
+      margin-bottom: 0;
+    }
+    
+    /* Logo Link Fix */
+    a.nav-logo {
+      text-decoration: none;
+      cursor: none; 
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: var(--card);
+      color: var(--teal);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, background 0.2s, box-shadow 0.2s;
+      cursor: none; 
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: var(--teal-faint);
+      border-color: var(--teal);
+      box-shadow: 0 0 10px var(--teal-glow);
+    }
+    
+    @media (max-width: 900px) {
+      .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 16px;
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">Nicholas<span> Griffen</span></div>
+  <a href="index.html" class="back-link">← Return to Portfolio</a>
+</nav>
+
+<header class="project-hero">
+  <div class="hero-tag">Prescribing Customer Merchandising and Ad Strategy</div>
+  <h1>Using Customer Insights as<br/><span class="accent">business intelligence</span></h1>
+
+ <aside style="margin-top: 40px;">
+    <div class="sidebar-widget" style="display:inline-block;">
+      <div class="widget-title">Stack</div>
+      <div class="skill-pills">
+<span class="skill-pill">Python</span>
+      <span class="skill-pill">R</span>
+      <span class="skill-pill">NLP</span>
+      <span class="skill-pill">Linear Regression</span>
+      <span class="skill-pill">K-Means Clustering</span>
+      </div>
+    </div>
+  </aside>
+
+  
+  <div style="max-width: 800px; font-size: 16px; margin-top: 40px;">
+     <p>My goal was to better understand the customer base and product performance at Turtle Games. For this analysis, I explicitly targeted the demographic distributions, spending habits, and product review sentiments made available in the customer data.</p>
+    
+    <p>This report focuses strictly on uncovering actionable insights by evaluating distinct customer groups, uncovering the performance of different products, and transforming qualitative customer feedback into a concise marketing strategy.</p>
+  </div>
+</header>
+
+<div class="content-grid">
+  <div class="main-content">
+    
+    <h2>1. Business Context & Demographics</h2>
+    <p>The analysis began by evaluating customer demographics to develop an understanding of who's interacting with the Turtle Games. The initial data mapping reveals a highly specific user base.</p>
+    <ul>
+      <li><strong>Gender:</strong> The customer base leans heavily female, recording noticeably higher engagement and transaction volumes than male counterparts.</li>
+      
+      
+    
+    <div class="figure-block">
+        <div class="figure-header">
+            <span>DATA_VIZ // GENDER_DISTRIBUTION</span>
+            <span>TYPE: HISTOGRAM</span>
+        </div>
+        <div class="figure-image-wrapper">
+            <img src="Gender_Dist.jpg" alt="Gender Distribution Chart">
+        </div>
+        <div class="figure-caption">
+            <strong>Fig 1.</strong> Histogram of customer gender distribution.
+        </div>
+    </div>
+
+    <li><strong>Age:</strong> Age distribution models indicate that the primary customer demographic consists of adults, establishing a distinct peak forming around the late 30s to early 40s.</li>
+
+    <div class="figure-block">
+        <div class="figure-header">
+            <span>DATA_VIZ // AGE_DISTRIBUTION</span>
+            <span>TYPE: HISTOGRAM</span>
+        </div>
+        <div class="figure-image-wrapper">
+            <img src="Age_Dist.jpg" alt="Age Distribution Chart">
+        </div>
+        <div class="figure-caption">
+            <strong>Fig 2.</strong> Histogram of customer age distribution.
+        </div>
+    </div>
+<li><strong>Education:</strong> The audience is demonstrably well-educated; the largest segment of customers holds a "Graduate" level education, closely followed by "PhD" and "Postgraduate" degree holders.</li>
+    </ul>
+    <div class="figure-block">
+        <div class="figure-header">
+            <span>DATA_VIZ // EDUCATION_DISTRIBUTION</span>
+            <span>TYPE: HISTOGRAM</span>
+        </div>
+        <div class="figure-image-wrapper">
+            <img src="Edu_Dist.jpg" alt="Education Distribution Chart">
+        </div>
+        <div class="figure-caption">
+            <strong>Fig 3.</strong> Histogram of customer education distribution.
+        </div>
+    </div>
+
+    <h2>2. Customer Segmentation</h2>
+    <p>Moving forward, I conducted an analysis of the customer behavior as defined by spending habits, renumeration, and loyalty points.</p>
+    <ul>
+      <li><strong>Scatterplot Metrics:</strong> When plotting customer Remuneration (£) against their internal Spending Score (1-100), the dataset begins to fragment into distinct groups.</li>
+
+        <div class="figure-block">
+        <div class="figure-header">
+            <span>DATA_VIZ // LOYALTY_PATTERNS</span>
+            <span>TYPE: SCATTERPLOT</span>
+        </div>
+        <div class="figure-image-wrapper">
+            <img src="Scatterplot.jpg" alt="Customer Scatterplot">
+        </div>
+        <div class="figure-caption">
+            <strong>Fig 4.</strong> Scatterplot of Renumeration by Spending Score and colored by allocated Loyalty Points.
+        </div>
+    </div>    
+      <li><strong>K-Means Clustering:</strong> By applying K-Means Clustering, an unsupervised Machine Learning algorithm, five distinct groups of customers were uncovered according to their spending habits, income, and allocation of loyalty points. (Cluster 0 to Cluster 4).</li>
+
+        <div class="figure-block">
+        <div class="figure-header">
+            <span>DATA_VIZ // CUSTOMER_GROUPING</span>
+            <span>TYPE: K-MEANS CLUSTERING</span>
+        </div>
+        <div class="figure-image-wrapper">
+            <img src="Scatterplot.jpg" alt="Customer Scatterplot">
+        </div>
+        <div class="figure-caption">
+            <strong>Fig 5.</strong> K-Means Clustering designating five distinct customer profiles.
+        </div>
+    </div>    
+      
+      <li><strong>Targeted Personas:</strong> These five clusters allow Turtle Games to clearly identify different customer groups that interact with their products, providing a foundation for targeted marketing.</li>
+    </ul>
+
+  <h2>3. Statistical Modeling</h2>
+    <p>Multiple Linear Regression (MLR) was selected as the analytical approach because it effectively models the simultaneous relationship between a continuous target variable and multiple independent predictors. This method provides a clear framework for understanding how underlying factors like spending scores and renumeration  drive the allocation of loyalty points.</p>
+
+ <div class="figure-block">
+
+    <div class="figure-header">
+        <span>MODEL_COMPARISON // REGRESSION_RESULTS</span>
+        <span>TYPE: PERFORMANCE_TABLE</span>
+    </div>
+
+    <div class="table-wrapper" style="padding: 40px;">
+        <style>
+            .model-table { width: 100%; border-collapse: collapse; max-width: 700px; margin: 0 auto; text-align: left; }
+            .model-table th { color: var(--text); font-family: var(--display); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 16px 12px; border-bottom: 1px solid var(--border); }
+            .model-table td { color: var(--muted); font-family: var(--mono); font-size: 12px; padding: 16px 12px; border-bottom: 1px solid rgba(0, 229, 204, 0.05); transition: color 0.2s, background-color 0.2s; }
+            .model-table tr:hover td { color: var(--text); background-color: rgba(0, 229, 204, 0.02); }
+            .model-table .accuracy { color: var(--teal); font-weight: 700; text-shadow: 0 0 2px rgba(0, 229, 204, 0.3); }
+            .model-table .weak { opacity: 0.5; font-style: italic; }
+        </style>
+
+        <table class="model-table">
+            <thead>
+                <tr>
+                    <th>Model (Formula)</th>
+                    <th>R-Squared</th>
+                    <th>P-Value</th>
+                    <th>Observation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Baseline Model <br> <span class="weak">Loyal_Pts ~ Spend_Score + Pay</span></td>
+                    <td class="accuracy">82.69%</td>
+                    <td class="p-value">< 2.2e-16</td>
+                    <td>Model prior to data manipulation</td>
+                </tr>
+                <tr>
+                    <td>Transformed Model<br> <span class="weak">SqrtLoyal_Pts ~ SqrtSpend_Score + SqrtPay + Age</span></td>
+                    <td class="accuracy">92.89%</td>
+                  <td class="p-value">< 2.2e-16</td>
+                    <td>Highest predictive ability</td>
+                </tr>
+              <tr>
+                    <td>Transformed Model (Simplified)<br> <span class="weak">SqrtLoyal_Pts ~ SqrtSpend_Score + SqrtPay</span></td>
+                    <td class="accuracy">91.69%</td>
+                <td class="p-value">< 2.2e-16</td>
+                    <td>Removed Age as predictor, enabling easier explainability</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+  
+  <div class="figure-caption"><strong>Fig 6.</strong> Multiple Linear Regression performance comparison.</div>
+</div>  
+
+<p>Although both models utilize square-root transformations to increase linearity the final was ultimately selected to prioritize ease of explainability. By excluding additional variables like age, this allows stakeholders to better understand the straightforward relationship that spending scores and renumeration effectively explain the allocation of loyalty points.</p>    
+   
+
+    <h2>4. Product Performance & Sentiment</h2>
+    <p>By conducting an NLP sentiment analysis of customer reviews and summaries, several aspects are made clear about the data quality and availed impressions.</p>
+    <ul>
+      <li><strong>Juxtaposing Reviews & Summaries:</strong> The summaries are intended to summarize the reviews, however, they don't accomplish this in a consistent manner. The summaries are used idiosyncratically by each individual data logger. This is problematic when trying to conduct a sentiment analysis. An intriguing finding is that the summaries were also used to record one-to-five-star ratings.</li>
+      <li><strong>Extracting Ratings From Summaries:</strong> When looking at the one-to-five-star ratings, product satisfaction appears to be exceptionally high. The vast majority of ratings are 4 star (n=57) and 5 star (n=378) ratings.</li>
+        <li><strong>Product Averages:</strong> Approximately 98.4% of reviewed products are rated at 3.0 or higher, while only 1.6% of rated products hold rating below this threshold.</li>
+
+       <div class="figure-block">
+    <div class="figure-header">
+        <span>DATA_VIZ // REVIEW_RATING_DISTRIBUTION</span>
+        <span>TYPE: VECTOR_SVG</span>
+    </div>
+    <div class="figure-image-wrapper">
+        <svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:950px;height:auto;">
+            
+            <!-- LEFT GRAPH: Count of Reviews by Rating -->
+            
+            <!-- Axis -->
+            <line x1="60" y1="250" x2="480" y2="250" stroke="#00e5cc" stroke-opacity=".3" stroke-width="2"/>
+            <line x1="60" y1="40" x2="60" y2="250" stroke="#00e5cc" stroke-opacity=".3" stroke-width="2"/>
+            
+            <!-- Axis Labels & Title -->
+            <text x="270" y="290" fill="#6b9e97" font-size="12" text-anchor="middle" font-family="Space Mono">Rating (1-5)</text>
+            <text x="35" y="145" fill="#6b9e97" font-size="12" text-anchor="middle" transform="rotate(-90 35,145)" font-family="Space Mono"># of Reviews</text>
+            <text x="270" y="25" fill="#e0f7f4" font-size="14" font-weight="bold" text-anchor="middle" font-family="Space Mono">Count of Reviews by Rating</text>
+
+            <!-- Bars & Data Labels -->
+            <!-- Rating 1 -->
+            <rect x="90" y="246" width="45" height="4" fill="#6b9e97" opacity="0.5"/>
+            <text x="112.5" y="240" fill="#e0f7f4" font-size="11" text-anchor="middle" font-family="Space Mono">8</text>
+            <text x="112.5" y="270" fill="#6b9e97" font-size="12" text-anchor="middle" font-family="Space Mono">1</text>
+
+            <!-- Rating 2 -->
+            <rect x="160" y="244" width="45" height="6" fill="#6b9e97" opacity="0.5"/>
+            <text x="182.5" y="238" fill="#e0f7f4" font-size="11" text-anchor="middle" font-family="Space Mono">12</text>
+            <text x="182.5" y="270" fill="#6b9e97" font-size="12" text-anchor="middle" font-family="Space Mono">2</text>
+
+            <!-- Rating 3 -->
+            <rect x="230" y="243" width="45" height="7" fill="#00b8a3" opacity="0.7"/>
+            <text x="252.5" y="237" fill="#e0f7f4" font-size="11" text-anchor="middle" font-family="Space Mono">14</text>
+            <text x="252.5" y="270" fill="#6b9e97" font-size="12" text-anchor="middle" font-family="Space Mono">3</text>
+
+            <!-- Rating 4 -->
+            <rect x="300" y="221.5" width="45" height="28.5" fill="#00e5cc" opacity="0.9"/>
+            <text x="322.5" y="215" fill="#e0f7f4" font-size="11" text-anchor="middle" font-family="Space Mono">57</text>
+            <text x="322.5" y="270" fill="#6b9e97" font-size="12" text-anchor="middle" font-family="Space Mono">4</text>
+
+            <!-- Rating 5 -->
+            <rect x="370" y="61" width="45" height="189" fill="#00e5cc" opacity="0.9"/>
+            <text x="392.5" y="55" fill="#e0f7f4" font-size="11" text-anchor="middle" font-family="Space Mono">378</text>
+            <text x="392.5" y="270" fill="#6b9e97" font-size="12" text-anchor="middle" font-family="Space Mono">5</text>
+
+            <!-- RIGHT GRAPH: Products by Average Rating -->
+            
+            <!-- Pie Chart Title -->
+            <text x="730" y="25" fill="#e0f7f4" font-size="14" font-weight="bold" text-anchor="middle" font-family="Space Mono">Products by Average Rating</text>
+
+            <!-- Pie Chart Rings (Stroke technique for SVG pie charts) -->
+            <!-- Base Ring (98.4%) -->
+            <circle cx="600" cy="150" r="45" fill="none" stroke="#00e5cc" stroke-width="90" opacity="0.9"/>
+            <!-- Overlay Slice (1.6% - Calculated as 1.6% of circumference 282.74 = 4.52) -->
+            <circle cx="600" cy="150" r="45" fill="none" stroke="#6b9e97" stroke-width="90" stroke-dasharray="4.52 282.74" stroke-dashoffset="70.68" opacity="0.9"/>
+
+            <!-- Legend -->
+            <rect x="710" y="100" width="16" height="16" fill="#00e5cc" opacity="0.9"/>
+            <text x="736" y="113" fill="#e0f7f4" font-size="12" font-family="Space Mono">3+ Rating: 98.4% (183 products)</text>
+            
+            <rect x="710" y="130" width="16" height="16" fill="#6b9e97" opacity="0.9"/>
+            <text x="736" y="143" fill="#e0f7f4" font-size="12" font-family="Space Mono">2.9 Rating or Less: 1.6% (3 products)</text>
+
+        </svg>
+    </div>
+    <div class="figure-caption">
+        <strong>Fig 7.</strong> Breakdown of user ratings.
+    </div>
+</div>
+      
+      <li><strong>Making Ratings A Requirement:</strong>  Only a minority of products are assigned a rating. In the future, it would be highly beneficial to clean-up how summaries are used and to obtain one-to-five star ratings for each recorded transaction. This would provide a rigorous way to assess customer satisfaction empirically.</li>    
+      <li><strong>Core Impressions:</strong> A sentiment analysis provides insight as to whether negative, neutral, or positive sentiments can be attributed to a given review or summary. When strictly for 1- and 2-star ratings extracted frequent keywords: customers found these specific games "boring," "difficult to use," "flimsy," "expensive for what you get," and hindered by "complicated" instructions. The products associated with these ratings require an urgent level of attention by Turtle Games.</li>
+      <li><strong>The Truth About Sentiment Analysis:</strong> Often complex paragraphs are not well-understood from simple sentiment analysis which have a tendency to lock on to singlular pieces of vocabulary like "good" or "bad," however this does little justice to reviews which express more nuanced impressions.</li>
+    </ul>
+
+
+
+    <h2>5. Business Recommendations</h2>
+    <ul>
+      <li><strong>Targeting New Customers:</strong> With the allocation of loyalty loints being better understood, this presents a definitive opportunity. It is time to encourage new and lower spending customers to engage with Turtle Games.
+</li>
+
+    <li><strong>The “Carrot on a Stick” Method:</strong> My recommendation is to use loyalty points as a proverbial “carrot on a stick” by introducing sign-up rewards, an increased allocation of points during sales events, and points for engaging with Turtle Games on social media platforms to expand the customer-base. 
+</li>
+
+      <li><strong>Data Quality & Data Annotation:</strong> In the future, it would be highly beneficial to clean-up how the transactions are recorded. For instance, ensuring that one-to-five star ratings are associated with each purchase would do wonders. In addition, recording the specific item type and amount spent, plus the time and store location for each transaction would permit for a better assessment of trends over time. Each of these aspects would allow for more prescriptive recommendations that can be tied to specified customer groups.
+</li>
+       </ul>
+
+     <p style="font-style: italic; color: var(--muted); font-size: 12px; margin-top: 40px; border-left: 1px solid var(--teal); padding-left: 12px;">
+    Full Python & R Notebooks available <a href="https://github.com/ngriffen/Turtle_Games" target="_blank" rel="noopener noreferrer" style="color: var(--teal);">here</a>.
+</p>
+
+     <div class="impact-statement">
+      <div class="widget-title">Impact Statement</div>
+      <p>This analysis addressed Turtle Games' objectives by modeling loyalty point allocation, identifying five distinct customer segments, and analysing customer reviews to understand customer sentiment. Based on these findings, the recommendation is to shift the loyalty points program from rewarding a small subset of high-value customers to attracting new and lower-spending customers through targeted marketing campaigns. </p>
+
+  </div>
+
+</div>
+
+<button id="backToTop" class="back-to-top">↑ SEND ME UP</button>
+
+<script>
+  // Custom Cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 50);
+  });
+
+  // Back to Top Button Logic
+  const backToTopBtn = document.getElementById("backToTop");
+  
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add("show");
+    } else {
+      backToTopBtn.classList.remove("show");
+    }
+  });
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+</script>
+</body>
+</html>
