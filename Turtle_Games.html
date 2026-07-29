@@ -335,7 +335,7 @@
       <li><strong>Extracting Ratings From Summaries:</strong> When looking at the one-to-five-star ratings, product satisfaction appears to be exceptionally high. The vast majority of ratings are 4 star (n=57) and 5 star (n=378) ratings.</li>
         <li><strong>Product Averages:</strong> Approximately 98.4% of reviewed products are rated at 3.0 or higher, while only 1.6% of rated products hold rating below this threshold.</li>
 
-       <div class="figure-block">
+<div class="figure-block">
     <div class="figure-header">
         <span>DATA_VIZ // REVIEW_RATING_DISTRIBUTION</span>
         <span>TYPE: VECTOR_SVG</span>
@@ -387,16 +387,16 @@
 
             <!-- Pie Chart Rings (Stroke technique for SVG pie charts) -->
             <!-- Base Ring (98.4%) -->
-            <circle cx="600" cy="150" r="45" fill="none" stroke="#00e5cc" stroke-width="90" opacity="0.9"/>
+            <circle cx="730" cy="140" r="45" fill="none" stroke="#00e5cc" stroke-width="90" opacity="0.9"/>
             <!-- Overlay Slice (1.6% - Calculated as 1.6% of circumference 282.74 = 4.52) -->
-            <circle cx="600" cy="150" r="45" fill="none" stroke="#6b9e97" stroke-width="90" stroke-dasharray="4.52 282.74" stroke-dashoffset="70.68" opacity="0.9"/>
+            <circle cx="730" cy="140" r="45" fill="none" stroke="#6b9e97" stroke-width="90" stroke-dasharray="4.52 282.74" stroke-dashoffset="70.68" opacity="0.9"/>
 
-            <!-- Legend -->
-            <rect x="710" y="100" width="16" height="16" fill="#00e5cc" opacity="0.9"/>
-            <text x="736" y="113" fill="#e0f7f4" font-size="12" font-family="Space Mono">3+ Rating: 98.4% (183 products)</text>
+            <!-- Legend (Moved Below the Pie Chart) -->
+            <rect x="605" y="250" width="16" height="16" fill="#00e5cc" opacity="0.9"/>
+            <text x="631" y="263" fill="#e0f7f4" font-size="12" font-family="Space Mono">3+ Rating: 98.4% (183 products)</text>
             
-            <rect x="710" y="130" width="16" height="16" fill="#6b9e97" opacity="0.9"/>
-            <text x="736" y="143" fill="#e0f7f4" font-size="12" font-family="Space Mono">2.9 Rating or Less: 1.6% (3 products)</text>
+            <rect x="605" y="275" width="16" height="16" fill="#6b9e97" opacity="0.9"/>
+            <text x="631" y="288" fill="#e0f7f4" font-size="12" font-family="Space Mono">2.9 Rating or Less: 1.6% (3 products)</text>
 
         </svg>
     </div>
