@@ -802,11 +802,9 @@
     <div class="about-text fade-up">
       <p>At the intersection of <strong>Data and AI</strong> is your story waiting to be told.
 </p>
-            <p>In today's world the difference maker isn't just having data, it's knowing what to do with it. There's always a hidden story to tell. This is precisely why your team needs an experienced practitioner who can handle the full data pipeline from A-Z.</p>
+            <p>In today's world the difference maker isn't just having data, it's knowing what to do with it. There's always a hidden story to tell. This is precisely why your team needs an experienced practioner who can handle the full data pipeline from A-Z.</p>
       
       <p>So, if you want to turn your columns and rows into value, to dig up patterns, and to chart hidden  relationships within your data then you've come to the right place.</p>
-      
-      <p>Keep scrolling if you'd like to view my portfoilio.</p>
       
     </div>
     <div class="skills-wrap fade-up">
@@ -1383,9 +1381,13 @@ const PARKS = [ // [lon, lat, rx, ry]
 ];
 
 const SEINE = [
-  [2.222,48.848],[2.250,48.853],[2.275,48.857],[2.292,48.862],[2.310,48.861],
-  [2.330,48.861],[2.3364,48.857],[2.345,48.854],[2.348,48.857],[2.360,48.854],
-  [2.378,48.850],[2.400,48.846],[2.420,48.842]
+  [2.222,48.848],[2.230,48.849],[2.239,48.850],[2.248,48.851],[2.257,48.853],
+  [2.266,48.855],[2.275,48.857],[2.284,48.859],[2.292,48.861],[2.301,48.861],
+  [2.310,48.861],[2.319,48.861],[2.328,48.861],[2.334,48.860],[2.337,48.858],
+  [2.340,48.856],[2.345,48.854],[2.349,48.854],[2.353,48.855],[2.357,48.856],
+  [2.361,48.855],[2.365,48.853],[2.371,48.850],[2.375,48.842],[2.378,48.8395],
+  [2.383,48.8375],[2.389,48.8365],[2.395,48.8355],[2.401,48.8345],[2.407,48.8325],
+  [2.414,48.8305],[2.421,48.8285],[2.426,48.8275]
 ];
 const SEINE_PX = SEINE.map(p => [projX(p[0]), projY(p[1])]);
 
@@ -1454,23 +1456,23 @@ function ArrondissementCanvas(){
     }
     ctx.putImageData(img, 0, 0);
   }, []);
-  return <canvas ref={ref} style={{position:"absolute", inset:0, width:"100%", height:"100%"}} />;
+  return <canvas ref={ref} style={{position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", objectPosition:"center"}} />;
 }
 
 const LANDMARKS = [
   { name:"Arc de Triomphe",  lat:48.8738, lon:2.2950, icon:"arch" },
-  { name:"Moulin Rouge",     lat:48.8841, lon:2.3322, icon:"windmill" },
-  { name:"Sacré-Cœur",       lat:48.8867, lon:2.3431, icon:"basilica" },
+  { name:"Moulin Rouge",     lat:48.8844, lon:2.3323, icon:"windmill" },
+  { name:"Sacré-Cœur",       lat:48.8870, lon:2.3431, icon:"basilica" },
   { name:"Opéra Garnier",    lat:48.8719, lon:2.3316, icon:"opera" },
   { name:"Place de la Concorde", lat:48.8656, lon:2.3212, icon:"obelisk" },
-  { name:"Louvre Museum",    lat:48.8621, lon:2.3364, icon:"pyramid" },
-  { name:"Notre-Dame",       lat:48.8521, lon:2.3499, icon:"cathedral" },
-  { name:"Orsay Museum",     lat:48.8570, lon:2.3266, icon:"museum" },
-  { name:"Père Lachaise Cemetery", lat:48.8599, lon:2.3936, icon:"cemetery" },
-  { name:"Eiffel Tower",     lat:48.8584, lon:2.2945, icon:"tower" },
+  { name:"Louvre Museum",    lat:48.8606, lon:2.3376, icon:"pyramid" },
+  { name:"Notre-Dame",       lat:48.853056, lon:2.349722, icon:"cathedral" },
+  { name:"Orsay Museum",     lat:48.8600, lon:2.3266, icon:"museum" },
+  { name:"Père Lachaise Cemetery", lat:48.8614, lon:2.3933, icon:"cemetery" },
+  { name:"Eiffel Tower",     lat:48.85837, lon:2.294481, icon:"tower" },
   { name:"Montparnasse Tower", lat:48.8421, lon:2.3219, icon:"skyscraper" },
-  { name:"Panthéon",         lat:48.8462, lon:2.3464, icon:"pantheon" },
-  { name:"Catacombs",        lat:48.8338, lon:2.3327, icon:"cross" },
+  { name:"Panthéon",         lat:48.8462, lon:2.3461, icon:"pantheon" },
+  { name:"Catacombs",        lat:48.8338, lon:2.3324, icon:"cross" },
 ];
 
 // ---- real independent Paris businesses (illustrative demo metrics) -----
@@ -1893,7 +1895,7 @@ ReactDOM.createRoot(document.getElementById("geomapping-root")).render(<App/>);
     
     <div class="project-card">
   <div class="project-num">06</div>
-  <div class="project-title">Do LLMs Read Minds? Demystifying Theory of Mind in Chatbots</div>
+  <div class="project-title">Do LLMs Read Minds? Demystifying Theory of Mind in chatbots</div>
   <div class="project-desc">Conducted a study testing the claim that LLMs can accurately attribute mental states (<i>she thinks that he thinks</i>), by using the Unexpected Transfer task to assess five up-to-date LLMs. The results indicated that while each model cumulatively performed above chance, they regularly defaulted to using less costly heuristics in place of dynamically tracking mental states.</div>
   <div class="project-tags">
     <span class="tag">R</span>
