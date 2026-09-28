@@ -1,12 +1,15 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-  <html lang="en">
-    <link rel="icon" href="images/matrix.jpg" type="image/gif">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nicholas Griffen | Data & AI </title>
+  <title>Nicholas Griffen | Data & AI Consultant</title>
+  <link rel="icon" href="images/matrix.jpg" type="image/jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
- <style>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script>
+<style>
     :root {
       --teal: #00e5cc;
       --teal-dim: #00b8a3;
@@ -20,6 +23,21 @@
       --muted: #6b9e97;
       --mono: 'Space Mono', monospace;
       --display: 'Syne', sans-serif;
+
+      /* ---- aliases so embedded components (e.g. the dashboard) ----
+         ---- can reference this same palette without their own <style> ---- */
+      --bg: var(--black);
+      --panel: var(--card);
+      --panel-2: var(--surface);
+      --line: var(--border);
+      --ink: var(--text);
+      --ink-dim: var(--muted);
+      --ink-faint: #3f5f5a;
+      --accent: var(--teal);
+      --accent-dim: var(--teal-dim);
+      --accent-faint: var(--teal-faint);
+      --accent-ink: #04110f;
+      --danger: #ff6a5c;
     }
 
     *, *::before, *::after { 
@@ -91,6 +109,15 @@
       pointer-events: none; 
       z-index: 0;
     }
+
+    /* SHARED COMPONENT UTILITIES (used by embedded widgets like the dashboard) */
+    .num { font-family: var(--mono); }
+    .head-font { font-family: var(--display); }
+    .tag-label { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
+    .data-row:hover { background: var(--teal-faint); }
+    button, select { font-family: inherit; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
 
     /* NAV */
     nav {
@@ -687,6 +714,35 @@
         padding: 10px 16px;
       }
     }
+  
+  :root{
+    --bg:#000000; --panel:#0c1614; --line:rgba(0,229,204,0.18);
+    --ink:#e0f7f4; --ink-dim:#6b9e97;
+    --accent:#00e5cc; --accent-ink:#04110f; --accent-faint:rgba(0,229,204,0.06);
+    --monument:#e63262;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink); font-family:'Space Mono',monospace;
+    -webkit-font-smoothing:antialiased; cursor:none; position:relative;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  body::before{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(0,229,204,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,204,0.045) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+  #cursor{ position:fixed; width:10px; height:10px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:screen; }
+  #cursor-ring{ position:fixed; width:32px; height:32px; border:1px solid var(--accent); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:0.5; }
+  @media (hover:none){ #cursor,#cursor-ring{ display:none; } body{ cursor:auto; } }
+  ::-webkit-scrollbar{width:6px;height:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:9999px;}
+  .head-font{font-family:'Syne',sans-serif;}
+  .tag-label{font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);}
+  #dashboard-root, #geomapping-root{max-width:1080px;margin:0 auto;padding:0 20px 48px; position:relative; z-index:1;}
   </style>
 </head>
 <body>
@@ -698,10 +754,12 @@
   <div class="nav-logo">Nicholas<span> Griffen</span></div>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
+    <li><a href="#dashboards">Dashboards</a></li>
+    <li><a href="#geomapping">Geo-Mapping</a></li>
     <li><a href="#projects">Projects</a></li>
     <!---<li><a href="#journey">My Journey</a></li>
     <!---<li><a href="https://orcid.org/0009-0007-7212-3228/">ORCID</a></li>!---->
-    <li><a href="mailto:njogriffen@gmail.com">Contact</a></li>
+    <li><a href="mailto:njogriffen[at]gmail.com">Contact</a></li>
   </ul>
   <a href="https://www.linkedin.com/in/ngriffen/" target="_blank" class="nav-linkedin">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -717,8 +775,8 @@
     
     <div class="hero-text-side">
       <h1>
-        Predicting The Future<br/>
-        <span class="accent">with data</span>
+        Data & AI<br/>
+        <span class="accent">consultant</span>
       </h1>
      <!-- <p class="hero-desc">
         As a Data Analyst, I have a passion for demystifying the future by facing uncertainty head on. I maximize the availability of insights by letting data speak for itself.
@@ -742,11 +800,13 @@
   </div>
   <div class="about-grid">
     <div class="about-text fade-up">
-      <p>I believe that we should let data speak for itself. 
+      <p>At the intersection of <strong>Data and AI</strong> is your story waiting to be told.
 </p>
-            <p>When we take time to notice that each dataset has a story to tell, it becomes fascinating to learn what's hidden within. This is precisely why data fascinates me, each and every dataset is unique, and has the potential to produce groundbreaking insights.</p>
+            <p>In today's world the difference maker isn't just having data, it's knowing what to do with it. There's always a hidden story to tell. This is precisely why your team needs an experienced practioner who can handle the full data pipeline from A-Z.</p>
       
-      <p>I've developed a passion for the process of turning columns and rows into value. Being able to dig up patterns, trends, and relationships, hidden within data is simply what I enjoy doing. This is what inspired me to forge a career in Data.</p>
+      <p>So, if you want to turn your columns and rows into value, to dig up patterns, and to chart hidden  relationships within your data then you've come to the right place.</p>
+      
+      <p>Keep scrolling if you'd like to view my portfoilio.</p>
       
     </div>
     <div class="skills-wrap fade-up">
@@ -758,6 +818,8 @@
           <span class="skill-pill">R</span>
           <span class="skill-pill">Excel</span>
           <span class="skill-pill">Tableau</span>
+          <span class="skill-pill">LLM</span>
+          <span class="skill-pill">Agents</span>
         </div>
       </div>
       <div>
@@ -786,7 +848,942 @@
   </div>
 </section>
   
-<section id="projects">
+<section id="dashboards">
+  <div class="section-header fade-up">
+    <div class="section-tag">Dashboards</div>
+  </div>
+  <div class="fade-up">
+    <div id="dashboard-root"></div>
+
+<script type="text/babel">
+(function(){
+
+const { useState, useEffect, useRef } = React;
+
+// ---- tiny SVG chart primitives (no external chart library) ----
+const VB_W = 620, VB_H = 280, PAD = { t:14, r:12, b:26, l:34 };
+const plotW = VB_W - PAD.l - PAD.r, plotH = VB_H - PAD.t - PAD.b;
+
+function scaleX(i, n){ return PAD.l + (n <= 1 ? plotW/2 : (i/(n-1)) * plotW); }
+function scaleY(v, min, max){ return PAD.t + plotH - ((v-min)/((max-min)||1)) * plotH; }
+
+function pathFor(data, key, min, max, curve){
+  const n = data.length;
+  const pts = data.map((d,i) => [scaleX(i,n), scaleY(d[key], min, max)]);
+  if (curve === "step") {
+    let d = `M ${pts[0][0]},${pts[0][1]}`;
+    for (let i=1;i<pts.length;i++){
+      const midX = (pts[i-1][0] + pts[i][0]) / 2;
+      d += ` L ${midX},${pts[i-1][1]} L ${midX},${pts[i][1]} L ${pts[i][0]},${pts[i][1]}`;
+    }
+    return d;
+  }
+  if (curve === "linear") {
+    return pts.map((p,i) => (i===0?"M":"L") + p[0] + "," + p[1]).join(" ");
+  }
+  // smooth: simple Catmull-Rom to cubic Bezier
+  if (pts.length < 3) return pts.map((p,i) => (i===0?"M":"L") + p[0] + "," + p[1]).join(" ");
+  let d = `M ${pts[0][0]},${pts[0][1]}`;
+  for (let i=0;i<pts.length-1;i++){
+    const p0 = pts[i-1] || pts[i], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2] || p2;
+    const c1x = p1[0] + (p2[0]-p0[0])/6, c1y = p1[1] + (p2[1]-p0[1])/6;
+    const c2x = p2[0] - (p3[0]-p1[0])/6, c2y = p2[1] - (p3[1]-p1[1])/6;
+    d += ` C ${c1x},${c1y} ${c2x},${c2y} ${p2[0]},${p2[1]}`;
+  }
+  return d;
+}
+
+function Grid({ show, min, max }){
+  if (!show) return null;
+  const lines = 4;
+  return (
+    <g>
+      {Array.from({length:lines+1}).map((_,i) => {
+        const y = PAD.t + (plotH/lines)*i;
+        return <line key={i} x1={PAD.l} x2={VB_W-PAD.r} y1={y} y2={y} stroke="var(--line)" strokeWidth="1" />;
+      })}
+    </g>
+  );
+}
+
+function AxisX({ data }){
+  const n = data.length;
+  const tickCount = Math.min(n, 6);
+  const idxs = Array.from({length:tickCount}, (_,k) => Math.round(k*(n-1)/((tickCount-1)||1)));
+  return (
+    <g>
+      {idxs.map((i,k) => (
+        <text key={k} x={scaleX(i,n)} y={VB_H-6} fontSize="10.5" fill="var(--ink-faint)" textAnchor="middle">{data[i].name}</text>
+      ))}
+    </g>
+  );
+}
+
+// shared hover tracking for interactive charts: maps mouse position -> nearest data index
+function useChartHover(n){
+  const svgRef = useRef(null);
+  const [state, setState] = useState({ idx:null, x:0, width:0 });
+  const onMove = (e) => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const localX = (px / rect.width) * VB_W;
+    const clamped = Math.max(PAD.l, Math.min(VB_W-PAD.r, localX));
+    const frac = (clamped - PAD.l) / plotW;
+    const i = Math.max(0, Math.min(n-1, Math.round(frac * (n-1))));
+    setState({ idx:i, x:px, width:rect.width });
+  };
+  const onLeave = () => setState(s => ({ ...s, idx:null }));
+  return { svgRef, hoverIdx: state.idx, mouseX: state.x, containerWidth: state.width, onMove, onLeave };
+}
+
+function HoverTooltip({ mouseX, containerWidth, row, keys, colors, extra }){
+  const tipWidth = 168;
+  const left = mouseX + 16 + tipWidth > containerWidth ? Math.max(4, mouseX - tipWidth - 12) : mouseX + 16;
+  return (
+    <div style={{
+      position:"absolute", left, top:8, width:tipWidth,
+      background:"var(--panel)", border:"1px solid var(--accent)",
+      padding:"9px 11px", fontSize:12, pointerEvents:"none", boxShadow:"0 6px 18px rgba(0,0,0,0.4)", fontFamily:"'Space Mono',monospace"
+    }}>
+      <div style={{color:"var(--ink-dim)", marginBottom:5, fontSize:11.5}}>{row.name}</div>
+      {keys.map((k,i) => (
+        <div key={k} style={{display:"flex", gap:8, alignItems:"center", justifyContent:"space-between", marginTop:i>0?3:0}}>
+          <span style={{display:"flex", alignItems:"center", gap:6, color:"var(--ink-dim)"}}>
+            <span style={{width:7,height:7,borderRadius:99, background:colors[i]}}></span>
+            {KEY_LABELS[k] || k}
+          </span>
+          <span className="num" style={{fontWeight:600}}>
+            {(k==="revenue"||k==="expenses") ? "$" : ""}{row[k].toLocaleString()}
+          </span>
+        </div>
+      ))}
+      {extra && extra.map((e,i) => (
+        <div key={"x"+i} style={{display:"flex", gap:8, alignItems:"center", justifyContent:"space-between", marginTop:5, paddingTop:5, borderTop:"1px solid var(--line)"}}>
+          <span style={{color:"var(--ink-dim)"}}>{e.label}</span>
+          <span className="num" style={{fontWeight:600, color:"var(--ink-dim)"}}>{e.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LineAreaSVG({ data, keys, colors, curve, showGrid, filled }){
+  const all = data.flatMap(d => keys.map(k => d[k]));
+  const max = Math.max(...all) * 1.12, min = Math.min(0, Math.min(...all));
+  const n = data.length;
+  const dense = n > 120;
+  const { svgRef, hoverIdx, mouseX, containerWidth, onMove, onLeave } = useChartHover(n);
+  return (
+    <div style={{position:"relative", width:"100%", height:"100%"}} onMouseMove={onMove} onMouseLeave={onLeave}>
+      <svg ref={svgRef} viewBox={`0 0 ${VB_W} ${VB_H}`} width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style={{cursor:"crosshair"}}>
+        <defs>
+          {keys.map((k,i) => (
+            <linearGradient key={k} id={"grad-"+k} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={colors[i]} stopOpacity="0.32"/>
+              <stop offset="95%" stopColor={colors[i]} stopOpacity="0"/>
+            </linearGradient>
+          ))}
+        </defs>
+        <Grid show={showGrid} min={min} max={max} />
+        {keys.map((k,i) => {
+          const line = pathFor(data, k, min, max, dense ? "linear" : curve);
+          const area = filled ? `${line} L ${scaleX(n-1,n)},${PAD.t+plotH} L ${scaleX(0,n)},${PAD.t+plotH} Z` : null;
+          return (
+            <g key={k}>
+              {filled && <path d={area} fill={"url(#grad-"+k+")"} stroke="none" />}
+              <path d={line} fill="none" stroke={colors[i]} strokeWidth={i===0?2.5:2}
+                    strokeDasharray={i===0?"none":"4 4"} strokeLinejoin="round" strokeLinecap="round" />
+            </g>
+          );
+        })}
+        {hoverIdx !== null && (
+          <g>
+            <line x1={scaleX(hoverIdx,n)} x2={scaleX(hoverIdx,n)} y1={PAD.t} y2={PAD.t+plotH}
+                  stroke="var(--ink-faint)" strokeWidth="1" strokeDasharray="3 3" />
+            {keys.map((k,i) => (
+              <circle key={k} cx={scaleX(hoverIdx,n)} cy={scaleY(data[hoverIdx][k],min,max)} r="4"
+                      fill={colors[i]} stroke="var(--panel)" strokeWidth="1.5" />
+            ))}
+          </g>
+        )}
+        <AxisX data={data} />
+      </svg>
+      {hoverIdx !== null && (
+        <HoverTooltip mouseX={mouseX} containerWidth={containerWidth} row={data[hoverIdx]} keys={keys} colors={colors} />
+      )}
+    </div>
+  );
+}
+
+
+function DonutSVG({ data }){
+  const total = data.reduce((s,d) => s+d.value, 0);
+  const cx = VB_W/2, cy = VB_H/2 - 6, rOuter = 78, rInner = 48;
+  let angle = -90;
+  const slices = data.map(d => {
+    const sweep = (d.value/total) * 360;
+    const start = angle, end = angle + sweep;
+    angle = end;
+    const toXY = (r,a) => [cx + r*Math.cos(a*Math.PI/180), cy + r*Math.sin(a*Math.PI/180)];
+    const [x1,y1] = toXY(rOuter,start), [x2,y2] = toXY(rOuter,end);
+    const [x3,y3] = toXY(rInner,end), [x4,y4] = toXY(rInner,start);
+    const large = sweep > 180 ? 1 : 0;
+    const path = `M ${x1},${y1} A ${rOuter},${rOuter} 0 ${large} 1 ${x2},${y2} L ${x3},${y3} A ${rInner},${rInner} 0 ${large} 0 ${x4},${y4} Z`;
+    return { path, color: d.color, name: d.name, value: d.value };
+  });
+  return (
+    <svg viewBox={`0 0 ${VB_W} ${VB_H}`} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      {slices.map((s,i) => (
+        <path key={i} d={s.path} fill={s.color}>
+          <title>{s.name}: {s.value}%</title>
+        </path>
+      ))}
+      <text x={cx} y={cy+5} textAnchor="middle" fontSize="20" fontFamily="'JetBrains Mono',monospace" fontWeight="600" fill="var(--ink)">{total}%</text>
+      {data.map((d,i) => (
+        <g key={i} transform={`translate(${VB_W/2 - (data.length*90)/2 + i*90}, ${VB_H-14})`}>
+          <circle cx="0" cy="-3" r="4" fill={d.color} />
+          <text x="10" y="0" fontSize="11" fill="var(--ink-dim)">{d.name}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function RadarSVG({ data }){
+  const cx = VB_W/2, cy = VB_H/2 - 4, r = 92;
+  const n = data.length;
+  const angleFor = (i) => -90 + (360/n)*i;
+  const pointFor = (val, i) => {
+    const a = angleFor(i) * Math.PI/180;
+    const rr = (val/150) * r;
+    return [cx + rr*Math.cos(a), cy + rr*Math.sin(a)];
+  };
+  const ringPts = (frac) => data.map((d,i) => {
+    const a = angleFor(i) * Math.PI/180;
+    return `${cx + r*frac*Math.cos(a)},${cy + r*frac*Math.sin(a)}`;
+  }).join(" ");
+  const polyA = data.map((d,i) => pointFor(d.A,i).join(",")).join(" ");
+  const polyB = data.map((d,i) => pointFor(d.B,i).join(",")).join(" ");
+  return (
+    <svg viewBox={`0 0 ${VB_W} ${VB_H}`} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+      {[0.33,0.66,1].map((f,i) => <polygon key={i} points={ringPts(f)} fill="none" stroke="var(--line)" strokeWidth="1" />)}
+      {data.map((d,i) => {
+        const [x,y] = pointFor(150,i);
+        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="var(--line)" strokeWidth="1" />;
+      })}
+      <polygon points={polyB} fill="#00b8a3" fillOpacity="0.16" stroke="#00b8a3" strokeWidth="1.5" />
+      <polygon points={polyA} fill="#00e5cc" fillOpacity="0.32" stroke="#00e5cc" strokeWidth="2" />
+      {data.map((d,i) => {
+        const a = angleFor(i) * Math.PI/180;
+        const [x,y] = [cx + (r+16)*Math.cos(a), cy + (r+16)*Math.sin(a)];
+        return <text key={i} x={x} y={y} fontSize="10.5" fill="var(--ink-faint)" textAnchor="middle">{d.subject}</text>;
+      })}
+    </svg>
+  );
+}
+
+const N_POINTS = 1000;
+
+function seriesDates(n){
+  const today = new Date();
+  const out = [];
+  for (let i=0;i<n;i++){
+    const d = new Date(today);
+    d.setDate(d.getDate() - (n-1-i));
+    out.push(d.toLocaleDateString(undefined, { month:"short", day:"numeric" }));
+  }
+  return out;
+}
+
+function randomWalk(n, start, volatility, floor, cyclePeriod, cycleAmp){
+  const out = [];
+  let v = start;
+  for (let i=0;i<n;i++){
+    const noise = (Math.random() - 0.5) * volatility;
+    const cycle = Math.sin(i / cyclePeriod) * cycleAmp;
+    v = Math.max(floor, v + noise + cycle * 0.05);
+    out.push(v);
+  }
+  return out;
+}
+
+function genRevenue(n){
+  const dates = seriesDates(n);
+  const revenue = randomWalk(n, 4500, 420, 300, 45, 900);
+  return dates.map((name,i) => ({
+    name,
+    revenue: Math.round(revenue[i]),
+    expenses: Math.round(Math.max(150, revenue[i]*0.42 + (Math.random()-0.5)*260))
+  }));
+}
+
+function genTraffic(n){
+  const dates = seriesDates(n);
+  const users = randomWalk(n, 1400, 260, 150, 30, 700);
+  return dates.map((name,i) => ({
+    name,
+    activeUsers: Math.round(users[i]),
+    signups: Math.round(Math.max(15, users[i]*0.16 + (Math.random()-0.5)*70))
+  }));
+}
+
+const PRESETS = {
+  revenue: { label:"Revenue", unit:"$", keys:["revenue","expenses"], data: genRevenue(N_POINTS) },
+  traffic: { label:"Traffic", unit:"", keys:["activeUsers","signups"], data: genTraffic(N_POINTS) }
+};
+
+const RADAR_DATA = [
+  { subject:"CPU", A:120, B:110, fullMark:150 }, { subject:"Memory", A:98, B:130, fullMark:150 },
+  { subject:"Network", A:86, B:130, fullMark:150 }, { subject:"Disk I/O", A:99, B:100, fullMark:150 },
+  { subject:"Latency", A:85, B:90, fullMark:150 }, { subject:"Uptime", A:65, B:85, fullMark:150 },
+];
+const DONUT_DATA = [
+  { name:"Desktop", value:54, color:"#00e5cc" }, { name:"Mobile", value:32, color:"#00877a" },
+  { name:"Tablet", value:14, color:"#6b9e97" },
+];
+
+const CHART_TYPES = [
+  { id:"area", label:"Area" }, { id:"line", label:"Line" },
+  { id:"donut", label:"Mix" }, { id:"radar", label:"Load" },
+];
+
+const KEY_LABELS = { revenue:"Revenue", expenses:"Expenses", activeUsers:"Active Users", signups:"Sign Ups" };
+
+function fmt(n, unit){
+  const v = n >= 1000 ? (n/1000).toFixed(1)+"k" : n;
+  return unit + v;
+}
+
+function App(){
+  const [chartType, setChartType] = useState("area");
+  const [presetKey, setPresetKey] = useState("revenue");
+
+  useEffect(() => {
+    const dot = document.getElementById("cursor");
+    const ring = document.getElementById("cursor-ring");
+    if (!dot || !ring) return;
+    const move = (e) => {
+      dot.style.left = e.clientX + "px"; dot.style.top = e.clientY + "px";
+      ring.style.left = e.clientX + "px"; ring.style.top = e.clientY + "px";
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  const preset = PRESETS[presetKey];
+  const primaryKey = preset.keys[0];
+  const secondaryKey = preset.keys[1];
+  const seriesColors = presetKey === "revenue" ? ["#ff6a5c", "#00e5cc"] : ["#00e5cc", "#00877a"];
+  const latest = preset.data[preset.data.length - 1];
+  const first = preset.data[0];
+  const change = (((latest[primaryKey] - first[primaryKey]) / first[primaryKey]) * 100).toFixed(1);
+  const isUp = Number(change) >= 0;
+  const total = preset.data.reduce((s,d) => s + d[primaryKey], 0);
+  const avg = Math.round(total / preset.data.length);
+
+  const renderChart = () => {
+    if (chartType === "donut") return <DonutSVG data={DONUT_DATA} />;
+    if (chartType === "radar") return <RadarSVG data={RADAR_DATA} />;
+    if (chartType === "line") return <LineAreaSVG data={preset.data} keys={preset.keys} colors={seriesColors} curve="monotone" showGrid={true} filled={false} />;
+    return <LineAreaSVG data={preset.data} keys={preset.keys} colors={seriesColors} curve="monotone" showGrid={true} filled={true} />;
+  };
+
+  const showLegendKeys = chartType === "area" || chartType === "line";
+
+  return (
+    <div>
+      <header style={{
+        position:"sticky", top:0, zIndex:10, background:"rgba(0,0,0,0.85)", backdropFilter:"blur(12px)",
+        paddingTop:"calc(env(safe-area-inset-top,0px) + 20px)", paddingBottom:18,
+        borderBottom:"1px solid var(--line)", marginBottom:28
+      }}>
+        <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:16}}>
+          <div style={{display:"flex", alignItems:"center", gap:10}}>
+            <div style={{
+              width:28, height:28, background:"var(--accent)",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              color:"var(--accent-ink)", fontWeight:800, fontFamily:"'Syne',sans-serif", fontSize:14
+            }}>Q</div>
+            <div className="head-font" style={{fontSize:17, fontWeight:800, letterSpacing:"-0.5px"}}>Quarterly<span style={{color:"var(--accent)"}}>Expenses</span></div>
+          </div>
+          <div className="tag-label" style={{display:"flex", alignItems:"center", gap:8}}>
+            <span style={{width:6,height:6,borderRadius:99, background:"var(--accent)", boxShadow:"0 0 8px var(--accent)"}}></span>
+            Live
+          </div>
+        </div>
+      </header>
+
+      {/* Stat row */}
+      <div style={{display:"flex", gap:0, border:"1px solid var(--line)", marginBottom:28, overflowX:"auto", background:"var(--panel)"}}>
+        {[
+          {label:`Total ${preset.label.toLowerCase()}`, value: fmt(total, preset.unit)},
+          {label:"Daily average", value: fmt(avg, preset.unit)},
+          {label:"Period change", value:(isUp?"+":"")+change+"%", tone: isUp ? "#00e5cc" : "#ff6a5c"},
+          {label:"Data points", value: preset.data.length},
+        ].map((s,i) => (
+          <div key={i} style={{
+            flex:"1 0 140px", padding:"16px 20px", borderLeft: i>0 ? "1px solid var(--line)" : "none"
+          }}>
+            <div className="tag-label" style={{marginBottom:8}}>{s.label}</div>
+            <div className="num" style={{fontSize:22, fontWeight:700, color: s.tone || "var(--ink)"}}>{s.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Controls */}
+      <div style={{display:"flex", flexWrap:"wrap", gap:10, alignItems:"center", marginBottom:16}}>
+        <div style={{display:"flex", background:"var(--panel)", border:"1px solid var(--line)", padding:3, gap:2}}>
+          {CHART_TYPES.map(c => (
+            <button key={c.id} onClick={() => setChartType(c.id)} style={{
+              border:"none", cursor:"none", fontSize:11, padding:"7px 13px",
+              textTransform:"uppercase", letterSpacing:"0.08em",
+              background: chartType === c.id ? "var(--accent)" : "transparent",
+              color: chartType === c.id ? "var(--accent-ink)" : "var(--ink-dim)",
+              fontWeight: chartType === c.id ? 600 : 500
+            }}>{c.label}</button>
+          ))}
+        </div>
+
+        <select value={presetKey} onChange={e => setPresetKey(e.target.value)} style={{
+          border:"1px solid var(--line)", background:"var(--panel)", color:"var(--ink)",
+          padding:"8px 10px", fontSize:11, textTransform:"uppercase", letterSpacing:"0.08em", cursor:"none"
+        }}>
+          {Object.keys(PRESETS).map(k => <option key={k} value={k}>{PRESETS[k].label} dataset</option>)}
+        </select>
+      </div>
+
+      {/* Chart panel */}
+      <div style={{ border:"1px solid var(--line)", marginBottom:24 }}>
+        <div className="tag-label" style={{
+          background:"var(--accent-faint)", borderBottom:"1px solid var(--line)",
+          padding:"10px 16px", display:"flex", justifyContent:"space-between"
+        }}>
+          <span>Fig. 01 — {chartType}</span>
+          <span>{preset.label}</span>
+        </div>
+        <div style={{background:"#000", padding:20}}>
+          {showLegendKeys && (
+            <div style={{display:"flex", gap:16, marginBottom:12, fontSize:11, textTransform:"uppercase", letterSpacing:"0.06em", color:"var(--ink-dim)"}}>
+              <span style={{display:"flex", alignItems:"center", gap:6}}>
+                <span style={{width:8,height:8, background:seriesColors[0]}}></span>{KEY_LABELS[primaryKey] || primaryKey}
+              </span>
+              <span style={{display:"flex", alignItems:"center", gap:6}}>
+                <span style={{width:8,height:8, background:seriesColors[1]}}></span>{KEY_LABELS[secondaryKey] || secondaryKey}
+              </span>
+            </div>
+          )}
+          <div style={{height:320}}>{renderChart()}</div>
+        </div>
+        <div style={{padding:"12px 16px", borderTop:"1px solid var(--line)", fontSize:12, color:"var(--ink-dim)"}}>
+        </div>
+      </div>
+
+      {/* Data table */}
+      <div style={{ border:"1px solid var(--line)" }}>
+        <div className="tag-label" style={{
+          background:"var(--accent-faint)", borderBottom:"1px solid var(--line)",
+          padding:"10px 16px", display:"flex", justifyContent:"space-between"
+        }}>
+          <span>Raw values</span>
+          <span>{preset.data.length.toLocaleString()} rows</span>
+        </div>
+        <div style={{overflowY:"auto", overflowX:"auto", maxHeight:210}}>
+          <table style={{width:"100%", borderCollapse:"collapse", fontSize:13}}>
+            <thead>
+              <tr>
+                <th style={{position:"sticky", top:0, background:"var(--panel)", textAlign:"left", padding:"12px 18px", color:"var(--accent)", fontWeight:700, fontSize:10, letterSpacing:"0.14em", textTransform:"uppercase", borderBottom:"1px solid var(--line)"}}>Date</th>
+                {preset.keys.map(k => (
+                  <th key={k} style={{position:"sticky", top:0, background:"var(--panel)", textAlign:"right", padding:"12px 18px", color:"var(--accent)", fontWeight:700, fontSize:10, letterSpacing:"0.14em", textTransform:"uppercase", borderBottom:"1px solid var(--line)"}}>{KEY_LABELS[k] || k}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {preset.data.map((row,i) => (
+                <tr key={i} className="data-row">
+                  <td className="head-font" style={{padding:"11px 18px", color:"var(--ink)", fontWeight:600, borderBottom: i < preset.data.length-1 ? "1px solid var(--line)" : "none"}}>{row.name}</td>
+                  {preset.keys.map(k => (
+                    <td key={k} className="num" style={{textAlign:"right", padding:"11px 18px", color:"var(--ink-dim)", borderBottom: i < preset.data.length-1 ? "1px solid var(--line)" : "none"}}>
+                      {(k === "revenue" || k === "expenses") ? "$" : ""}{row[k].toLocaleString()}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("dashboard-root")).render(<App/>);
+
+})();
+</script>
+  </div>
+</section>
+  
+  <section id="geomapping">
+  <div class="section-header fade-up">
+    <div class="section-tag">Geo-Mapping</div>
+  </div>
+  <div class="fade-up">
+    <div id="geomapping-root"></div>
+  </div>
+  </section>
+    
+    <script type="text/babel">
+(function(){
+
+const { useState, useEffect, useRef } = React;
+
+// ---- geography (approximate, stylized) ----------------------------------
+const LON_MIN=2.215, LON_MAX=2.430, LAT_MIN=48.805, LAT_MAX=48.906;
+const COS_LAT = Math.cos(48.86 * Math.PI/180);
+const LON_ADJ_MIN = LON_MIN*COS_LAT, LON_ADJ_MAX = LON_MAX*COS_LAT;
+
+// shared projection (module-level so the business generator can share it with the map)
+const VB_W=720, VB_H=540, PAD=20;
+const plotW = VB_W-PAD*2, plotH = VB_H-PAD*2;
+function projX(lon){ return PAD + ((lon*COS_LAT - LON_ADJ_MIN)/(LON_ADJ_MAX-LON_ADJ_MIN)) * plotW; }
+function projY(lat){ return PAD + (1-(lat-LAT_MIN)/(LAT_MAX-LAT_MIN)) * plotH; }
+function distToSeg(px,py,ax,ay,bx,by){
+  const dx=bx-ax, dy=by-ay;
+  const len2 = dx*dx+dy*dy;
+  let t = len2===0?0:((px-ax)*dx+(py-ay)*dy)/len2;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px-(ax+t*dx), py-(ay+t*dy));
+}
+function distToRiver(lon, lat){
+  const px=projX(lon), py=projY(lat);
+  let m = Infinity;
+  for (let i=0;i<SEINE_PX.length-1;i++){
+    m = Math.min(m, distToSeg(px,py,SEINE_PX[i][0],SEINE_PX[i][1],SEINE_PX[i+1][0],SEINE_PX[i+1][1]));
+  }
+  return m;
+}
+
+// rounded city outline, loosely tracing the périphérique — stylized, not survey-grade
+const CITY_BOUNDARY = [
+  [2.300,48.905],[2.345,48.900],[2.385,48.892],[2.415,48.878],[2.427,48.858],
+  [2.422,48.838],[2.407,48.820],[2.382,48.809],[2.348,48.805],[2.305,48.805],
+  [2.265,48.809],[2.238,48.820],[2.222,48.838],[2.219,48.858],[2.228,48.878],
+  [2.253,48.893],[2.278,48.902],[2.300,48.905]
+];
+
+const PARKS = [ // [lon, lat, rx, ry]
+  [2.230,48.862,0.020,0.022], // Bois de Boulogne
+  [2.415,48.828,0.018,0.016], // Bois de Vincennes
+  [2.337,48.847,0.006,0.006], // Luxembourg Gardens
+  [2.328,48.863,0.007,0.004], // Tuileries
+  [2.298,48.855,0.006,0.005], // Champ de Mars
+  [2.382,48.879,0.007,0.006], // Buttes-Chaumont
+];
+
+const SEINE = [
+  [2.222,48.848],[2.250,48.853],[2.275,48.857],[2.292,48.862],[2.310,48.861],
+  [2.330,48.861],[2.3364,48.857],[2.345,48.854],[2.348,48.857],[2.360,48.854],
+  [2.378,48.850],[2.400,48.846],[2.420,48.842]
+];
+const SEINE_PX = SEINE.map(p => [projX(p[0]), projY(p[1])]);
+
+// approximate real centroids of the 20 arrondissements (for a stylized Voronoi-style division)
+const ARRONDISSEMENTS = [
+  { num:1,  lat:48.8637, lon:2.3380 }, { num:2,  lat:48.8686, lon:2.3411 },
+  { num:3,  lat:48.8630, lon:2.3603 }, { num:4,  lat:48.8541, lon:2.3577 },
+  { num:5,  lat:48.8448, lon:2.3508 }, { num:6,  lat:48.8496, lon:2.3325 },
+  { num:7,  lat:48.8560, lon:2.3125 }, { num:8,  lat:48.8718, lon:2.3126 },
+  { num:9,  lat:48.8763, lon:2.3378 }, { num:10, lat:48.8760, lon:2.3600 },
+  { num:11, lat:48.8590, lon:2.3800 }, { num:12, lat:48.8390, lon:2.3980 },
+  { num:13, lat:48.8280, lon:2.3550 }, { num:14, lat:48.8300, lon:2.3230 },
+  { num:15, lat:48.8410, lon:2.2950 }, { num:16, lat:48.8600, lon:2.2650 },
+  { num:17, lat:48.8850, lon:2.3070 }, { num:18, lat:48.8920, lon:2.3450 },
+  { num:19, lat:48.8850, lon:2.3850 }, { num:20, lat:48.8630, lon:2.3980 },
+];
+const ARR_PX = ARRONDISSEMENTS.map(a => [projX(a.lon), projY(a.lat)]);
+
+function pointInPoly(px, py, poly){
+  let inside = false;
+  for (let i=0, j=poly.length-1; i<poly.length; j=i++){
+    const [xi,yi] = poly[i], [xj,yj] = poly[j];
+    if (((yi>py)!==(yj>py)) && (px < (xj-xi)*(py-yi)/(yj-yi)+xi)) inside = !inside;
+  }
+  return inside;
+}
+
+function ArrondissementCanvas(){
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    canvas.width = VB_W; canvas.height = VB_H;
+    const ctx = canvas.getContext("2d");
+    const boundaryPx = CITY_BOUNDARY.map(p => [projX(p[0]), projY(p[1])]);
+    const img = ctx.createImageData(VB_W, VB_H);
+    const colorA = [212,222,220], colorB = [222,230,228]; // two subtle alternating shades
+    for (let py=0; py<VB_H; py++){
+      for (let px=0; px<VB_W; px++){
+        const idx = (py*VB_W+px)*4;
+        if (!pointInPoly(px, py, boundaryPx)) { img.data[idx+3] = 0; continue; }
+        let best=0, bd=Infinity;
+        for (let k=0;k<ARR_PX.length;k++){
+          const dx=px-ARR_PX[k][0], dy=py-ARR_PX[k][1];
+          const d=dx*dx+dy*dy;
+          if (d<bd){ bd=d; best=k; }
+        }
+        // edge detection: compare to neighbor's nearest region for a boundary line
+        let isEdge = false;
+        if (px>0 || py>0){
+          const checks = [[px-1,py],[px,py-1]];
+          for (const [nx,ny] of checks){
+            if (nx<0||ny<0) continue;
+            let nb=0, nd=Infinity;
+            for (let k=0;k<ARR_PX.length;k++){
+              const dx=nx-ARR_PX[k][0], dy=ny-ARR_PX[k][1];
+              const d=dx*dx+dy*dy;
+              if (d<nd){ nd=d; nb=k; }
+            }
+            if (nb!==best) isEdge = true;
+          }
+        }
+        const col = isEdge ? [255,255,255] : (ARRONDISSEMENTS[best].num % 2 === 0 ? colorA : colorB);
+        img.data[idx]=col[0]; img.data[idx+1]=col[1]; img.data[idx+2]=col[2]; img.data[idx+3]=255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }, []);
+  return <canvas ref={ref} style={{position:"absolute", inset:0, width:"100%", height:"100%"}} />;
+}
+
+const LANDMARKS = [
+  { name:"Arc de Triomphe",  lat:48.8738, lon:2.2950, icon:"arch" },
+  { name:"Moulin Rouge",     lat:48.8841, lon:2.3322, icon:"windmill" },
+  { name:"Sacré-Cœur",       lat:48.8867, lon:2.3431, icon:"basilica" },
+  { name:"Opéra Garnier",    lat:48.8719, lon:2.3316, icon:"opera" },
+  { name:"Place de la Concorde", lat:48.8656, lon:2.3212, icon:"obelisk" },
+  { name:"Louvre Museum",    lat:48.8621, lon:2.3364, icon:"pyramid" },
+  { name:"Notre-Dame",       lat:48.8521, lon:2.3499, icon:"cathedral" },
+  { name:"Orsay Museum",     lat:48.8570, lon:2.3266, icon:"museum" },
+  { name:"Père Lachaise Cemetery", lat:48.8599, lon:2.3936, icon:"cemetery" },
+  { name:"Eiffel Tower",     lat:48.8584, lon:2.2945, icon:"tower" },
+  { name:"Montparnasse Tower", lat:48.8421, lon:2.3219, icon:"skyscraper" },
+  { name:"Panthéon",         lat:48.8462, lon:2.3464, icon:"pantheon" },
+  { name:"Catacombs",        lat:48.8338, lon:2.3327, icon:"cross" },
+];
+
+// ---- real independent Paris businesses (illustrative demo metrics) -----
+const CATEGORY_COLOR = {
+  Bistro:"#ff9d54", Brasserie:"#ff9d54", Restaurant:"#ff9d54", "Crêperie":"#ff9d54",
+  "Café":"#8b8cf0", "Tea Salon":"#8b8cf0",
+  Bakery:"#ffe066", Patisserie:"#ffe066",
+  Bookshop:"#00e5cc", Boutique:"#00e5cc", "Concept Store":"#00e5cc", Ceramics:"#00e5cc",
+  Curiosities:"#00e5cc", Cookware:"#00e5cc", "Gourmet Grocer":"#00e5cc", Grocer:"#00e5cc", Market:"#00e5cc",
+};
+const BUSINESSES = [
+  { id:"P01", name:"Shakespeare and Company", category:"Bookshop",       lat:48.8504, lon:2.3470, stars:4.5, mentions:9400 },
+  { id:"P02", name:"Café de Flore",           category:"Café",           lat:48.8542, lon:2.3320, stars:4.0, mentions:7200 },
+  { id:"P03", name:"Les Deux Magots",         category:"Café",           lat:48.8539, lon:2.3336, stars:4.0, mentions:6800 },
+  { id:"P04", name:"Poilâne",                 category:"Bakery",         lat:48.8492, lon:2.3277, stars:4.6, mentions:3100 },
+  { id:"P05", name:"Ladurée (Champs-Élysées)",category:"Patisserie",     lat:48.8698, lon:2.3079, stars:4.4, mentions:8600 },
+  { id:"P06", name:"E. Dehillerin",           category:"Cookware",       lat:48.8625, lon:2.3448, stars:4.5, mentions:1200 },
+  { id:"P07", name:"Deyrolle",                category:"Curiosities",    lat:48.8558, lon:2.3266, stars:4.7, mentions:1900 },
+  { id:"P08", name:"Merci",                   category:"Concept Store",  lat:48.8631, lon:2.3631, stars:4.3, mentions:4200 },
+  { id:"P09", name:"Du Pain et des Idées",    category:"Bakery",         lat:48.8721, lon:2.3639, stars:4.8, mentions:2600 },
+  { id:"P10", name:"Breizh Café",             category:"Crêperie",       lat:48.8631, lon:2.3625, stars:4.4, mentions:3300 },
+  { id:"P11", name:"Le Comptoir du Relais",   category:"Bistro",         lat:48.8517, lon:2.3389, stars:4.3, mentions:2700 },
+  { id:"P12", name:"Chez L'Ami Jean",         category:"Bistro",         lat:48.8577, lon:2.3059, stars:4.5, mentions:1800 },
+  { id:"P13", name:"La Pâtisserie des Rêves", category:"Patisserie",     lat:48.8546, lon:2.2946, stars:4.4, mentions:1500 },
+  { id:"P14", name:"Pierre Hermé",            category:"Patisserie",     lat:48.8514, lon:2.3305, stars:4.7, mentions:5100 },
+  { id:"P15", name:"Fauchon",                 category:"Gourmet Grocer",lat:48.8699, lon:2.3242, stars:4.2, mentions:2400 },
+  { id:"P16", name:"Comptoir de la Gastronomie", category:"Bistro",      lat:48.8626, lon:2.3459, stars:4.1, mentions:1600 },
+  { id:"P17", name:"Angelina",                category:"Tea Salon",      lat:48.8646, lon:2.3283, stars:4.3, mentions:6300 },
+  { id:"P18", name:"Bistrot Paul Bert",       category:"Bistro",         lat:48.8531, lon:2.3822, stars:4.6, mentions:2100 },
+  { id:"P19", name:"Septime",                 category:"Restaurant",     lat:48.8540, lon:2.3789, stars:4.7, mentions:1400 },
+  { id:"P20", name:"Marché des Enfants Rouges", category:"Market",       lat:48.8626, lon:2.3631, stars:4.2, mentions:3900 },
+  { id:"P21", name:"La Maison Plisson",       category:"Grocer",         lat:48.8637, lon:2.3653, stars:4.1, mentions:1100 },
+  { id:"P22", name:"L'Éclaireur",             category:"Boutique",       lat:48.8607, lon:2.3608, stars:4.0, mentions:900 },
+  { id:"P23", name:"Astier de Villatte",      category:"Ceramics",       lat:48.8625, lon:2.3438, stars:4.6, mentions:700 },
+  { id:"P24", name:"Librairie Galignani",     category:"Bookshop",       lat:48.8646, lon:2.3277, stars:4.5, mentions:1300 },
+  { id:"P25", name:"Bofinger",                category:"Brasserie",      lat:48.8560, lon:2.3695, stars:4.1, mentions:3600 },
+];
+
+// synthetic fill-in businesses (clearly illustrative), rounding the map out to ~80 points
+const SYNTH_PREFIXES = ["Le Petit","La Belle","Chez","Au Bon","Le Vieux","La Maison","Le Comptoir","L'Atelier","La Cave","Le Coin","Aux Deux","La Petite"];
+const SYNTH_CATEGORIES = Object.keys(CATEGORY_COLOR).filter((v,i,a)=>a.indexOf(v)===i);
+function genSynthBusinesses(n){
+  const out = [];
+  const lonLo = LON_MIN+0.032, lonHi = LON_MAX-0.032;
+  const latLo = LAT_MIN+0.015, latHi = LAT_MAX-0.015;
+  for (let i=0;i<n;i++){
+    const category = SYNTH_CATEGORIES[Math.floor(Math.random()*SYNTH_CATEGORIES.length)];
+    let lat, lon, tries = 0;
+    do {
+      lat = latLo + Math.random()*(latHi-latLo);
+      lon = lonLo + Math.random()*(lonHi-lonLo);
+      tries++;
+    } while (distToRiver(lon, lat) < 16 && tries < 40);
+    out.push({
+      id: "S" + String(i+1).padStart(2,"0"),
+      name: SYNTH_PREFIXES[Math.floor(Math.random()*SYNTH_PREFIXES.length)] + " " + category,
+      category, lat, lon,
+      stars: Math.round((3 + Math.random()*2) * 2) / 2,
+      mentions: Math.max(30, Math.round(Math.exp(Math.random()*6))),
+    });
+  }
+  return out;
+}
+const ALL_BUSINESSES = BUSINESSES.concat(genSynthBusinesses(80 - BUSINESSES.length));
+
+// ---- original monument glyphs (simple geometric silhouettes) -----------
+function MonumentIcon({ type, active }){
+  const c = "var(--monument)";
+  const s = active ? 1.25 : 1;
+  const common = { fill:c, stroke:"#fff", strokeWidth:0.6 };
+  switch(type){
+    case "tower": // Eiffel Tower
+      return <g transform={`scale(${s})`}>
+        <polygon points="0,-16 3,-4 8,10 5,10 0,-2 -5,10 -8,10 -3,-4" {...common} />
+        <rect x="-6" y="8" width="12" height="2.2" fill={c} />
+      </g>;
+    case "arch": // Arc de Triomphe
+      return <g transform={`scale(${s})`}>
+        <path d="M -9,10 L -9,-6 A 9,9 0 0 1 9,-6 L 9,10 L 5,10 L 5,-5 A 5,5 0 0 0 -5,-5 L -5,10 Z" {...common} />
+      </g>;
+    case "basilica": // Sacré-Cœur
+      return <g transform={`scale(${s})`}>
+        <circle cx="-7" cy="2" r="3" {...common} />
+        <circle cx="7" cy="2" r="3" {...common} />
+        <path d="M -8,10 L -8,3 Q 0,-3 8,3 L 8,10 Z" {...common} />
+        <circle cx="0" cy="-5" r="6" {...common} />
+      </g>;
+    case "windmill": // Moulin Rouge
+      return <g transform={`scale(${s})`}>
+        <rect x="-3" y="0" width="6" height="10" {...common} />
+        <circle cx="0" cy="-2" r="2.4" {...common} />
+        <line x1="0" y1="-2" x2="9" y2="-9" stroke={c} strokeWidth="2.4" />
+        <line x1="0" y1="-2" x2="-9" y2="-9" stroke={c} strokeWidth="2.4" />
+        <line x1="0" y1="-2" x2="9" y2="5" stroke={c} strokeWidth="2.4" />
+        <line x1="0" y1="-2" x2="-9" y2="5" stroke={c} strokeWidth="2.4" />
+      </g>;
+    case "opera": // Opéra Garnier
+      return <g transform={`scale(${s})`}>
+        <rect x="-10" y="-2" width="20" height="12" {...common} />
+        <rect x="-8" y="-2" width="2.4" height="12" fill="#fff" opacity="0.55" />
+        <rect x="-2.6" y="-2" width="2.4" height="12" fill="#fff" opacity="0.55" />
+        <rect x="3" y="-2" width="2.4" height="12" fill="#fff" opacity="0.55" />
+        <path d="M -10,-2 Q 0,-13 10,-2 Z" {...common} />
+      </g>;
+    case "pyramid": // Louvre
+      return <g transform={`scale(${s})`}>
+        <polygon points="0,-11 11,10 -11,10" {...common} />
+        <line x1="0" y1="-11" x2="0" y2="10" stroke="#fff" strokeWidth="0.6" opacity="0.6" />
+      </g>;
+    case "obelisk": // Place de la Concorde
+      return <g transform={`scale(${s})`}>
+        <polygon points="-3,10 3,10 2,-8 0,-13 -2,-8" {...common} />
+      </g>;
+    case "cathedral": // Notre-Dame
+      return <g transform={`scale(${s})`}>
+        <rect x="-9" y="-2" width="6" height="12" {...common} />
+        <rect x="3" y="-2" width="6" height="12" {...common} />
+        <rect x="-9" y="-6" width="18" height="4" {...common} />
+        <circle cx="0" cy="-6" r="2.6" fill="#fff" opacity="0.7" />
+      </g>;
+    case "museum": // Orsay
+      return <g transform={`scale(${s})`}>
+        <rect x="-10" y="-4" width="20" height="14" {...common} />
+        <circle cx="0" cy="-8" r="4.5" {...common} />
+        <circle cx="0" cy="-8" r="2" fill="#fff" opacity="0.7" />
+      </g>;
+    case "skyscraper": // Montparnasse Tower
+      return <g transform={`scale(${s})`}>
+        <rect x="-4" y="-14" width="8" height="24" {...common} />
+      </g>;
+    case "pantheon":
+      return <g transform={`scale(${s})`}>
+        <rect x="-9" y="0" width="2" height="10" fill={c} />
+        <rect x="-5" y="0" width="2" height="10" fill={c} />
+        <rect x="-1" y="0" width="2" height="10" fill={c} />
+        <rect x="3" y="0" width="2" height="10" fill={c} />
+        <rect x="7" y="0" width="2" height="10" fill={c} />
+        <path d="M -10,0 Q 0,-11 10,0 Z" {...common} />
+        <circle cx="0" cy="-9" r="3" {...common} />
+      </g>;
+    case "cross": // Catacombs
+      return <g transform={`scale(${s})`}>
+        <rect x="-1.4" y="-11" width="2.8" height="20" {...common} />
+        <rect x="-6" y="-6" width="12" height="2.8" {...common} />
+      </g>;
+    case "cemetery": // Père Lachaise
+      return <g transform={`scale(${s})`}>
+        <path d="M -7,10 L -7,0 Q -7,-8 0,-10 Q 7,-8 7,0 L 7,10 Z" {...common} />
+        <rect x="-1.2" y="-6" width="2.4" height="10" fill="#fff" opacity="0.7" />
+        <rect x="-4" y="-2.4" width="8" height="2.4" fill="#fff" opacity="0.7" />
+      </g>;
+    default:
+      return <circle r="6" {...common} />;
+  }
+}
+
+function MapSVG({ hoveredId, selectedId, onHover, onSelect }){
+  const x = projX, y = projY;
+
+  const boundaryPath = CITY_BOUNDARY.map((p,i) => (i===0?"M":"L")+x(p[0])+","+y(p[1])).join(" ") + " Z";
+  const seinePath = SEINE.map((p,i) => (i===0?"M":"L")+x(p[0])+","+y(p[1])).join(" ");
+
+  return (
+    <svg viewBox={`0 0 ${VB_W} ${VB_H}`} width="100%" height="100%" preserveAspectRatio="xMidYMid meet"
+         style={{position:"absolute", inset:0}}>
+      <path d={boundaryPath} fill="none" stroke="#8f8f8f" strokeWidth="4" />
+
+      {PARKS.map((p,i) => (
+        <ellipse key={i} cx={x(p[0])} cy={y(p[1])}
+                 rx={Math.abs(x(p[0]+p[2])-x(p[0]))} ry={Math.abs(y(p[1]-p[3])-y(p[1]))}
+                 fill="#a9d99a" opacity="0.85" />
+      ))}
+      <path d={seinePath} fill="none" stroke="#a9d8ea" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+
+      {ALL_BUSINESSES.map(d => {
+        const active = d.id === selectedId || d.id === hoveredId;
+        const r = Math.max(3.5, Math.min(8, 3 + Math.sqrt(d.mentions)/40));
+        const px = x(d.lon), py = y(d.lat);
+        return (
+          <g key={d.id} onMouseEnter={()=>onHover(d.id)} onMouseLeave={()=>onHover(null)} onClick={()=>onSelect(d.id)} style={{cursor:"none"}}>
+            <circle cx={px} cy={py} r={active?r+2.5:r}
+                    fill={CATEGORY_COLOR[d.category] || "#00e5cc"} fillOpacity={active?1:0.85}
+                    stroke={active?"#fff":"#3a3a3a"} strokeWidth={active?2:1} />
+            {active && (
+              <g transform={`translate(${px},${py-r-14})`}>
+                <rect x={-(d.name.length*3.1+6)} y="-9" width={d.name.length*6.2+12} height="16" rx="2"
+                      fill="#fff" stroke="#999" strokeWidth="0.7" />
+                <text x="0" y="3" textAnchor="middle" fontSize="8.5" fontWeight="700" letterSpacing="0.02em"
+                      fill="#1a1a1a" fontFamily="'Space Mono',monospace">{d.name.toUpperCase()}</text>
+              </g>
+            )}
+          </g>
+        );
+      })}
+
+      {LANDMARKS.map((l,i) => {
+        const active = hoveredId === l.name;
+        const px = x(l.lon), py = y(l.lat);
+        return (
+          <g key={i} onMouseEnter={()=>onHover(l.name)} onMouseLeave={()=>onHover(null)} style={{cursor:"none"}}>
+            <g transform={`translate(${px},${py})`}>
+              <MonumentIcon type={l.icon} active={active} />
+            </g>
+            {active && (
+              <g transform={`translate(${px},${py-24})`}>
+                <rect x={-(l.name.length*3.1+6)} y="-9" width={l.name.length*6.2+12} height="16" rx="2"
+                      fill="#fff" stroke="#999" strokeWidth="0.7" />
+                <text x="0" y="3" textAnchor="middle" fontSize="8.5" fontWeight="700" letterSpacing="0.02em"
+                      fill="#1a1a1a" fontFamily="'Space Mono',monospace">{l.name.toUpperCase()}</text>
+              </g>
+            )}
+          </g>
+        );
+      })}
+
+      {/* Arrondissement numbers moved to the bottom so they are rendered LAST (top layer). 
+          They are now perfectly centered over the centroid coordinates with prominent but transparent styling. */}
+      {ARRONDISSEMENTS.map((a,i) => {
+        const px = x(a.lon), py = y(a.lat);
+        return (
+          <text key={i} x={px} y={py} textAnchor="middle" dominantBaseline="central"
+                fontSize="32" fontWeight="800"
+                fill="#ffffff" opacity="0.25"
+                fontFamily="'Syne',sans-serif"
+                style={{pointerEvents:"none"}}>
+            {a.num}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
+
+function App(){
+  const [hoveredId, setHoveredId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+
+  useEffect(() => {
+    const dot = document.getElementById("cursor"), ring = document.getElementById("cursor-ring");
+    const move = (e) => {
+      dot.style.left = e.clientX+"px"; dot.style.top = e.clientY+"px";
+      ring.style.left = e.clientX+"px"; ring.style.top = e.clientY+"px";
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  const top10 = ALL_BUSINESSES.slice().sort((a,b)=>b.mentions-a.mentions).slice(0,10);
+
+  return (
+    <div>
+      <header style={{
+        position:"sticky", top:0, zIndex:10, background:"rgba(0,0,0,0.85)", backdropFilter:"blur(12px)",
+        paddingTop:"calc(env(safe-area-inset-top,0px) + 20px)", paddingBottom:18,
+        borderBottom:"1px solid var(--line)", marginBottom:24
+      }}>
+        <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", gap:16}}>
+          <div style={{display:"flex", alignItems:"center", gap:10}}>
+            <div style={{width:28,height:28,background:"var(--accent)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--accent-ink)",fontWeight:800,fontFamily:"'Syne',sans-serif",fontSize:14}}>M</div>
+            <div className="head-font" style={{fontSize:17,fontWeight:800,letterSpacing:"-0.5px"}}>Mapping <span style={{color:"var(--accent)"}}>Metrics</span></div>
+          </div>
+          <div className="tag-label" style={{display:"flex",alignItems:"center",gap:8}}>
+            <span style={{width:6,height:6,borderRadius:99,background:"var(--accent)",boxShadow:"0 0 8px var(--accent)"}}></span>Live
+          </div>
+        </div>
+      </header>
+
+      <div style={{display:"flex", gap:20, flexWrap:"wrap"}}>
+        <div style={{flex:"1 1 560px", minWidth:320, border:"1px solid var(--line)"}}>
+          <div className="tag-label" style={{background:"var(--accent-faint)", borderBottom:"1px solid var(--line)", padding:"10px 16px"}}>
+            Fig. 01 — Paris, Landmarks &amp; Businesses
+          </div>
+          <div style={{height:560, background:"var(--panel)", position:"relative"}}>
+            <ArrondissementCanvas />
+            <MapSVG hoveredId={hoveredId} selectedId={selectedId} onHover={setHoveredId} onSelect={setSelectedId} />
+          </div>
+          <div style={{padding:"10px 16px", borderTop:"1px solid var(--line)", fontSize:10.5, color:"var(--ink-dim)", display:"flex", gap:14, flexWrap:"wrap"}}>
+            <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:99,background:"#ff9d54"}}></span>Bistro/Restaurant</span>
+            <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:99,background:"#8b8cf0"}}></span>Café</span>
+            <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:99,background:"#ffe066"}}></span>Bakery/Patisserie</span>
+            <span style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:99,background:"#00e5cc"}}></span>Shops</span>
+            <span style={{marginLeft:"auto"}}>{LANDMARKS.length} landmarks · {ALL_BUSINESSES.length} businesses</span>
+          </div>
+        </div>
+
+        <div style={{flex:"1 1 280px", minWidth:260, border:"1px solid var(--line)"}}>
+          <div className="tag-label" style={{background:"var(--accent-faint)", borderBottom:"1px solid var(--line)", padding:"10px 16px"}}>Top 10 by Mentions</div>
+          <div style={{maxHeight:560, overflowY:"auto"}}>
+            {top10.map((d,i) => (
+              <div key={d.id}
+                   onClick={()=>setSelectedId(d.id)}
+                   onMouseEnter={()=>setHoveredId(d.id)} onMouseLeave={()=>setHoveredId(null)}
+                   style={{
+                     padding:"11px 16px", borderBottom:"1px solid var(--line)", cursor:"none",
+                     background: (selectedId===d.id || hoveredId===d.id) ? "var(--accent-faint)" : "transparent"
+                   }}>
+                <div className="head-font" style={{fontSize:13, fontWeight:700, color:"var(--ink)", marginBottom:3}}>{i+1}. {d.name}</div>
+                <div style={{fontSize:11, color:"var(--ink-dim)"}}>{d.category} · ★ {d.stars} · {d.mentions.toLocaleString()} mentions</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("geomapping-root")).render(<App/>);
+
+})();
+</script>
+    
+    <section id="projects">
   <div class="section-header fade-up">
     <div class="section-tag">Selected Work</div>
     <!--<h2>Projects That<br/><span class="accent">moved the needle</span></h2>-->
@@ -875,6 +1872,40 @@
     <a href="https://github.com/ngriffen/Sharks_CA_Coastline_Exploration/blob/main/SharksML.ipynb" class="project-link">Code →</a>
   </div>
 </div>    
+    
+    <div class="project-card">
+  <div class="project-num">05</div>
+  <div class="project-title">Prototyping a Location Health Index</div>
+  <div class="project-desc">Designed a scoring framework to rank outlet performance, benchmark locations against competition, and flag at-risk businesses while utilizing clear and explainable performance drivers as a repeatable analytics product to drive informed analytical recommendations.</div>
+  <div class="project-tags">
+    <span class="tag">Python</span>
+    <span class="tag">NLP</span>
+    <span class="tag">Benchmarking</span>
+    <span class="tag">Linear Regression</span>
+  </div>
+  
+  <div class="project-links-group">
+    <a href="#projects" class="project-link">Coming Soon →</a>
+    <!--<a href="Prototype.html" class="project-link">Project Summary →</a>
+    <a href="https://github.com/ngriffen/Sharks_CA_Coastline_Exploration/blob/main/SharksML.ipynb" class="project-link">Code →</a>--->
+  </div>
+</div>    
+    
+    <div class="project-card">
+  <div class="project-num">06</div>
+  <div class="project-title">Do LLMs Read Minds? Demystifying Theory of Mind in chatbots</div>
+  <div class="project-desc">Conducted a study testing the claim that LLMs can accurately attribute mental states (<i>she thinks that he thinks</i>), by using the Unexpected Transfer task to assess five up-to-date LLMs. The results indicated that while each model cumulatively performed above chance, they regularly defaulted to using less costly heuristics in place of dynamically tracking mental states.</div>
+  <div class="project-tags">
+    <span class="tag">R</span>
+    <span class="tag">LLMs</span>
+    <span class="tag">Research</span>
+  </div>
+  
+  <div class="project-links-group">
+    <a href="https://notebook.google.com/notebook/fa2c2f11-c14a-40da-ad19-034fe54a5985/artifact/d0b162aa-6555-4b23-89c7-0cc80e50c298?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" class="project-link">Project Summary →</a>
+    <a href="https://assets-eu.researchsquare.com/files/rs-11116672/v1_covered_ff91d1a3-ed87-4418-85e4-e1151a647658.pdf?c=1790145503" class="project-link">Article →</a>
+  </div>
+</div>    
 
 </div>
       
@@ -942,9 +1973,6 @@
       <div class="legend-item"><div class="legend-dot" style="background:#00e5cc"></div>Data Specialization</div>
     </div>
   </div>-->
-
-
-      </section>
 
 <section id="contact" style="background: #050f0d; overflow: hidden; position: relative;">
   
